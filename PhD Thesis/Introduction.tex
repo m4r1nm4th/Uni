@@ -1,0 +1,149 @@
+\section{Introduction}
+
+Cohomology theories arise in various contexts in mathematics and are a powerful invariant of the objects that one wants to study.
+Most cohomology theories are homotopy theoretic in nature and the first mathematicians that axiomatized cohomology theories in the most
+basic setting of Homotopy Theory, namely in the category of homotopy types or anima, were Eilenberg and Steenrod.
+In their formulation of the axioms they used a grading of cohomology theoires by the integers.
+But in many other contexts of mathematics and even within Homotopy Theory it is common to use a different grading.
+To name a few, Motivic Homotopy Theory, Hodge Theory and Equivariant Homotopy Theory. 
+For example in Equivariant Homotopy Theory it is common to 
+grade cohomology theories over the representation of a fixed group $G$.
+These can be thought of as (equivariant) vector bundles over the 
+terminal $G$-anima $G/G$.
+This is analogues to to how a natural number can be thought of as the dimension of a vector bundle over the point in anima.
+Inspired by this analogy we introduce the notion of genuine cohomology theories (GCTs).
+We now give a quick description of what a genuine cohomology theory essentially is.
+
+A \emph{genuine cohomology theory (in the category of anima with coefficients in abelian groups)} 
+consists of a collection $E^V(X)$ of abelian groups for each compact anima $X$ and vector bundle $V$ over $X$
+\footnote{A vector bundle $V$ over the anima $X$ is a map $V \colon X \to \coprod_n BO(n)$.},
+morphisms 
+\[f^* := E^W(f) \colon E^W(Y) \to E^{f^*W}(X)\] for each map $f \colon X \to Y$ of anima and vector bundle $W$ over 
+$Y$,
+and 
+\[\alpha_* := E^\alpha(X) \colon E^V(X) \to E^W(X)\] for each map $\alpha \colon V \to W$ between vector bundles $V,W$ over $X$, 
+that satisfy various compatibility requirements, most importantly 
+a certain map 
+\[
+E^V(X) \to E^{V \oplus W}(S^W,X)    
+\]
+is an equivalence, which we will call the \emph{Thom isomorphism}.
+We will give a more detailed description of GCTs in Section~\ref{section:Genuinecohomologytheories}.
+
+Essential to GCTs is the grading over vector bundles, but if we restrict a GCT $E$ only to trivial bundles 
+we obtain a (classical) cohomology theory
+\[
+  E^n(X) := E^{\R^n}(X).  
+\]
+
+Our main result states that every (classical) cohomology theory arises this way.
+That is, it extends to a GCT and furthermore this extension to a GCT is unique.
+In other words:
+
+\begin{theorem}\label{thm:introGCTs}Restriction of a genuine cohomology theory to a (classical) cohomology theory is 
+    an equivalence of categories 
+\[
+\{\mathrm{GCTs\ on\ \An^\omega\ with\ coefficients\ in\ Ab}\} \simeq 
+\{\mathrm{Cohomology\ Theories\ on\ \An^\omega}\}.\]
+\end{theorem}
+
+A key insight in this paper is that we generalize GCTs 
+so that we allow them to take values in any arbitrary pointed $\infty$-category
+instead of abelian groups.
+To keep track of the additional coherences that appear when working with $\infty$-categories, we model 
+GCTs as certain functors out of a category $\AVB^\vop|_{\An^\omega}$ that keeps track of the 
+combinatorics of anima and vector bundles. 
+In this greater generality of working with arbitrary pointed $\infty$-category as the target of GCTs, we are 
+able to prove a much stronger result than Theorem~\ref{thm:introGCTs}.
+
+\begin{theorem}\label{thm:introUniversalGCT} There exists a universal GCT
+    \[\Th^- \colon \AVB^\vop|_{\An^\omega} \to \Sp^\omega. \]
+That is, for every GCT $E \colon \AVB^\vop|_{\An^\omega} \to \cD^\op$ there exists 
+a unique functor $\mathcal E \colon \Sp^\omega \to \cD^\op$ such that we have a factorization
+\[\begin{tikzcd}
+	{\AVB^\vop|_{\An^\omega}} && {\Sp^\omega} \\
+	& {\mathcal D^\op}
+	\arrow["{\Th^-}", from=1-1, to=1-3]
+	\arrow["{\mathcal E}", dashed, from=1-3, to=2-2]
+	\arrow["E"', from=1-1, to=2-2].
+\end{tikzcd}.\]
+\end{theorem}
+A more detailed version of Theorem~\ref{thm:introUniversalGCT} is given by 
+Theorem~\ref{thrm:dream} in Section~\ref{section:spectraGenerated}. There we give a 
+precise analysis of which functors $\mathcal E$ arise through Theorem~\ref{thm:introUniversalGCT}.
+For example if we let $\cD = \Ab$, then GCTs $E$ with values in $\Ab$ induce 
+cohomology theories $\mathcal E \colon \Sp^\omega \to \Ab^\op$ and that is how 
+Theorem~\ref{thm:introUniversalGCT} proves Theorem~\ref{thm:introGCTs}.
+Another important case is $\cD = \An_*$, then the functors $\mathcal E \colon \Sp^\omega \to \An_*^\op$
+that arise are excisive functors, and therefore $GCTs$ with values in $\An_*$ are spectra.
+
+\medskip
+
+We now give some background on some objects and ideas that appear in the formulation and 
+proof of Theorem~\ref{thm:introUniversalGCT}.
+
+First of all the category $\AVB^\vop|_{\An^\omega}$ on which we model GCTs can be thought of as having objects given by pairs $(X,-V)$ where $X$ is a compact anima and $V$ is a vector bundle over $X$.
+% In Section~\ref{sec:AVBs} we construct different kinds of categories of anima and vector bundles. 
+% The most important categories are called $\AVB$ and $\AVB^\vop$. 
+% Both can be seen as categories of pairs of anima and vector bundles over them, but the main difference is 
+% the functoriality in the vector bundle.
+% While a morphism in $\AVB$ consists of the data of a morphism $\alpha \colon V \to f^*W$ into 
+% the pulled back vector bundle $f^*W$, 
+A morphism $(X,-V) \to (Y,-W)$ in $\AVB^\vop$ contains the data of a morhpism $f \colon X \to Y$ of anima and a morphism 
+$\alpha \colon f^*W \to V$ out of the pulled back bundle.
+Therefore we should think of morphism in $\AVB^\vop$ as morphisms between the `duals' of the vector bundles $V$, $f^*W$.
+This is the reason why we use the notation $(X,-V)$ for objects of $\AVB^\vop$ and think of $-V$ as a
+variable that keeps track of how to (twisted) desuspend $X$.
+
+Another nodal point about the category $\AVB^\vop|_{\An^\omega}$ is that the morphisms between 
+vector bundles are affine linear. This is important since the aforementioned Thom isomorphism is 
+induced by the Thom diagonal, which is a strict affine linear map between vector bundles.
+We introduce affine linear maps in depth in Section~\ref{sec:AffLin}, but one can think of 
+an affine linear morphism of vector spaces $\phi \colon V \to W$ as the composition 
+of an isometric linear embedding $f \colon V \to W$ followed by a translation $\tau \colon W \to W$ along a vector 
+$w$ out of the orthogonal complement $f(V)^\perp \cup \{\infty\}$ of the image of $f$.
+Since we also want to allow $w = \infty$, we cannot model affine linear morphisms as set theoretic maps between vector spaces. 
+They are best understood as a subspace of the space of pointed continuous functions between the one point compactifications $S^V,S^W$.
+
+Let $V$ be a vector bundle over $X$. We have an associated spherical fibration $\pi \colon S^V \to X$
+which one can think of as the fiberwise one point compactification of $V$. 
+Over $S^V$ there is a specific affine linear map $\theta \colon 0 \to \pi^*V$ from the zero bundle into the 
+pulled back bundle of $V$, that is called the \emph{Thom diagonal} that we want to describe now. 
+An affine linear morphism from the $0$ vector space into another vector space $W$ is fully 
+determined by its value of the $0$ vector, which can be any element of $S^W$.
+Therefore a morphism $0 \to \pi^*V$ is given by a section of $S^{\pi^*V} \to S^V$.
+But $S^{\pi^*V} \simeq S^V \times S^V$ and the Thom diagonal corresponds under this identification 
+unsurprisingly with the diagonal section.
+The map $(S^V, -V) \xto{\theta} (S^V, -0) \xto{\pi} (X, -0)$ which we sometimes also call the Thom diagonal induces on associated 
+Thom spectra of the negative bundle the projection to the right summand of the splitting 
+\[
+  (S^V)^{-V} \simeq X^{-V} \oplus X^{-0}.
+\]
+It turns out that the functor $(X,-V) \mapsto X^{-V}$ is the universal GCT and therefore the universal functor 
+that among others splits the Thom diagonal.
+
+\medskip
+
+BIS HIER HAB ICH DEN TEXT VERAENDERT
+
+The key idea of the proof of Theorem~\ref{thrm:dream} is to construct a functorial Thom diagonal.
+This construction is strictly not possible for the category $\AVB^\vop$, but one can construct it
+functorially for the category $\AVB$. We explain this in Section~\ref{section:ThomDiagonal}.
+In Section~\ref{sec:AVB(n)} we introduce categories $\AVB^\vop(n)$.
+In this paper they play the technical role, that they filter the category $\AVB^\vop$ over the category $\An^\omega$, that is 
+\[
+\colim_n \AVB^\vop(n)|_{\An^\omega} \simeq \AVB^\vop|_{\An^\omega},    
+\]
+but the categories $\AVB^\vop(n)$ also admit a functiorial construction of the Thom diagonal similar to the category $\AVB$.
+
+In Section~\ref{section:spectraGenerated} we study the Thom spectrum $X^{-V}$ of the negative vector bundle $(X,-V)$, which 
+is a functor $\AVB^\vop \to \Sp$. Phrased differently, Thereom~\ref{thrm:dream} shows that the 
+negative Thom spectrum functor satisfies a universal property. 
+Simply put, its the universal functor that preserves certain colimits and splits the 
+Thom diagonal.
+
+In Section~\ref{section:Genuinecohomologytheories}
+
+
+
+

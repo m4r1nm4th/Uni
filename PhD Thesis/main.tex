@@ -1,0 +1,456 @@
+\documentclass{article}
+
+% Pakete
+\usepackage{amsmath} % Mathematische Symbole und Umgebungen
+\usepackage{amssymb} % Zusätzliche mathematische Symbole
+\usepackage{amsthm} % Theorem-Umgebung
+\usepackage{tikz-cd} % Kommutative Diagramme
+\usepackage{enumitem} % Anpassbare Aufzählungen
+\usepackage{hyperref} % Hyperlinks
+\usepackage{showkeys}
+\usetikzlibrary{decorations.pathmorphing}
+
+% Abkürzungen
+
+\newcommand{\xto}{\xrightarrow}
+\newcommand{\xot}{\xleftarrow}
+
+
+\newcommand{\R}{\mathbb{R}} % Reelle Zahlen
+\newcommand{\N}{\mathbb{N}} % Natürliche Zahlen
+\newcommand{\Z}{\mathbb{Z}} % Ganze Zahlen
+\newcommand{\Q}{\mathbb{Q}} % Rationale Zahlen
+\newcommand{\C}{\mathbb{C}} % Komplexe Zahlen
+\newcommand{\F}{\mathbb{F}}
+
+\newcommand{\cC}{\mathcal{C}}
+\newcommand{\cD}{\mathcal{D}}
+\newcommand{\cE}{\mathcal{E}}
+
+
+\newcommand{\cO}{\AffLin}
+\newcommand{\cX}{\AVB^{\vop}}
+
+\newcommand{\Ab}{\mathrm{Ab}}
+\newcommand{\Psh}{\mathcal{P}}
+
+
+
+\newcommand{\pt}{\mathrm{pt}}
+\newcommand{\op}{\mathrm{op}}
+\newcommand{\vop}{\mathrm{vop}}
+\newcommand{\pr}{\mathrm{pr}}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\ev}{\mathrm{ev}}
+\newcommand{\Pow}{\mathrm{P}}
+
+
+\newcommand{\iotaemptyempty}{\iota_{\overleftarrow{\emptyset},\overrightarrow{\emptyset}}}
+\newcommand{\iotarnzero}{\iota_{\overleftarrow{\R^n},\overrightarrow{0}}}
+
+
+\DeclareMathOperator{\AVB}{AVB}
+\DeclareMathOperator{\AWB}{AWB}
+\DeclareMathOperator{\An}{An}
+\DeclareMathOperator{\Sp}{Sp}
+\newcommand{\catinfty}{\mathcal{C}\mathrm{at}_{\infty}}
+\DeclareMathOperator{\Fun}{Fun}
+\DeclareMathOperator{\AffLin}{AffLin}
+\DeclareMathOperator{\res}{res}
+\DeclareMathOperator{\Map}{Map}
+\DeclareMathOperator*{\colim}{colim}
+\DeclareMathOperator*{\fib}{fib}
+\DeclareMathOperator{\Th}{Th}
+\DeclareMathOperator{\Span}{Span}
+\DeclareMathOperator{\Nat}{Nat}
+
+
+
+% Theorems
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{example}{Example}
+\newtheorem{construction}{Construction}
+\newtheorem{remark}{Remark}
+
+\begin{document}
+
+\title{Genuine Cohomology Theories and the Thom Diagonal}
+\author{Marin Janssen}
+\date{\today}
+
+\maketitle
+
+\begin{abstract}
+    We will present a set of axioms that describe cohomology theories but with an extended grading over vector bundles instead of integers.
+    To show that these axioms are equivalent to the Eilenberg-Steenrod axioms we will give a generators-relation description of the category of finite spectra.
+    The generators can be thought of a pair consisting of an anima and a vector bundle over it.
+    In order to prove this, we make the Thom anima construction an endofunctor of our category, which can be thought of as a twisted suspension.
+    It is connected to the identity via the Thom diagonal. The relation that one has to quotient by to obtain finite spectra is morally giving 
+    by inverting the Thom diagonal.
+\end{abstract}
+
+\tableofcontents
+
+% \include{Introduction}
+
+\include{Chapter1}
+
+% \include{Chapter2}
+
+% \include{Chapter3}
+
+\include{Chapter4}
+
+% \include{Chapter5}
+
+%   \begin{remark}
+%     A functor $F \colon \cC \to \cD$ which preserves split puhsouts also preserves
+%     cofibers of split monomorphisms as it is a special case.
+%     If $\cC$ and $\cD$ are semi-additive $\infty$-categories,
+%     then we observe that tfae
+%     \begin{itemize}
+%       \item $F$ preserves split pushouts.
+%       \item $F$ preserves cofibers of split monomorphisms.
+%       \item $F$ is additive.
+%     \end{itemize}
+%     since we can classify split pushouts in a semi-additive $\infty$-category to be of the form
+%     \[
+%       \begin{tikzcd}
+%         A & A \oplus X \\
+%         B & B \oplus X
+%         \arrow[from=1-1,to=1-2]
+%         \arrow[from=1-1,to=2-1]
+%         \arrow[from=2-1,to=2-2]
+%         \arrow[from=1-2,to=2-2]
+%       \end{tikzcd}.
+%     \]
+%   \end{remark}
+% This is a special case of a more general lemma 
+% \begin{lemma}
+%     Let 
+%     \[\begin{tikzcd}
+%         \cC & \cD & \cE & \cC
+%         \arrow["F", from=1-1, to=1-2]
+%         \arrow["G", from=1-2, to=1-3]
+%         \arrow["L", from=1-3, to=1-4]
+%     \end{tikzcd}\]
+%     be functors together with adjunction data 
+%     $FL \dashv G$ with counit $\epsilon \colon FLG \Rightarrow \id$ and 
+%     $L \dashv GF$ with counit $\theta \colon LGF \Rightarrow \id$ such that
+%     both units 
+%     $\id \Rightarrow FLG$ are mutually equivalent.
+%     Then there exists an auto equivalence $\Phi \colon F \Rightarrow F$ such that 
+%     \[
+%     F(\theta) \simeq \Phi \circ \epsilon_F     
+%     \]
+%     are equivalent transformations $FLGF \Rightarrow F$.
+% \end{lemma}
+% \begin{proof}
+%     Consider the following diagram 
+%     \[\begin{tikzcd}
+%         & {\Map(-,GF-)} \\
+%         {\Map(L-,-)} & {\Map(L-,LGF-)} \\
+%         {\Map(FL-,F-)} & {\Map(FL-,FLGF-)} & {\Map(FL-,F-)}
+%         \arrow["{F(\theta)_*}", from=3-2, to=3-1]
+%         \arrow["{(\epsilon_F)_*}"', from=3-2, to=3-3]
+%         \arrow["{\theta_*}"', from=2-2, to=2-1]
+%         \arrow["F"', from=2-1, to=3-1]
+%         \arrow["F"', from=2-2, to=3-2]
+%         \arrow["L"', from=1-2, to=2-2]
+%         \arrow["\simeq"', from=1-2, to=2-1]
+%         \arrow["\simeq", from=1-2, to=3-3]
+%     \end{tikzcd}\]
+% \end{proof}
+% \begin{construction}\label{cX(n)}
+%     Let $\mathbb W(n)$ be the pullback of categories 
+%     \[\begin{tikzcd}
+%         {\mathbb W(n)} & {\AffLin/\R^n} \\
+%         {\AffLin^{\times 2}} & \AffLin
+%         \arrow["{\mathrm{source}}", from=1-2, to=2-2]
+%         \arrow["\oplus"', from=2-1, to=2-2]
+%         \arrow[from=1-1, to=2-1]
+%         \arrow[from=1-1, to=1-2]
+%         \arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=1-1, to=2-2]
+%     \end{tikzcd}\]
+%     Let $l.e.$ ($r.e.$) denote the non-full subcategory of the slice category
+%     ${\mathbb W(n)} := (\oplus \colon (\cO)^{\times 2} \to \cO)_{/\R^n}$
+%     given by the class of morphisms which get send to equivalences under the
+%     projections ${\mathbb W(n)} \to (\cO)^{\times 2} \xto{\pr_j} \cO$ for
+%     $j = 1$ ($j = 2$ resp.).
+%     For example, $r.e.$ is the pullback of
+%     \begin{equation}\label{eq:defnre}
+%       \cO \times (\cO)^\simeq \xto{(\oplus, \R^n)} \cO
+%       \times \cO \xleftarrow{(s,t)} \cO^{\Delta^1}
+%     \end{equation}
+%     We define $\cO(n)$ to be the full subcategory of the span category
+%     associated to the triple $({\mathbb W(n)}, r.e., l.e.)$ on the objects
+%     $(V,W, \alpha \colon V\oplus W \to \R^n)$ where $\alpha$ is either an
+%     equivalence or the $\infty$-map, but in that case we require $V = W = \emptyset$.
+  
+%     A typical morphism of $\AffLin(n)$ is of the form 
+%           \[
+%             (V,W,\alpha\colon  V\oplus W \xto{\simeq} \R^n) \xot{f}
+%             (S,U,\beta \colon S \oplus U \to \R^n) \xto{g}
+%             (V',W'\alpha' \colon V'\oplus W' \xto{\simeq} \R^n)  
+%           \]
+%           In particular it gives us a commutative diagram 
+%           \[\begin{tikzcd}
+%               && {S \oplus U} \\
+%               {V\oplus W} && {\R^n} && {V'\oplus W'}
+%               \arrow["{(\overleftarrow{\pr}g,\overrightarrow{\pr}g)}", from=1-3, to=2-5]
+%               \arrow["{(\overleftarrow{\pr}f\overrightarrow{\pr}f)}"', from=1-3, to=2-1]
+%               \arrow["{\alpha }"', from=2-1, to=2-3]
+%               \arrow[from=1-3, to=2-3]
+%               \arrow["{\alpha'}", from=2-5, to=2-3]
+%           \end{tikzcd}\]
+%           where $\overrightarrow{\pr}f$ and $\overleftarrow{\pr}g$ are equivalences or $V=W=\emptyset$.
+%           Hence, we can think of the data of a morphism in $\AffLin(n)$ to 
+%           consist of  
+%           \begin{itemize}
+%               \item A map $\phi \colon V' \to V$,
+%               \item A map $\psi \colon W \to W'$,
+%               \item A commutative square 
+%               \[\begin{tikzcd}
+%                   {V'\oplus W} & {V'\oplus W'} \\
+%                   {V\oplus W} & {\R^n}
+%                   \arrow["\alpha"', from=2-1, to=2-2]
+%                   \arrow["{\alpha'}", from=1-2, to=2-2]
+%                   \arrow["{\phi\oplus W}"', from=1-1, to=2-1]
+%                   \arrow["{V'\oplus \psi}", from=1-1, to=1-2]
+%               \end{tikzcd}\]
+%           \end{itemize}
+  
+%     Moreover, let $\cX(n)$ be the total space of the Cartesian fibration 
+%     associated to $\underline{\cO(n)}$. 
+%     % supposedly the span category construction takes care of the vop 
+%   \end{construction}
+  
+%   \begin{remark}\label{spansandunstraightening}
+%     We want to apply Theorem 3.8 in \cite{hebestreit2020orthofibrations} to 
+%     the functor $G \colon (\spaces^\omega)^\op \to \mathrm{AdTrip}$ which sends 
+%     $X$ to the adequate triple $(\Fun(X,{\mathbb W(n)}), \Fun(X,r.e.), \Fun(X,l.e.))$.
+%     This will yield a discription of $\cX(n)$ as a full subcategory of a 
+%     span category. 
+%     Since we are particularly interested in the Cartesian fibration associated to 
+%     $G$ we want to compare our situation to the content of remark 3.16 of \cite{hebestreit2020orthofibrations}.
+%     In order to not confuse ourselfs in the comparison between our notation and the 
+%     notation in paper \cite{hebestreit2020orthofibrations} we give a little 
+%     dictionary:
+    
+%     \begin{tabular}{l|r}
+%       This Paper & \cite{hebestreit2020orthofibrations} \\
+%       \hline\hline
+%       backwards arrow & egressive morphism \\
+%       \cline{1-2}
+%       forwards arrow & ingressive morphism \\
+%       \cline{1-2}
+%       adequate Triple & adequate Triple \\ 
+%       (category, backwards arrows, forwards arrows) &
+%       (category, forwards arrows, backwards arrows) \\
+%     \end{tabular}
+    
+%     Let $X:= \spaces^\omega$ and $Y := \int_{X \in {\spaces^\omega}^\op} \Fun(X,{\mathbb W(n)})$.
+%     Then we have $Y^{\mathrm{eg}} = \int_{X \in {\spaces^\omega}^\op} \Fun(X,r.e.)$,
+%     $Y_{\mathrm{in}} = \int_{X \in {\spaces^\omega}^\op} \Fun(X,l.e.) $ and 
+%     \[
+%       Y^{\mathrm{eq}}_{\mathrm{fw}} = \coprod_{X \in \spaces^\omega} r.e.^X 
+%       := \left[ \int_{X \in (\spaces^\omega)^\op} \underline{r.e.} \right]
+%       \times_{\spaces^\omega} (\spaces^\omega)^\simeq.
+%     \] 
+%     Remark 3.16 of \cite{hebestreit2020orthofibrations} tells us now that we 
+%     have an equivalence of $\infty$-categories
+%     \[
+%       \int_{x \in {\spaces^\omega}^\op} \Span({\mathbb W(n)}^X,r.e.^X,l.e.^X) \simeq 
+%       \Span \left(\int_{x \in {\spaces^\omega}^\op}{\mathbb W(n)}^X,\coprod_X r.e.^X , 
+%       \int_{x \in {\spaces^\omega}^\op}l.e.^X \right).    
+%     \]
+%     We sum up: 
+%     $\cX(n)$ is a full subcategory of the span category
+%     of $\int_X \underline{{\mathbb W(n)}}$ with backwards arrows given by $\coprod_X r.e.^X$
+%     and forward morphisms given by $\int_X l.e.^X$.
+%   \end{remark}
+  
+  
+%   \begin{lemma}\label{colimitlemma}
+%     The functor $-\oplus \overrightarrow{\R} \colon {\cO}^{\times 2} \to {\cO}^{\times 2}
+%       \colon (V,W) \mapsto (V, W\oplus \R)$ induces a functor
+%     $-\oplus \overrightarrow{\R} \colon \cO(n)\to \cO(n+1)$,
+%     compatible with the functors
+%     $\cO(n) \to \Span({\mathbb W(n)}, r.e., l.e. ) \xto{(pr_1)_*} \Span(\cO,
+%       {\cO}, {\cO}^\simeq) \simeq ({\cO})^\op$
+%     so that we have an equivalence
+%     \[
+%       \colim (\cO(0) \xto{-\oplus \overrightarrow{\R}} \cO(1)
+%       \xto{-\oplus \overrightarrow{\R}} \dots) \xrightarrow{\simeq} {\cO}^\op 
+%       .\]
+%   \end{lemma}
+%   \begin{proof}
+%     The existence of the induced functor
+%     $\cO(n) \to \cO(n+1)$ and the compatibility is clear by inspection.
+%     We show that the functor
+%     \[
+%       \colim (\cO(0)^X \xto{-\oplus \overrightarrow{\R}} \cO(1)^X
+%       \xto{-\oplus \overrightarrow{\R}} \dots) \to ({\cO^X})^\op
+%     \]
+%     is fully faithful and essentially surjective for every compact space $X$.
+%     Since $X$ is a compact space, we can pull it out the colimit diagram and 
+%     see that we can reduce the claim to the case $X \simeq \pt$.
+%     The essential surjectivity is clear as every object of $\AffLin$ is 
+%     equivalent to $\R^k$ or $\emptyset$ for some $k$.
+%     And these are evidently in the image. 
+%     We now show that the functor is fully faithful.
+%     Fix objects $(V,W,\alpha \colon V \oplus W \xto{\simeq} \R^n),
+%       (V',W',\alpha' \colon V' \oplus W' \xto{\simeq} \R^n) \in \cO(n)$ and let
+%     \[
+%       M := \Map((V,W,\alpha \colon V \oplus W \xto{\simeq} \R^{n}),
+%       (V',W',\alpha' \colon V \oplus W' \xto{\simeq} \R^{n}))
+%       .\]
+%     In the case $\emptyset \in \{V,W,V',W'\}$ we easily compute
+%     $ M \simeq \pt \simeq \Map_{(\cO)^\op}(V',\emptyset) \simeq
+%       \Map_{(\cO)^\op}(\emptyset, V)$ and the claim follows from the fact
+%     $(\emptyset,\emptyset) \oplus \overrightarrow{\R} \simeq
+%       (\emptyset,\emptyset) \in \cO(n+1)$ as $\emptyset \in \cO$
+%     is an absorbing element with respect to $\oplus$.
+  
+%     So suppose $V,W,V',W' \neq \emptyset$. By unraveling the construction of
+%     $\cO(n)$ we have that $M$ is equivalent to the core of the
+%     full subcategory of
+%     \[
+%       \Fun(\Lambda^2_0, {\mathbb W(n)}) \times_{(\ev_1,\ev_2),
+%         {\mathbb W(n)}\times {\mathbb W(n)}} \{(V,W,\alpha),(V',W',\alpha')\}
+%     \]
+%     on those wedges
+%     \[
+%       (V,W,\alpha) \xleftarrow{f} (A,B,\beta) \xto{g} (V',W',\beta)
+%     \]
+%     for which $f$ is a right equivalence and $g$ is a left equivalence.
+%     By writing $ \Fun(\Lambda^2_0, {\mathbb W(n)}) $ as the
+%     pullback ${\mathbb W(n)}^{\Delta^1} \times_{s,{\mathbb W(n)},s} {\mathbb W(n)}^{\Delta^1}$
+%     and commuting limits with limits we find that $M$ is equivalent to the core of
+%     \[
+%       r.e./(V,W,\alpha) \times_{{\mathbb W(n)}} l.e./(V',W',\alpha').
+%     \]
+%     The category of right equivalences, for example,
+%     is itself a pullback of categories, see \eqref{eq:defnre}.
+%     Therefore, we can compute $r.e./(V,W,\alpha)$, after
+%     commuting limits again, as the pullback of
+%     \[
+%       \cO/V \times (\cO)^\simeq/W \xto{(\oplus, \R^n)} \cO/V\oplus W \times
+%       \cO/\R^n \xot{(s,t)} (\cO)^{\Delta^1}/\alpha
+%     \]
+%     The category $(\cO)^\simeq/W$ is contractible, so we can omit it in the above wedge.
+%     Moreover, the above wedge is of the form
+%     $A \times_{\pt} \pt \to B \times_{\pt} C \leftarrow D \times_D D$,
+%     so we can compute its pullback $P$ as the
+%     pullback of  $A \times_B D \to D \leftarrow \pt \times_C D$.
+%     Let us first compute
+%     \begin{eqnarray*}
+%       \pt \times_C D &=& \{\id_{\R^n}\} \times_{\cO/\R^n,t} (\cO)^{\Delta^1}/\alpha \\
+%       &\simeq & \{\id_{\R^n}\} \times_{(\cO)^{\Delta^1}, \ev_{\{1\} \subset \{1,2\} }}
+%       \Fun(\Pow(\langle 2 \rangle), \cO)
+%       \times_{(\cO)^{\Delta^1}, \ev_{\{2\} \subset \{1,2\} }} \{\alpha \} \\
+%       & \simeq & \cO / V \oplus W  = B .
+%     \end{eqnarray*}
+%     One can check that the composition $B = \pt \times_C D \to D \to B$ is the identity,
+%     and that makes the map from $P$ to $A = \cO/V$ an equivalence.
+%     Similarly one can compute that $l.e./(V',W',\alpha')$ is equivalent to
+%     $\cO/W'$.
+%     If we put these results together we can identify $M$ with the core of the pullback
+%     \[
+%       \cO/V \to {\mathbb W(n)} \leftarrow \cO/W'
+%     \]
+%     where the left map sends a map $f\colon U \to V$ to the triple
+%     $(U,W, U\oplus W \xto{f \oplus W} V \oplus W \xto{\alpha} \R^n)$ and
+%     the right map sends $g \colon U \to W'$ to the triple
+%     $(V',U,V' \oplus U \xto{V' \oplus g} V' \oplus W' \xto{\alpha'} \R^n)$.
+  
+%     There is an evident map from
+%     $\Map(V',V) \times_{\Map(V'\oplus W,\R^n)} \Map(W,W')$
+%     into $\cO/V \times_{{\mathbb W(n)}} \cO/W'$. In fact it is obtained
+%     as the pullback:
+%     \[\begin{tikzcd}[column sep=tiny]
+%         {\Map(V',V)\times_{\Map(V'\oplus W,\R^n)}\Map(W,W')} && {\cO/V \times_{{\mathbb W(n)}}\cO/W} \\
+%         \\
+%         \\
+%         {\pt \times_{\pt} \pt} && {\cO \times_{\id\times\{W\},\cO \times \cO,\{V'\}\times\id}\cO}
+%         \arrow[from=1-1, to=4-1]
+%         \arrow["{(V',W)}", from=4-1, to=4-3]
+%         \arrow["{s\times_ss}", from=1-3, to=4-3]
+%         \arrow[from=1-1, to=1-3]
+%         \arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=1-1, to=4-3]
+%       \end{tikzcd}\]
+%     After taking cores the lower map becomes an equivalence, which shows that
+%     $M$ is equivalent to $\Map(V',V) \times_{\Map(V'\oplus W,\R^n)} \Map(W,W')$.
+%     Under this identification the forgetful functor $\cO(n) \to (\cO)^\op$
+%     induces the projection $\Map(V',V) \times_{\Map(V'\oplus W,\R^n)} \Map(W,W') \to \Map(V',V)$
+%     and the functor $-\oplus \overrightarrow{\R} \colon \cO(n) \to \cO(n+1)$
+%     can be identified with the map
+%     \[
+%       \Map(V',V) \times_{\Map(V'\oplus W,\R^n)} \Map(W,W') \to
+%       \Map(V',V) \times_{\Map(V'\oplus W \oplus \R,\R^{n+1})} \Map(W\oplus \R,W'\oplus \R)
+%     \]
+%     Now, it becomes clear, that the induced functor
+%     $\colim \cO(n) \to (\cO)^\op$ is fully faithful,
+%     whence we have proven that the map
+%     \begin{eqnarray*}
+%       \Map(W\oplus \R^k, W' \oplus \R^k) &\to& \Map(V' \oplus W \oplus \R^k, \R^{n+k}) \\
+%       \phi &\mapsto & \alpha' \circ (\id_{V'} \oplus \phi)
+%     \end{eqnarray*}
+%     becomes an equivalence in the colimit for $k \to \infty$.
+%     Since $\alpha'$ is an equivalence, we may as well show the claim for the system
+%     \begin{eqnarray*}
+%       \Map(W\oplus \R^k, W' \oplus \R^k) &\to&
+%       \Map(V' \oplus W \oplus \R^k, V' \oplus W' \oplus \R^k) \\
+%       \phi &\mapsto & \id_{V'} \oplus \phi
+%     \end{eqnarray*}
+  
+%     Both spaces of affine linear embeddings are Thom spaces
+%     $M_i$ for vector bundles $\xi_i \to A_i$,  $i = 1,2$, 
+%     \begin{itemize}
+%       \item $A_1 = \isoemb{W \oplus \R^k}{W' \oplus \R^k}$
+%       \item $A_2 = \isoemb{V' \oplus W \oplus \R^k}{V' \oplus W' \oplus \R^k}$
+%     \end{itemize}
+%     of rank
+%     $\dim W' - \dim W$.
+%     Moreover the map between $M_1 \to M_2$ comes from a map of vector bundles
+%     $\xi_1 \to \xi_2$, which induces isomorphisms on fibers.
+%     Hence we can reduce to check that $A_1 \to A_2$ becomes an equivalence for 
+%     $k \to \infty$.
+%     After picking bases $W \cong \R^l, W' \cong \R^{l'}, V' \cong \R^{m'}$,
+%     we obtain equivalences $A_1 \simeq O(l' + k)/O(l' - l)$ and
+%     $A_2 \simeq O(m' + l' + k)/O(l' - l)$.
+%     Under these choices, 
+%     we can identify the map $A_1 \to A_2$ with the standard inclusion
+%     $O(l' + k)/O(l' - l) \subset O(m' + l' + k)/O(l' - l)$,
+%     which yields the desired equivalence on colimits for $k \to \infty$.
+%   \end{proof}
+  
+%   \begin{corollary}\label{filterAVB}
+%     The
+%     functors $- \oplus (0, \R) \colon \cO(n) \to \cO(n + 1)$ induce an
+%     equivalence 
+%       \[
+%         \colim (\cX(0) \xto{-\oplus \overrightarrow{\R}} \cX(1)
+%         \xto{-\oplus \overrightarrow{\R}} \dots) \xrightarrow{\simeq} {\cX}
+%       .\]
+%   \end{corollary}
+  
+%   \begin{proof}
+%     Apply the last lemma together with the fact that the
+%     functor $\catinfty \to \catinfty$, which sends 
+%     a category $\cD$ to the underying category of the 
+%     cartesian unstraightening of $\underline{\cD}$
+%     preserves filtered colimits.
+%   \end{proof}
+  
+
+
+\begin{thebibliography}{99}
+    % BibTeX-Einträge
+\end{thebibliography}
+
+\end{document}

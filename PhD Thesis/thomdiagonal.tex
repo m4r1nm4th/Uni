@@ -1,0 +1,2891 @@
+\documentclass{article}
+
+% Pakete
+\usepackage{amsmath} % Mathematische Symbole und Umgebungen
+\usepackage{amssymb} % Zusätzliche mathematische Symbole
+\usepackage{amsthm} % Theorem-Umgebung
+\usepackage{tikz-cd} % Kommutative Diagramme
+\usepackage{enumitem} % Anpassbare Aufzählungen
+\usepackage{hyperref} % Hyperlinks
+\usepackage{showkeys}
+\usetikzlibrary{decorations.pathmorphing}
+
+% Abkürzungen
+
+\newcommand{\xto}{\xrightarrow}
+\newcommand{\xot}{\xleftarrow}
+
+
+\newcommand{\R}{\mathbb{R}} % Reelle Zahlen
+\newcommand{\N}{\mathbb{N}} % Natürliche Zahlen
+\newcommand{\Z}{\mathbb{Z}} % Ganze Zahlen
+\newcommand{\Q}{\mathbb{Q}} % Rationale Zahlen
+\newcommand{\C}{\mathbb{C}} % Komplexe Zahlen
+\newcommand{\F}{\mathbb{F}}
+
+\newcommand{\cC}{\mathcal{C}}
+\newcommand{\cD}{\mathcal{D}}
+\newcommand{\cE}{\mathcal{E}}
+
+
+\newcommand{\cO}{\AffLin}
+\newcommand{\cX}{\AVB^{\vop}}
+
+\newcommand{\Ab}{\mathrm{Ab}}
+\newcommand{\Psh}{\mathcal{P}}
+
+
+
+\newcommand{\pt}{\mathrm{pt}}
+\newcommand{\op}{\mathrm{op}}
+\newcommand{\vop}{\mathrm{vop}}
+\newcommand{\pr}{\mathrm{pr}}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\ev}{\mathrm{ev}}
+\newcommand{\Pow}{\mathrm{P}}
+
+
+\newcommand{\iotaemptyempty}{\iota_{\overleftarrow{\emptyset},\overrightarrow{\emptyset}}}
+\newcommand{\iotarnzero}{\iota_{\overleftarrow{\R^n},\overrightarrow{0}}}
+
+
+\DeclareMathOperator{\AVB}{AVB}
+\DeclareMathOperator{\AWB}{AWB}
+\DeclareMathOperator{\An}{An}
+\DeclareMathOperator{\Sp}{Sp}
+\newcommand{\catinfty}{\mathcal{C}\mathrm{at}_{\infty}}
+\DeclareMathOperator{\Fun}{Fun}
+\DeclareMathOperator{\AffLin}{AffLin}
+\DeclareMathOperator{\res}{res}
+\DeclareMathOperator{\Map}{Map}
+\DeclareMathOperator*{\colim}{colim}
+\DeclareMathOperator*{\fib}{fib}
+\DeclareMathOperator{\Th}{Th}
+\DeclareMathOperator{\Span}{Span}
+\DeclareMathOperator{\Nat}{Nat}
+
+
+
+% Theorems
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{example}{Example}
+\newtheorem{construction}{Construction}
+\newtheorem{remark}{Remark}
+
+\begin{document}
+
+\title{Genuine Cohomology Theories and the Thom Diagonal}
+\author{Marin Janssen}
+\date{\today}
+
+\maketitle
+
+\begin{abstract}
+    We will present a set of axioms that describe cohomology theories but with an extended grading over vector bundles instead of integers.
+    To show that these axioms are equivalent to the Eilenberg-Steenrod axioms we will give a generators-relation description of the category of finite spectra.
+    The generators can be thought of a pair consisting of an anima and a vector bundle over it.
+    In order to prove this, we make the Thom anima construction an endofunctor of our category, which can be thought of as a twisted suspension.
+    It is connected to the identity via the Thom diagonal. The relation that one has to quotient by to obtain finite spectra is morally giving 
+    by inverting the Thom diagonal.
+\end{abstract}
+
+\tableofcontents
+
+\section{Introduction}
+Cohomology theories arise in various contexts in mathematics and are a powerful invariant of the objects that one wants to study.
+Most cohomology theories are homotopy theoretic in nature and the first mathematicians that axiomatized cohomology theories in the most
+basic setting of Homotopy Theory, namely in the category of homotopy types or anima, were Eilenberg and Steenrod.
+In their formulation of the axioms they used a grading of cohomology theoires by the integers.
+But in many other contexts of mathematics and even within Homotopy Theory it is common to use a different grading.
+To name a few, Motivic Homotopy Theory, Hodge Theory and Equivariant Homotopy Theory. 
+For example in Equivariant Homotopy Theory it is common to 
+grade cohomology theories over the representation of a fixed group $G$.
+These can be thought of as (equivariant) vector bundles over the 
+terminal $G$-anima $G/G$.
+This is analogues to to how a natural number can be thought of as the dimension of a vector bundle over the point in anima.
+Inspired by this analogy we introduce the notion of genuine cohomology theories (GCTs).
+We now give a quick description of what a genuine cohomology theory essentially is.
+
+A \emph{genuine cohomology theory (in the category of anima with coefficients in abelian groups)} 
+consists of a collection $E^V(X)$ of abelian groups for each compact anima $X$ and vector bundle $V$ over $X$
+\footnote{A vector bundle $V$ over the anima $X$ is a map $V \colon X \to \coprod_n BO(n)$.},
+morphisms 
+\[f^* := E^W(f) \colon E^W(Y) \to E^{f^*W}(X)\] for each map $f \colon X \to Y$ of anima and vector bundle $W$ over 
+$Y$,
+and 
+\[\alpha_* := E^\alpha(X) \colon E^V(X) \to E^W(X)\] for each map $\alpha \colon V \to W$ between vector bundles $V,W$ over $X$, 
+that satisfy various compatibility requirements, most importantly 
+a certain map 
+\[
+E^V(X) \to E^{V \oplus W}(S^W,X)    
+\]
+is an equivalence, which we will call the \emph{Thom isomorphism}.
+We will give a more detailed description of GCTs in Section~\ref{section:Genuinecohomologytheories}.
+
+Essential to GCTs is the grading over vector bundles, but if we restrict a GCT $E$ only to trivial bundles 
+we obtain a (classical) cohomology theory
+\[
+  E^n(X) := E^{\R^n}(X).  
+\]
+
+Our main result states that every (classical) cohomology theory arises this way.
+That is, it extends to a GCT and furthermore this extension to a GCT is unique.
+In other words:
+
+\begin{theorem}\label{thm:introGCTs}Restriction of a genuine cohomology theory to a (classical) cohomology theory is 
+    an equivalence of categories 
+\[
+\{\mathrm{GCTs\ on\ \An^\omega\ with\ coefficients\ in\ Ab}\} \simeq 
+\{\mathrm{Cohomology\ Theories\ on\ \An^\omega}\}.\]
+\end{theorem}
+
+A key insight in this paper is that we generalize GCTs 
+so that we allow them to take values in any arbitrary pointed $\infty$-category
+instead of abelian groups.
+To keep track of the additional coherences that appear when working with $\infty$-categories, we model 
+GCTs as certain functors out of a category $\AVB^\vop|_{\An^\omega}$ that keeps track of the 
+combinatorics of anima and vector bundles. 
+In this greater generality of working with arbitrary pointed $\infty$-category as the target of GCTs, we are 
+able to prove a much stronger result than Theorem~\ref{thm:introGCTs}.
+
+\begin{theorem}\label{thm:introUniversalGCT} There exists a universal GCT
+    \[\Th^- \colon \AVB^\vop|_{\An^\omega} \to \Sp^\omega. \]
+That is, for every GCT $E \colon \AVB^\vop|_{\An^\omega} \to \cD^\op$ there exists 
+a unique functor $\mathcal E \colon \Sp^\omega \to \cD^\op$ such that we have a factorization
+\[\begin{tikzcd}
+	{\AVB^\vop|_{\An^\omega}} && {\Sp^\omega} \\
+	& {\mathcal D^\op}
+	\arrow["{\Th^-}", from=1-1, to=1-3]
+	\arrow["{\mathcal E}", dashed, from=1-3, to=2-2]
+	\arrow["E"', from=1-1, to=2-2].
+\end{tikzcd}.\]
+\end{theorem}
+A more detailed version of Theorem~\ref{thm:introUniversalGCT} is given by 
+Theorem~\ref{thrm:dream} in Section~\ref{section:spectraGenerated}. There we give a 
+precise analysis of which functors $\mathcal E$ arise through Theorem~\ref{thm:introUniversalGCT}.
+For example if we let $\cD = \Ab$, then GCTs $E$ with values in $\Ab$ induce 
+cohomology theories $\mathcal E \colon \Sp^\omega \to \Ab^\op$ and that is how 
+Theorem~\ref{thm:introUniversalGCT} proves Theorem~\ref{thm:introGCTs}.
+Another important case is $\cD = \An_*$, then the functors $\mathcal E \colon \Sp^\omega \to \An_*^\op$
+that arise are excisive functors, and therefore $GCTs$ with values in $\An_*$ are spectra.
+
+\medskip
+
+We now give some background on some objects and ideas that appear in the formulation and 
+proof of Theorem~\ref{thm:introUniversalGCT}.
+
+First of all the category $\AVB^\vop|_{\An^\omega}$ on which we model GCTs can be thought of as having objects given by pairs $(X,-V)$ where $X$ is a compact anima and $V$ is a vector bundle over $X$.
+% In Section~\ref{sec:AVBs} we construct different kinds of categories of anima and vector bundles. 
+% The most important categories are called $\AVB$ and $\AVB^\vop$. 
+% Both can be seen as categories of pairs of anima and vector bundles over them, but the main difference is 
+% the functoriality in the vector bundle.
+% While a morphism in $\AVB$ consists of the data of a morphism $\alpha \colon V \to f^*W$ into 
+% the pulled back vector bundle $f^*W$, 
+A morphism $(X,-V) \to (Y,-W)$ in $\AVB^\vop$ contains the data of a morhpism $f \colon X \to Y$ of anima and a morphism 
+$\alpha \colon f^*W \to V$ out of the pulled back bundle.
+Therefore we should think of morphism in $\AVB^\vop$ as morphisms between the `duals' of the vector bundles $V$, $f^*W$.
+This is the reason why we use the notation $(X,-V)$ for objects of $\AVB^\vop$ and think of $-V$ as a
+variable that keeps track of how to (twisted) desuspend $X$.
+
+Another nodal point about the category $\AVB^\vop|_{\An^\omega}$ is that the morphisms between 
+vector bundles are affine linear. This is important since the aforementioned Thom isomorphism is 
+induced by the Thom diagonal, which is a strict affine linear map between vector bundles.
+We introduce affine linear maps in depth in Section~\ref{sec:AffLin}, but one can think of 
+an affine linear morphism of vector spaces $\phi \colon V \to W$ as the composition 
+of an isometric linear embedding $f \colon V \to W$ followed by a translation $\tau \colon W \to W$ along a vector 
+$w$ out of the orthogonal complement $f(V)^\perp \cup \{\infty\}$ of the image of $f$.
+Since we also want to allow $w = \infty$, we cannot model affine linear morphisms as set theoretic maps between vector spaces. 
+They are best understood as a subspace of the space of pointed continuous functions between the one point compactifications $S^V,S^W$.
+
+Let $V$ be a vector bundle over $X$. We have an associated spherical fibration $\pi \colon S^V \to X$
+which one can think of as the fiberwise one point compactification of $V$. 
+Over $S^V$ there is a specific affine linear map $\theta \colon 0 \to \pi^*V$ from the zero bundle into the 
+pulled back bundle of $V$, that is called the \emph{Thom diagonal} that we want to describe now. 
+An affine linear morphism from the $0$ vector space into another vector space $W$ is fully 
+determined by its value of the $0$ vector, which can be any element of $S^W$.
+Therefore a morphism $0 \to \pi^*V$ is given by a section of $S^{\pi^*V} \to S^V$.
+But $S^{\pi^*V} \simeq S^V \times S^V$ and the Thom diagonal corresponds under this identification 
+unsurprisingly with the diagonal section.
+The map $(S^V, -V) \xto{\theta} (S^V, -0) \xto{\pi} (X, -0)$ which we sometimes also call the Thom diagonal induces on associated 
+Thom spectra of the negative bundle the projection to the right summand of the splitting 
+\[
+  (S^V)^{-V} \simeq X^{-V} \oplus X^{-0}.
+\]
+It turns out that the functor $(X,-V) \mapsto X^{-V}$ is the universal GCT and therefore the universal functor 
+that among others splits the Thom diagonal.
+
+\medskip
+
+BIS HIER HAB ICH DEN TEXT VERAENDERT
+
+The key idea of the proof of Theorem~\ref{thrm:dream} is to construct a functorial Thom diagonal.
+This construction is strictly not possible for the category $\AVB^\vop$, but one can construct it
+functorially for the category $\AVB$. We explain this in Section~\ref{section:ThomDiagonal}.
+In Section~\ref{sec:AVB(n)} we introduce categories $\AVB^\vop(n)$.
+In this paper they play the technical role, that they filter the category $\AVB^\vop$ over the category $\An^\omega$, that is 
+\[
+\colim_n \AVB^\vop(n)|_{\An^\omega} \simeq \AVB^\vop|_{\An^\omega},    
+\]
+but the categories $\AVB^\vop(n)$ also admit a functiorial construction of the Thom diagonal similar to the category $\AVB$.
+
+In Section~\ref{section:spectraGenerated} we study the Thom spectrum $X^{-V}$ of the negative vector bundle $(X,-V)$, which 
+is a functor $\AVB^\vop \to \Sp$. Phrased differently, Thereom~\ref{thrm:dream} shows that the 
+negative Thom spectrum functor satisfies a universal property. 
+Simply put, its the universal functor that preserves certain colimits and splits the 
+Thom diagonal.
+
+In Section~\ref{section:Genuinecohomologytheories}
+
+
+
+
+
+
+\section{The Category of Anima and Affine Vector Bundles and the Thom Diagonal}\label{sec:AVBs}
+
+\subsection{Affine Linear Homomorphisms}\label{sec:AffLin}
+
+TODO Definition Category $\AffLin$ 
+
+
+TODO Universal Property of $\AffLin$
+
+\subsection{The Thom Diagonal in the Category $\AVB$}\label{section:ThomDiagonal}
+\begin{construction}
+    We consider the category 
+    \[ 
+        \AVB := \int_{X \in \An^\op} \Fun(X, \AffLin);
+    \] 
+    the unstraightening of the functor that associates to 
+    each anima the category of 
+    affine linear vector bundles over it. 
+    We call the category $\AVB$ \emph{the category of affine linear 
+    vector bundles}.
+    Its objects consist of data $(X,V)$ where 
+    \begin{itemize}
+        \item $X$ is an anima 
+        \item $V$ is a functor $X \to \AffLin$, which we call \emph{vector bundle over $X$}
+    \end{itemize}
+
+
+\end{construction}
+
+\begin{remark}
+    Any functor $X \to \AffLin$ lands in the core of $\AffLin$, which is 
+    equivalent to the anima
+    \[ 
+        \left( \coprod_{n \geq 0} BO(n) \right)_+,
+    \] 
+    thus the terminology vector bundle is justified as long as we agree
+    that the distinguished functor 
+    \[
+       \emptyset \colon  X \to \pt = (\emptyset)_+ \to \left(\coprod_{n \geq 0} BO(n)\right)_+,  
+    \]
+    which we view as the \emph{empty bundle} on $X$, is considered to be a vector bundle.
+\end{remark}
+
+\begin{construction}\label{construction: mainfunctors}
+    By construction $\AVB$ carries a Cartesian fibration
+     \[
+        \pr \colon \AVB \to \An
+     \]
+    which forgets the data of the equipped vector bundle. That is 
+    $\pr(X,V) = X$ extracts the underlying anima $X$ out of the data $(X,V) \in \AVB$.
+    Since $\pr$ is a Cartesian fibration we obtain restriction/pullback functors 
+    \[
+     \res_X^-(-) \colon \An/_X \times \Fun(X,\AffLin) \to \AVB,   
+    \]  
+    That sends a pair of a morphism $f \colon Y \to X$ and a vector bundle $V$ on $X$ 
+    to the pair $\res^Y_X(V) := (Y, f^*V)$ where $f^*V$ is the vector bundle on $Y$ that 
+    arises as the composite 
+    \[ 
+        f^*Y \colon Y \xrightarrow{f} X \xrightarrow{V} \AffLin.
+    \]
+    In particular, if we fix $V \in \AffLin$ we have a functor
+    \[ 
+        \iota_V := \res_\pt^-(V) \colon \An \to \AVB.     
+    \]
+    If we fix an anima $X$ and call the unique map from $X$ to the point $r$, then 
+    $ \iota_V(X) = (X,r^*V)$ and $r^*V$ is the trivial 
+    rank $\mathrm{dim}(V)$ bundle on $X$.
+
+    We define the functor $S \colon \AVB \to \An$ to be the corepresented functor 
+    \[ 
+    S(X,V) := S^V_X := S^V := \Map_{\AVB}(\iota_0(\pt),(X,V)) = \Map((\pt, 0),(X,V)).    
+    \]
+    We call $S^V_X$ the \emph{associated (unstable) spherical fibration of $V$ over $X$}.
+
+\end{construction}
+
+\begin{lemma}The following statements are true
+    \begin{enumerate}
+        \item The functor $\pr$ is corepresented by $(\pt, \emptyset)$.
+        \item The functor $\iota_\emptyset$ is left and right adjoint to $\pr$.
+        \item The functor $\iota_0$ is left adjoint to $S$.
+    \end{enumerate}
+    \label{lemma:insight}
+\end{lemma}
+
+\begin{proof}
+    By construction of the category $\AVB$, we can identify the fiber of 
+    \[
+      \pr_{(X,V),(Y,W)} \colon \Map((X,V), (Y,W)) \to \Map(X,Y)
+    \]
+    at $f \colon X \to Y$ to be 
+    \[
+      \Map_{\Fun(X,\AffLin)}(V, f^* W).  
+    \]
+    If $W$ is the constant $\emptyset$ bundle then so is $f^* W$.
+    The $\emptyset$ bundle is the zero object of $\Fun(X,\AffLin)$, hence if either 
+    $V$ or $W$ is the $\emptyset$ bundle then $\pr_{(X,V),(Y,W)}$ has contractable fibers, i.e. is an equivalence.
+    This proves 1 and 2. 
+    The previous calculation also specializes to the equivalence 
+    \[
+    \Map_{\AVB}(\iota_0 X, (Y,W)) \simeq \colim_{f \colon X \to Y} \Map_{\Fun(X,\AffLin)}(0,f^* W).    
+    \]
+    The anima $\Map_{\Fun(X,\AffLin)}(0,f^* W)$ is easily seen to be equivalent to the anima of sections of 
+    the associated spherical fibration of $W$ over $Y$ pulled back along $f$, i.e. 
+    \[
+    \Map_{\Fun(X,\AffLin)}(0,f^* W) \simeq \Gamma_X( S^W \times_{Y, f} X).
+    \]
+    In general, if one has a map $Z \to Y$ of anima on can compute 
+    $\Map(X,Z)$ via the colimit
+    \[
+      \colim_{f \colon X \to Y} \Gamma_X( Z \times_{Y, f} X)  
+    \]
+    as seen by the following pullback squares 
+    \[\begin{tikzcd}
+        {\Gamma_X(Z \times_{Y,f}X)} & {\Map(X,Z\times_{Y,f}X)} & {\Map(X,Z)} \\
+        {\{\id\}} & {\Map(X,X)} & {\Map(X,Y)}
+        \arrow[from=1-1, to=2-1]
+        \arrow[from=1-1, to=1-2]
+        \arrow[from=1-2, to=2-2]
+        \arrow[from=2-1, to=2-2]
+        \arrow[from=1-2, to=1-3]
+        \arrow[from=1-3, to=2-3]
+        \arrow["{f_*}", from=2-2, to=2-3]
+        \arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=1-2, to=2-3]
+        \arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=1-1, to=2-2]
+    \end{tikzcd}\]
+    Putting these observations together gives us the equivalence 
+    \[
+        \Map_{\AVB}(\iota_0 X, (Y,W)) \simeq  \colim_{f \colon X \to Y} \Gamma_X( S^W \times_{Y, f} X)  \simeq \Map(X,S^W_Y).
+    \]
+    This proves 3.
+\end{proof}
+
+\begin{construction}
+    Let 
+    \[
+      \theta \colon \iota_0 S \to \id_{\AVB}  
+    \]
+    be the counit of the adjuntion $(\iota_0 \dashv S)$.
+    We call $\theta_{(X,V)}$ the \emph{Thom diagonal of $V$ on $X$}.
+    Let 
+    \[ 
+        \sigma_\infty \colon \pr \to S    
+    \]
+    be the unique natural transformation, which is by Yoneda induced from the unique map $\iota_\emptyset(\pt) \to \iota_0(\pt)$, 
+    which comes from the unique map $\emptyset \to 0$ in $\AffLin$.
+    We call $\sigma_\infty \colon X \to S^V_X$ \emph{the section at $\infty$}.
+    The composite of the unit $\id_{\AVB} \to \iota_\emptyset \pr$ and the counit $\iota_\emptyset \pr \to \id_{\AVB}$
+    of the adjunctions $\iota_\emptyset \dashv \pr \dashv \iota_\emptyset$ defines an endomorphism
+    of the identity on $\AVB$ which we will denote with $\infty$
+    and call it the \emph{translation to $\infty$}.\footnote{This endomorphism of the identity is an artefact of the fact that $\AVB$ arises as a fibered category whose fibers are pointed categories}
+    This endomorphism induces an action of the category $B(\F_2,\cdot)$ on $\AVB$, that on mapping anima 
+    $\F_2 \times \Map((X,V),(Y,W)) \to \Map((X,V),(Y,W))$ sends $(0, \phi)$ to $\infty \circ \phi$.
+    The map $\infty \circ \phi$ only depends on the value $\pr(\phi) =: f$, so we define 
+    $\infty_{f} := \infty \circ \phi$ and drop $f$ from the notation if $f = \id$. $\infty_f$ is a functorial lift of $f$ along $\pr$ and defines a section 
+    of the projection $\Map((X,V),(Y,W)) \to \Map(X,Y)$.
+    \label{constr:thomdiag1}
+\end{construction}
+
+    The next lemma shows that over the section at infinity the Thom diagonal acts as the translation to infinity.
+\begin{proposition}
+    We have a unique homotopy
+    \[
+      \theta \circ \iota_0(\sigma_\infty) \simeq \infty , 
+    \]
+    or equivalently the following square has a unique filler 
+    \[\begin{tikzcd}
+        {\iota_\infty \pr} & {\id_{\AVB}} \\
+        {\iota_0 \pr} & {\iota_0S}
+        \arrow["{\iota_0(\sigma_\infty)}"', from=2-1, to=2-2]
+        \arrow["\theta"', from=2-2, to=1-2]
+        \arrow["\infty", from=2-1, to=1-1]
+        \arrow["\infty", from=1-1, to=1-2]
+    \end{tikzcd}\label{diag:AVBsquare}\]\label{prop: thomatinfty}
+\end{proposition}
+
+\begin{proof}
+    % By the formula for the left adjoint of a morphism into a right adjoint functor, we immediately see that 
+    % $\theta \circ \iota_0(\sigma_\infty)$ is the left adjoint morphism to $\sigma_\infty$. In that way both 
+    % morphisms determine each other. Therefore we only need to verify that $\sigma_\infty$ is right adjoint to the 
+    % morphism $\infty \colon \iota_0 \pr \to \id_{\AVB}$.
+    % Let us denote the unit $\id_{\An} \to S \circ \iota_0$ with $j$. We have to compute $S(\infty) \circ j_{\pr} \colon \pr \to S$.
+    % Since both functors are corepresented we only have to compute the value of $S(\infty) \circ j_{\pr}$ at the object $(\pt, \emptyset)$.
+    By adjunction a natural transformation $\iota_0 \pr \to \id_{\AVB}$ corresponds one to one to a natural transformation between 
+    $\pr \to S$. But because $\pr$ is corepresented by $(\pt, \emptyset)$ and $S(\pt, \emptyset) \simeq \Map((\pt, 0), (\pt, \emptyset))\simeq \pt$
+    there exists essentially only one natural transformation. 
+\end{proof}
+
+\begin{remark}
+Evaluated on an object $(X,V) \in \AVB$ the square~\ref{diag:AVBsquare} is of the form 
+\[\begin{tikzcd}
+	{(X,\emptyset)} & {(X,V)} \\
+	{(X,0)} & {(S^V,0)}
+	\arrow[from=2-1, to=1-1]
+	\arrow[from=1-1, to=1-2]
+	\arrow[from=2-1, to=2-2]
+	\arrow[from=2-2, to=1-2]
+\end{tikzcd}\label{diag:AVBsquareeval}\]
+\end{remark}
+
+% \section{Einleitung}
+% % Text...
+
+% \section{Grundlagen}
+% % Text...
+
+% \section{Hauptergebnisse}
+% % Text...
+
+% \section{Beweise}
+% % Text...
+
+% \section{Beispiel}
+% % Text...
+
+% \section{Schlussfolgerung}
+% % Text...
+
+\subsection{Thom Diagonal in the Category $\AVB^\vop$}
+
+\begin{definition}
+    The category $\AVB^\vop$ is the vertical dual of $\AVB$, that is 
+    \[
+      \AVB^\vop := \int_{X \in \An^\op} \Fun(X, \AffLin^\op)  
+    \]
+\end{definition}
+
+\begin{remark}
+    One might expect that a similar square to the square~\ref{diag:AVBsquare} exists 
+    for the category $\AVB^\vop$ but the functoriality breaks at the functor $S$.
+    Nonetheless there still exists squares of the form 
+    \[\begin{tikzcd}
+        {(X,\emptyset)} & {(X,0)} \\
+        {(X,V)} & {(S^V,V)}
+        \arrow[from=2-1, to=1-1]
+        \arrow[from=1-1, to=1-2]
+        \arrow[from=2-1, to=2-2]
+        \arrow[from=2-2, to=1-2]
+    \end{tikzcd}\]
+    analoguous to the squares~\ref{diag:AVBsquareeval}. The minor difference is that these 
+    squares are not functorial in $(X,V) \in \AVB^\vop$.
+    To fix this lack of functoriality of the square-\ref{diag:AVBsquare} we will 
+    introduce in the next section categories $\AVB(n)$ for each natural number $n$, 
+    which filter the category $\AVB^\vop$.
+    Over these categories $\AVB(n)$ we can prove a version of Proposition-\ref{prop: thomatinfty}.
+\end{remark}
+
+\begin{definition} 
+    We call a square $\square \to \AVB^\vop$ \emph{simple distinguished} if it is equivalent to one of the 
+    form 
+    \[\begin{tikzcd}
+        {(X,\emptyset)} & {(X,0)} \\
+        {(X,V)} & {(S^V,V)}
+        \arrow[from=2-1, to=1-1]
+        \arrow[from=1-1, to=1-2]
+        \arrow[from=2-1, to=2-2]
+        \arrow[from=2-2, to=1-2]
+    \end{tikzcd}.\]
+    Let $W$ be a vector bundle over $X$. We can add $W$ to the square above and obtain a square 
+    \[\begin{tikzcd}
+        {(X,\emptyset)} & {(X,W)} \\
+        {(X,V \oplus W)} & {(S^V,V \oplus W)}
+        \arrow[from=2-1, to=1-1]
+        \arrow[from=1-1, to=1-2]
+        \arrow[from=2-1, to=2-2]
+        \arrow[from=2-2, to=1-2]
+    \end{tikzcd}.\]
+    We call squares equivalent to one of that form \emph{distinguished}.     
+\end{definition}
+\begin{remark}
+    Let $E \colon \left(\AVB^\vop\right)^\op \to \cC$ be a contravariant functor into a pointed category 
+    with fibers. Suppose $E$ sends objects of the form $(X,\emptyset)$ to $0$. 
+    Then for each collection of data $(X,V),(X,W) \in \AVB^\vop$ we define the object
+    \[
+        E^{W - V}(X) := \fib( E^{W}(S^V) \to E^{W}(X)).
+    \]
+    A distinguished square gives rise to a morphism 
+    \[
+        E^{W}(X) \to E^{V \oplus W - V}(X)  
+    \]
+    which is an equivalence if $E$ sends distinguished 
+    squares to pullbacks.
+    If additionally $E$ suffices an excision / Mayer-Vietoris property in the 
+    $X$ variable, then one can further compute 
+    \[
+    E^{n - V}(X) \simeq \tilde{E}^n(\Th(V))    
+    \]   
+\end{remark}
+
+\subsection{Thom Diagonal in the Category $\AVB^\vop(n)$}\label{sec:AVB(n)}
+
+To address the issue that we are not able to establish Proposition~\ref{prop: thomatinfty}
+in the context of the category $\AVB^\vop$ we will introduce a filtration of categories 
+\[
+  \AVB^\vop(n) \to \AVB^\vop(n+1) \to \dots \to \AVB^\vop.
+\]
+We will be able to prove a version of Proposition~\ref{prop: thomatinfty} for the filtration pieces $\AVB^\vop(n)$.
+In other words, our goal for this section is to prove the following proposition.
+
+\begin{proposition}\label{prop: AVB(n)}
+ There exist Cartesian fibrations $\AVB^\vop(n) \xto{\pr} \An$ together with functors of 
+ Cartesian fibrations 
+ \[
+   \AVB^\vop \xleftarrow{\overleftarrow{\pr}} \AVB^\vop(n) \xrightarrow{\overrightarrow{\pr}} \AVB 
+ \]
+ such that
+ \begin{enumerate}
+    \item the endofunctor $- \oplus \R \colon (X,V) \mapsto (X, V \oplus \R_X) \colon \AVB \to \AVB$ extends to a
+    functor $- \oplus \overrightarrow{\R} \colon \AVB^\vop(n) \to \AVB^\vop(n + 1)$ so that the following diagram is 
+    rendered commutative 
+    \[\begin{tikzcd}
+        {\AVB^\vop} & {\AVB^\vop(n)} & \AVB \\
+        {\AVB^\vop} & {\AVB^\vop(n + 1)} & \AVB
+        \arrow["{ -\oplus\overrightarrow{\R}}"', dashed, from=1-2, to=2-2]
+        \arrow["{\overrightarrow{\pr}}", from=1-2, to=1-3]
+        \arrow["{\overrightarrow{\pr}}"', from=2-2, to=2-3]
+        \arrow["{ - \oplus \R}", from=1-3, to=2-3]
+        \arrow["{\overleftarrow{\pr}}"', from=1-2, to=1-1]
+        \arrow["{\overleftarrow{\pr}}", from=2-2, to=2-1]
+        \arrow[Rightarrow, no head, from=1-1, to=2-1]
+        \label{}
+    \end{tikzcd}\]
+    and the induced functor 
+    \[
+      \colim_{n \to \infty} \AVB^\vop(n) \xto{\overleftarrow{\pr}} \AVB^\vop   
+    \]
+    is an equivalence over the category of compact anima, that is 
+    \[
+        \colim_{n \to \infty} \AVB^\vop(n) \times_{\An} \An^\omega \xto{\overleftarrow{\pr}} \AVB^\vop \times_{\An} \An^\omega
+    \]
+    is an equivalence, 
+    \item there exists a diagram $\square \to \mathrm{End}(\AVB^\vop(n))$ of endofunctors  of the form 
+    \begin{equation}
+    % \begin{figure}
+        % \centering
+        \begin{tikzcd}
+        {\iota_{\overleftarrow{\emptyset},\overrightarrow{\emptyset}}\pr} & \id \\
+        {\iota_{\overleftarrow{\R^n},\overrightarrow{0}}\pr} & {\iota_{\overleftarrow{\R^n},\overrightarrow{0}}S^\perp}
+        \arrow["\infty", Rightarrow, from=2-1, to=1-1]
+        \arrow["\infty", Rightarrow, from=1-1, to=1-2]
+        \arrow["{\iota_{\overleftarrow{\R^n},\overrightarrow{0}}\sigma_\infty}"', Rightarrow, from=2-1, to=2-2]
+        \arrow["\theta"', Rightarrow, from=2-2, to=1-2]
+    \end{tikzcd}
+    % \caption{Functorial resolution}
+    \label{fig:endosquareavb(n)}
+    % \end{figure}
+\end{equation}
+    that gets sends to distinguished squares under $\overleftarrow{\pr}$.
+ \end{enumerate}
+\end{proposition}
+
+We begin by constructing the category $\AVB^\vop(n)$.
+
+\subsection{Construction of $\AVB^\vop(n)$}
+
+\begin{construction}
+    First we will introduce the intermediate category $\AWB(n)$.
+    Let $\AWB(n)$ be the pullback of categories 
+    \[\begin{tikzcd}
+        {\AWB(n)} & {\AVB/(\pt,\R^n)} \\
+        {\AVB \times_{\An} \AVB} & \AVB
+        \arrow["\oplus"', from=2-1, to=2-2]
+        \arrow["{\mathrm{source}}", from=1-2, to=2-2]
+        \arrow["q"', from=1-1, to=2-1]
+        \arrow[from=1-1, to=1-2]
+        \arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=1-1, to=2-2]
+    \end{tikzcd}.\]
+    One can think of an object of $\AWB(n)$ to consists of the data 
+    \begin{itemize}
+        \item an anima $X$,
+        \item two vector bundles $V,W$ over $X$,
+        \item an affine linear morphism $\alpha \colon V\oplus W \to \R^n_X$.
+    \end{itemize}
+\end{construction}
+The morhisms in $\AWB(n)$ consist of covariant morphisms in both vector bundle
+coordinates. This is one of the major differences to the category $\AVB^\vop(n)$.
+There we want only one vector bundle coordinate to be covariant, while the other coordinate 
+has contravariant morphisms. To remidy this, we will model $\AVB^\vop(n)$ as a subcategory of 
+a span category. The following lemma will be useful. 
+\begin{lemma}
+Let $q \colon \cC \to \cD$ be a pullback preserving functor and let 
+$(\cD, b.w., f.w.)$ endow $\cD$ with the structure of an adequate triple. 
+Set $q^*(b.w.) := \{ f \colon \Delta^1 \to \cC | q(f) \in b.w.\}$
+and $q^*(f.w.)$ likewise.
+Then $(\cC, q^*(b.w.), q^*(f.w.))$ is an adequate triple and $q$ refines 
+to a functor of adequate triples. 
+\end{lemma}
+
+\begin{construction}
+    We first endow the category $\AVB \times_{\An} \AVB$ with the structure of an 
+    adequate triple via 
+    \small
+    \[
+      (\AVB^{\times_{\An} 2}, b.w., f.w.) := (
+        \AVB^{\times_{\An} 2}, (\AVB \times_{\An} \An^\simeq ) \times_{\An} \AVB^\simeq, 
+        \mathrm{Cart}(\AVB) \times_{\An} \AVB) . 
+    \]
+    \normalsize
+    We can think of the category $\mathrm{Span}(\AVB^{\times_{\An} 2}, b.w., f.w.)$
+    as follows 
+    \begin{itemize}
+        \item An object consists of the data of an anima $X$ and two vector bundles $V,W$ 
+        over $X$, 
+        \item A morphism $(X,V,W) \to (Y,V',W')$ consists of the data
+        \begin{itemize}
+            \item A morphism $f \colon X \to Y$, 
+            \item A morphism $\phi \colon f^*V' \to V$
+            \item A morhism $\psi \colon W \to f^*W'$.
+        \end{itemize}
+    \end{itemize}
+    In fact the category $\mathrm{Span}(\AVB^{\times_{\An} 2}, b.w., f.w.)$ is equivalent to 
+    the category $\AVB^{\vop}\times_{\An}\AVB$. 
+    We are more interested in the category 
+    \[ 
+        \cD(n) := \mathrm{Span}(\AWB(n), q^*b.w., q^*f.w.).
+    \]
+    The objects $(X,V, W, \alpha \colon (X, V \oplus W) \to (\pt, \R^n))$ of $\cD(n)$ have an 
+    additional datum of a map from the sum of the vector bundles to the object $(\pt, \R^n)$.
+    As mentioned earlier this is equivalent to the datum of a map 
+    \[
+    V \oplus W \to \R^n_X .  
+    \]
+    The morphisms $(X, V, W, \alpha) \to (Y, V', W', \beta)$ of $\cD(n)$ contain an additional 
+    compatibility datum 
+    \[\begin{tikzcd}
+        & {f^*V' \oplus W} \\
+        {V\oplus W} && {f^*V' \oplus f^*W'} \\
+        & {\R^n_X}
+        \arrow["{\phi \oplus W}"', from=1-2, to=2-1]
+        \arrow["{f^*V' \oplus\psi}", from=1-2, to=2-3]
+        \arrow["\alpha"', from=2-1, to=3-2]
+        \arrow["{f^*\beta}", from=2-3, to=3-2]
+    \end{tikzcd}\]
+    Finally let $\AVB^\vop(n) \subset \cD(n)$ be the full subcategory on those objects 
+    \[
+        (X,V,W,\alpha \colon (X, V \oplus W) \to (\pt, \R^n))  
+    \] where either 
+    \begin{itemize}
+        \item $\alpha$ is a Cartesian morphism or 
+        \item $V = W = \emptyset_X$.
+    \end{itemize}
+    In the first case, $\alpha$ identifies $W$ as an orthogonal complement bundle of $V$ inside of 
+    $\R^n_X$.
+    By construcion we have a functor 
+    \[
+        \AVB^\vop(n) \subset \cD(n) \to \AVB^\vop \times_{\An} \AVB  \to \AVB^\vop \times \AVB
+    \]
+    Let its projections be called 
+    \begin{eqnarray*}
+        \overleftarrow{\pr} & \colon & \AVB^\vop(n)  \to \AVB^\vop \\
+        \overrightarrow{\pr} & \colon & \AVB^\vop(n)  \to  \AVB
+    \end{eqnarray*}
+
+    Moreover the functor 
+    \[
+        \id_{\AVB} \times_{\id_{\An}} (- \oplus \R) \colon \AVB \times_{\An} \AVB \to \AVB \times_{\An} \AVB        
+    \]
+    lifts to a functor $- \oplus \overrightarrow{\R} \colon \AWB(n) \to \AWB(n + 1)$ under $q$, 
+    such that $- \oplus \overrightarrow{\R}$ is compatible with the adequate triple structure. 
+    This induces a functor 
+    $- \oplus \overrightarrow{\R} \colon \cD(n) \to \cD(n + 1)$ which restricts to a functor 
+    \[
+        - \oplus \overrightarrow{\R} \colon \AVB^\vop(n) \to \AVB^\vop(n + 1).
+    \] 
+
+\end{construction}
+
+    It is evident by construction that the functor $-\oplus \overrightarrow{\R}$
+    renders the following diagram commutative 
+    \[\begin{tikzcd}
+        {\AVB^\vop} & {\AVB^\vop(n)} & \AVB \\
+        {\AVB^\vop} & {\AVB^\vop(n + 1)} & \AVB
+        \arrow["{ -\oplus\overrightarrow{\R}}"', dashed, from=1-2, to=2-2]
+        \arrow["{\overrightarrow{\pr}}", from=1-2, to=1-3]
+        \arrow["{\overrightarrow{\pr}}"', from=2-2, to=2-3]
+        \arrow["{ - \oplus \R}", from=1-3, to=2-3]
+        \arrow["{\overleftarrow{\pr}}"', from=1-2, to=1-1]
+        \arrow["{\overleftarrow{\pr}}", from=2-2, to=2-1]
+        \arrow[Rightarrow, no head, from=1-1, to=2-1].
+    \end{tikzcd}\]
+
+\subsubsection{Proof of Proposition~\ref{prop: AVB(n)} Part 1}
+
+    We now want to show that the induced functor 
+    \[
+    \overleftarrow{\pr} \colon \AVB^\vop(\infty) := \colim_n \AVB^\vop(n) \to \AVB^\vop   
+    \]
+    induces an equivalence 
+    \[
+    \overleftarrow{\pr}_{\An^\omega} \colon \AVB^\vop(\infty) \times_{\An} \An^\omega \to \AVB^\vop \times_{\An} \An^\omega.
+    \]
+\begin{remark}
+    It is not true that $\overleftarrow{\pr}$ is an equivalence. First our argument 
+    wont offer more than an equivalences over finite anima as it uses that 
+    filtered colimits in $\catinfty$ commute with finite limits and not all limits. Second it is 
+    not even true that $\overleftarrow{\pr}$ is essentially surjective as this would imply that 
+    all vector bundles admit a finite dimensional orthogonal complement, which is absurd when one considers 
+    the universal rank one bundle $V_{\mathrm{uni}} \to BO(1)$.
+    One can verify by a calculation in characteristic classes that a potential complement of 
+    $V_\mathrm{uni}$ cannot have a bounded rank.
+\end{remark}
+
+    We observe that our construction of $\AVB^\vop(n)$ is compatible with its parametrization 
+    over $\An$, that means that we can construct $\AVB^\vop(n)$ as the unstraightening of a functor 
+    that sends $X$ to the functor category $\Fun(X, \AffLin^\op(n))$. Where $\AffLin^\op(n)$ is some 
+    category constructed out of $\AffLin$ in a similar fashion to how we have constructed $\AVB^\vop(n)$
+    out of $\AVB$. 
+
+\begin{construction}
+    Let $\mathcal W(n)$ be the pullback of categories 
+    \[\begin{tikzcd}
+        {\mathcal W(n)} & {\AffLin/\R^n} \\
+        {\AffLin^{\times 2}} & \AffLin
+        \arrow["{\mathrm{source}}", from=1-2, to=2-2]
+        \arrow["\oplus"', from=2-1, to=2-2]
+        \arrow[from=1-1, to=2-1]
+        \arrow[from=1-1, to=1-2]
+        \arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=1-1, to=2-2]
+    \end{tikzcd}\]
+    Let $\tilde{r.e.}, \tilde{l.e.}$ be defined as 
+    \begin{eqnarray*} 
+        \tilde{r.e.} & := & \left(\AffLin \times \AffLin^\simeq \right) \times_{\AffLin} \AffLin/\R^n \\
+        \tilde{l.e.} & := & \left(\AffLin^\simeq \times \AffLin \right) \times_{\AffLin} \AffLin/\R^n.
+    \end{eqnarray*}
+    The categories of morphisms $\tilde{r.e.}, \tilde{l.e.}$ endow $\mathcal W(n)$ with the structure of 
+    an adequate triple. 
+    Let $\AffLin^\op(n)$ be the full subcategory of
+    \[
+        \Span(\mathcal W(n), \tilde{r.e.}, \tilde{l.e.}) 
+    \]
+    on those objects $(V,W, \alpha \colon  V \oplus W \to \R^n)$ where either 
+    \begin{itemize}
+        \item $V = W = \emptyset$ or 
+        \item $\alpha$ is an equivalence.
+    \end{itemize}
+
+    A typical morphism of $\AffLin^\op(n)$ is of the form 
+          \[
+            (V,W,\alpha\colon  V\oplus W \xto{\simeq} \R^n) \xot{f}
+            (S,U,\beta \colon S \oplus U \to \R^n) \xto{g}
+            (V',W'\alpha' \colon V'\oplus W' \xto{\simeq} \R^n)  
+          \]
+          In particular it gives us a commutative diagram 
+          \[\begin{tikzcd}
+              && {S \oplus U} \\
+              {V\oplus W} && {\R^n} && {V'\oplus W'}
+              \arrow["{(\overleftarrow{\pr}g,\overrightarrow{\pr}g)}", from=1-3, to=2-5]
+              \arrow["{(\overleftarrow{\pr}f\overrightarrow{\pr}f)}"', from=1-3, to=2-1]
+              \arrow["{\alpha }"', from=2-1, to=2-3]
+              \arrow[from=1-3, to=2-3]
+              \arrow["{\alpha'}", from=2-5, to=2-3]
+          \end{tikzcd}\]
+          where $\overrightarrow{\pr}f$ and $\overleftarrow{\pr}g$ are equivalences or $V=W=\emptyset$.
+          Hence, we can think of the data of a morphism in $\AffLin^\op(n)$ to 
+          consist of  
+          \begin{itemize}
+              \item A map $\phi \colon V' \to V$,
+              \item A map $\psi \colon W \to W'$,
+              \item A commutative square 
+              \[\begin{tikzcd}
+                  {V'\oplus W} & {V'\oplus W'} \\
+                  {V\oplus W} & {\R^n}
+                  \arrow["\alpha"', from=2-1, to=2-2]
+                  \arrow["{\alpha'}", from=1-2, to=2-2]
+                  \arrow["{\phi\oplus W}"', from=1-1, to=2-1]
+                  \arrow["{V'\oplus \psi}", from=1-1, to=1-2]
+              \end{tikzcd}\]
+          \end{itemize} 
+\end{construction}
+
+\begin{lemma}
+    Let $X \in \An$ and let $(\cC, b.w._{\cC}, f.w._{\cC})$ be an adequate triple. 
+    The functor category $\cC^X$ is an adequate triple by setting
+    \[
+    b.w._{\cC^X} := (b.w._{\cC})^X    
+    \]    
+    and likewise with $f.w._{\cC^X}$.
+    Then the natural map into the limit 
+    \[
+        \Span(\cC^X, b.w._{\cC^X}, f.w._{\cC^X}) \to \Span(\cC,b.w._{\cC}, f.w._{\cC})^X
+    \]
+    is an equivalence.
+\end{lemma}
+
+\begin{proof}
+    To show that this functor is an equivalence we show that the corresponding map 
+    \[
+        \left( \Span(\cC^X, b.w._{\cC^X}, f.w._{\cC^X})^{\Delta^\bullet}\right)^\simeq \to \left(\Span(\cC,b.w._{\cC}, f.w._{\cC})^{X \times \Delta^\bullet}\right)^\simeq
+    \]
+    of Segal anima is an equivalence.
+    For $\bullet = 0$ this follows from the fact that the core of a category $\cD$ is equivalent to the core of its span category 
+    \[
+        \cD^\simeq \subset \left(\Span(\cD, b.w._{\cD}, f.w._{\cD})\right)^\simeq \subset \left(\Span(\cD)\right)^\simeq \simeq \cD^\simeq 
+    \]
+    and the fact that the core is right adjoint to the inclusion of anima into categories
+    \[
+      \left(\cD^X\right)^\simeq \simeq (\cD^\simeq)^X.
+    \]
+    For $\bullet \geq 1$ we can reduce to $\bullet = 1$ by the Segal property of the span category construction as a complete Segal anima.
+    In that case we find
+    \begin{eqnarray*}
+        \left(\Span(\cC^X, b.w._{\cC^X}, f.w._{\cC^X} )^{\Delta^1}\right)^\simeq & \simeq & \left(b.w._{\cC^X} \times_{\cC^X}f.w._{\cC^X}\right)^\simeq \\
+        % & \simeq & (\left(b.w. \times_{\cC} f.w. \right)^X)^\simeq \\
+        & \simeq & \left((b.w. \times_{\cC} f.w.)^X\right)^\simeq \\
+        & \simeq & \left(\Span(\cC,f.w._{\cC}, b.w._{\cC})^{X \times \Delta^1}\right)^\simeq
+    \end{eqnarray*}
+
+\end{proof}
+
+\begin{proposition}\label{prop: asunst}
+    % The exists a diagram where the vertical arrows are equivalences 
+    % \tiny
+    % \[\begin{tikzcd}[column sep=tiny]
+    %     {\AVB^\vop(n)} & {\Span(\left( \int_{X \in \An^\op} \AffLin^X\right)^{\times 2}\times_{\left( \int_{X \in \An^\op} \AffLin^X\right)}\left( \int_{X \in \An^\op} \AffLin^X/\mathrm{const}_{\R^n}\right), r.e., l.e.)} \\
+    %     {\int_{X \in \An^\op} \AffLin^\op(n)^X} & {\int_{X \in \An^\op} \Span(\mathcal W(n), \tilde{r.e.}, \tilde{l.e.})^X}
+    %     \arrow[hook, from=1-1, to=1-2]
+    %     \arrow[Rightarrow, no head, from=1-2, to=2-2]
+    %     \arrow[Rightarrow, no head, from=1-1, to=2-1]
+    %     \arrow[hook, from=2-1, to=2-2]
+    % \end{tikzcd}\]
+    % \normalsize
+
+There exists an equivalence of categories 
+\[
+    \cD(n) = \Span(\AWB(n), r.e., l.e.) \simeq \int_{X \in \An^\op}\Span(\mathcal W(n), \tilde{r.e.}, \tilde{l.e.})^X.
+\]
+Furthermore over the category of compact anima
+the full subcategories 
+\[
+    \AVB^\vop(n) \times_{\An}\An^\omega \subset \cD(n) \times_{\An}\An^\omega
+\]
+and 
+\[
+    \int_{X \in (\An^\omega)^\op} \AffLin^\op(n)^X \subset \int_{X \in (\An^\omega)^\op}\Span(\mathcal W(n), \tilde{r.e.}, \tilde{l.e.})^X
+\]
+coincide under this identification.
+
+
+\end{proposition}
+\begin{proof}
+    By using the equivalence 
+    \[
+    \AVB/(\pt, \R^n) \simeq \int_{X \in \An^\op} (\AffLin/\R^n)^X   
+    \]
+    we find that $\AWB(n)$ is a pullback of Cartesian fibrations over $\An$ along functors that 
+    are functors of Cartesian fibrations.
+    As such it is a Cartesian fibration over $\An$ too, namely
+    \[
+    \AWB(n) \simeq \int_{X \in \An^\op} (\AffLin^X)^{\times 2} \times_{\AffLin^X} \times (\AffLin/\R^n)^X \simeq \int_{X \in \An^\op} \mathcal W(n)^X
+    \]
+    By CITE FABIAN!!!, we have 
+    \[
+    \cD(n) = \Span(\AWB(n), r.e., l.e.) \simeq \int_{X \in \An^\op} \Span(\mathcal W(n)^X, \tilde{r.e.}^X, \tilde{l.e.}^X)    
+    \]
+    The last lemma shows 
+    \[
+        \int_{X \in \An^\op} \Span(\mathcal W(n)^X, \tilde{r.e.}^X, \tilde{l.e.}^X) \simeq \int_{X \in \An^\op} \Span(\mathcal W(n), \tilde{r.e.}, \tilde{l.e.})^X  
+    \]
+    \dots
+
+
+\end{proof}    
+    
+
+    We conclude that in particular $\overleftarrow{\pr}_{\An^\omega}$ is a functor of Cartesian fibrations over $\An^\omega$
+    and the straightend functors $(\An^\omega)^\op \to \catinfty$ of its source and target 
+    are both finite limit preserving 
+    and thus it is enough to show that $\overleftarrow{\pr}$ is an equivalence over the point, i.e.
+    \[ 
+        \AffLin^\op(\infty) := \colim_n \AffLin^\op(n) \to \AffLin^\op
+    \]
+    is an equivalence. 
+
+  \begin{lemma}\label{colimitlemma}
+    The functor $-\oplus \overrightarrow{\R} \colon {\cO}^{\times 2} \to {\cO}^{\times 2}
+      \colon (V,W) \mapsto (V, W\oplus \R)$ induces a functor
+    $-\oplus \overrightarrow{\R} \colon \cO^\op(n)\to \cO^\op(n+1)$,
+    compatible with the functors
+    $\cO^\op(n) \to \Span({\mathcal W(n)}, r.e., l.e. ) \xto{(pr_1)_*} \Span(\cO,
+      {\cO}, {\cO}^\simeq) \simeq ({\cO})^\op$
+    so that we have an equivalence
+    \[
+      \AffLin^\op(\infty) := \colim (\cO^\op(0) \xto{-\oplus \overrightarrow{\R}} \cO^\op(1)
+      \xto{-\oplus \overrightarrow{\R}} \dots) \xrightarrow{\simeq} {\cO}^\op 
+      .\]
+  \end{lemma}
+  \begin{proof}
+    The existence of the induced functor
+    $\cO(n)^\op \to \cO(n+1)^\op$ and the compatibility is clear.
+    We show that the functor
+    \[
+     \AffLin^\op(\infty) \to ({\cO})^\op
+    \]
+    is fully faithful and essentially surjective.
+    The essential surjectivity is clear as every object of $\AffLin$ is 
+    equivalent to $\R^k$ or $\emptyset$ for some $k$.
+    And these are evidently in the image. 
+    We now show that the functor is fully faithful.
+    Fix objects $(V,W,\alpha \colon V \oplus W \xto{\simeq} \R^n),
+      (V',W',\alpha' \colon V' \oplus W' \xto{\simeq} \R^n) \in \cO^\op(n)$ and let
+    \[
+      M := \Map((V,W,\alpha \colon V \oplus W \xto{\simeq} \R^{n}),
+      (V',W',\alpha' \colon V \oplus W' \xto{\simeq} \R^{n}))
+      .\]
+    In the case $\emptyset \in \{V,W,V',W'\}$ we easily compute
+    $ M \simeq \pt \simeq \Map_{(\cO)^\op}(V',\emptyset) \simeq
+      \Map_{(\cO)^\op}(\emptyset, V)$ and the claim follows from the fact
+    $(\emptyset,\emptyset) \oplus \overrightarrow{\R} \simeq
+      (\emptyset,\emptyset) \in \cO(n+1)$ as $\emptyset \in \cO$
+    is an absorbing element with respect to $\oplus$.
+  
+    So suppose $V,W,V',W' \neq \emptyset$. By unraveling the construction of
+    $\cO^\op(n)$ we have that $M$ is equivalent to the core of the
+    full subcategory of
+    \[
+      \Fun(\Lambda^2_0, {\mathcal W(n)}) \times_{(\ev_1,\ev_2),
+        {\mathcal W(n)}\times {\mathcal W(n)}} \{(V,W,\alpha),(V',W',\alpha')\}
+    \]
+    on those wedges
+    \[
+      (V,W,\alpha) \xleftarrow{f} (A,B,\beta) \xto{g} (V',W',\beta)
+    \]
+    for which $f$ is a right equivalence and $g$ is a left equivalence.
+    By writing $ \Fun(\Lambda^2_0, {\mathcal W(n)}) $ as the
+    pullback ${\mathcal W(n)}^{\Delta^1} \times_{s,{\mathcal W(n)},s} {\mathcal W(n)}^{\Delta^1}$
+    and commuting limits with limits we find that $M$ is equivalent to the core of
+    \[
+      r.e./(V,W,\alpha) \times_{{\mathcal W(n)}} l.e./(V',W',\alpha').
+    \]
+    The category of right equivalences, for example,
+    is itself a pullback of categories.
+    % , see \eqref{eq:defnre}.
+    Therefore, we can compute $r.e./(V,W,\alpha)$, after
+    commuting limits again, as the pullback of
+    \[
+      \cO/V \times (\cO)^\simeq/W \xto{(\oplus, \R^n)} \cO/V\oplus W \times
+      \cO/\R^n \xot{(s,t)} (\cO)^{\Delta^1}/\alpha
+    \]
+    The category $(\cO)^\simeq/W$ is contractible, so we can omit it in the above wedge.
+    Moreover, the above wedge is of the form
+    $A \times_{\pt} \pt \to B \times_{\pt} C \leftarrow D \times_D D$,
+    so we can compute its pullback $P$ as the
+    pullback of  $A \times_B D \to D \leftarrow \pt \times_C D$.
+    Let us first compute
+    \begin{eqnarray*}
+      \pt \times_C D &=& \{\id_{\R^n}\} \times_{\cO/\R^n,t} (\cO)^{\Delta^1}/\alpha \\
+      & \simeq & \{\id_{\R^n}\} \times_{(\cO)^{\Delta^1}, \ev_{\{1\} \subset \{1,2\} }}
+      \Fun(\Pow(\langle 2 \rangle), \cO)
+      \times_{(\cO)^{\Delta^1}, \ev_{\{2\} \subset \{1,2\} }} \{\alpha \} \\
+      & \simeq & \cO / V \oplus W  = B .
+    \end{eqnarray*}
+    One can check that the composition $B = \pt \times_C D \to D \to B$ is the identity,
+    and that makes the map from $P$ to $A = \cO/V$ an equivalence.
+    Similarly one can compute that $l.e./(V',W',\alpha')$ is equivalent to
+    $\cO/W'$.
+    If we put these results together we can identify $M$ with the core of the pullback
+    \[
+      \cO/V \to {\mathcal W(n)} \leftarrow \cO/W'
+    \]
+    where the left map sends a map $f\colon U \to V$ to the triple
+    $(U,W, U\oplus W \xto{f \oplus W} V \oplus W \xto{\alpha} \R^n)$ and
+    the right map sends $g \colon U \to W'$ to the triple
+    $(V',U,V' \oplus U \xto{V' \oplus g} V' \oplus W' \xto{\alpha'} \R^n)$.
+  
+    There is an evident map from
+    $\Map(V',V) \times_{\Map(V'\oplus W,\R^n)} \Map(W,W')$
+    into $\cO/V \times_{{\mathcal W(n)}} \cO/W'$. In fact it is obtained
+    as the pullback:
+    \[\begin{tikzcd}[column sep=tiny]
+        {\Map(V',V)\times_{\Map(V'\oplus W,\R^n)}\Map(W,W')} && {\cO/V \times_{{\mathcal W(n)}}\cO/W} \\
+        \\
+        \\
+        {\pt \times_{\pt} \pt} && {\cO \times_{\id\times\{W\},\cO \times \cO,\{V'\}\times\id}\cO}
+        \arrow[from=1-1, to=4-1]
+        \arrow["{(V',W)}", from=4-1, to=4-3]
+        \arrow["{s\times_ss}", from=1-3, to=4-3]
+        \arrow[from=1-1, to=1-3]
+        \arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=1-1, to=4-3]
+      \end{tikzcd}\]
+    After taking cores the lower map becomes an equivalence, which shows that
+    $M$ is equivalent to $\Map(V',V) \times_{\Map(V'\oplus W,\R^n)} \Map(W,W')$.
+    Under this identification the forgetful functor $\cO(n) \to (\cO)^\op$
+    induces the projection $\Map(V',V) \times_{\Map(V'\oplus W,\R^n)} \Map(W,W') \to \Map(V',V)$
+    and the functor $-\oplus \overrightarrow{\R} \colon \cO(n) \to \cO(n+1)$
+    can be identified with the map
+    \[
+      \Map(V',V) \times_{\Map(V'\oplus W,\R^n)} \Map(W,W') \to
+      \Map(V',V) \times_{\Map(V'\oplus W \oplus \R,\R^{n+1})} \Map(W\oplus \R,W'\oplus \R)
+    \]
+    Now, it becomes clear, that the induced functor
+    $\colim \cO(n) \to (\cO)^\op$ is fully faithful,
+    whence we have proven that the map
+    \begin{eqnarray*}
+      \Map(W\oplus \R^k, W' \oplus \R^k) &\to& \Map(V' \oplus W \oplus \R^k, \R^{n+k}) \\
+      \phi &\mapsto & \alpha' \circ (\id_{V'} \oplus \phi)
+    \end{eqnarray*}
+    becomes an equivalence in the colimit for $k \to \infty$.
+    Since $\alpha'$ is an equivalence, we may as well show the claim for the system
+    \begin{eqnarray*}
+      \Map(W\oplus \R^k, W' \oplus \R^k) &\to&
+      \Map(V' \oplus W \oplus \R^k, V' \oplus W' \oplus \R^k) \\
+      \phi &\mapsto & \id_{V'} \oplus \phi
+    \end{eqnarray*}
+  
+    Both anima of affine linear embeddings are Thom anima
+    $M_i$ for vector bundles $\xi_i \to A_i$,  $i = 1,2$, 
+    \begin{itemize}
+      \item $A_1 = \mathrm{IsoEmb}({W \oplus \R^k},{W' \oplus \R^k})$
+      \item $A_2 = \mathrm{IsoEmb}({V' \oplus W \oplus \R^k},{V' \oplus W' \oplus \R^k})$
+    \end{itemize}
+    of rank
+    $\dim W' - \dim W$.
+    Moreover the map between $M_1 \to M_2$ comes from a map of vector bundles
+    $\xi_1 \to \xi_2$, which induces isomorphisms on fibers.
+    Hence we can reduce to check that $A_1 \to A_2$ becomes an equivalence for 
+    $k \to \infty$.
+    After picking bases $W \cong \R^l, W' \cong \R^{l'}, V' \cong \R^{m'}$,
+    we obtain equivalences $A_1 \simeq O(l' + k)/O(l' - l)$ and
+    $A_2 \simeq O(m' + l' + k)/O(l' - l)$.
+    Under these choices, 
+    we can identify the map $A_1 \to A_2$ with the standard inclusion
+    $O(l' + k)/O(l' - l) \subset O(m' + l' + k)/O(l' - l)$,
+    which yields the desired equivalence on colimits for $k \to \infty$.
+  \end{proof}
+
+\subsubsection{Proof of Proposition~\ref{prop: AVB(n)} Part 2}
+
+Similar to Construction~\ref{construction: mainfunctors} we will define analogues 
+of the functors $\iota, S$ in the context of $\AVB^\vop(n)$.
+
+\begin{construction}
+    By Proposition~\ref{prop: asunst} $\AVB^\vop(n)$ is Cartesian over $\An$ 
+    with fiber over the point given by $\AffLin^\op(n)$, so we have a pullback/restriction functor
+    \[
+        \res \colon \An \times \AffLin^\op(n) \to \AVB^\vop(n) \colon (X, Z) \mapsto \res^X_\pt(Z) = (X, r^*Z)
+    \]
+    where $r \colon X \to \pt$ is the unique map.
+    For any $Z \in \AffLin^\op(n)$ let 
+    \[
+        \iota_Z(-) = \res^{-}_{\pt}(Z) \colon \An \to \AVB^\vop(n)    
+    \]
+\end{construction}
+
+Consider the following objects of $\AffLin^\op(n)$.
+\begin{itemize}
+    \item $Z_1 = (\emptyset, \emptyset, \emptyset \oplus \emptyset = \emptyset \xto{\infty} \R^n)$
+    \item $Z_2 = (\R^n, 0, \R^n \oplus 0 = \R^n)$.
+\end{itemize}
+One can check that $Z_1$ is the zero object of $\AffLin^\op(n)$ and that $Z_2$ corepresents the functor 
+that sends $(V,W,\alpha)$ to $S^W$.
+We set 
+\begin{itemize}
+    \item $\iota_{\overleftarrow{\emptyset},\overrightarrow{\emptyset}} := \iota_{Z_1} \colon \An \to \AVB^\vop(n)$
+    \item $\iota_{\overleftarrow{\R^n},\overrightarrow{0}} := \iota_{Z_2} \colon \An \to \AVB^\vop(n)$.
+\end{itemize}
+The unique morphism $Z_2 \to Z_1$ induces a natural transformation \[
+    \infty \colon \iota_{\overleftarrow{\R^n},\overrightarrow{0}} \Rightarrow 
+\iota_{\overleftarrow{\emptyset},\overrightarrow{\emptyset}}.
+\]
+Now consider the projection 
+\[\begin{tikzcd}
+	{\AVB^\vop(n)} && \AVB \\
+	& \An
+	\arrow["{\overrightarrow{\pr}}", from=1-1, to=1-3]
+	\arrow["\pr"', from=1-1, to=2-2]
+	\arrow["\pr", from=1-3, to=2-2]
+\end{tikzcd}\]
+and set 
+\[
+S^\perp = S \circ \overrightarrow{\pr} \colon \AVB^\vop(n) \to \AVB \to \An.  
+\]
+The natural transformation $\sigma_\infty \colon \pr \Rightarrow S$ induces a 
+natural transformation $\pr \Rightarrow S^\perp$ which we also call $\sigma_\infty$.
+
+\begin{lemma}The following statements are true
+    \begin{enumerate}
+        \item The functor $\pr \colon \AVB^\vop(n) \to \An$ is corepresented by $\iotaemptyempty(\pt)$.
+        \item The functor $\iotaemptyempty$ is left and right adjoint to $\pr$.
+        \item The functor $S^\perp$ is corepresented by $\iotarnzero(\pt)$.
+        \item The functor $\iotarnzero$ is left adjoint to $S^\perp$.
+    \end{enumerate}\label{lemma:favouritelemma}
+\end{lemma}
+
+\begin{proof}
+    We strictly follow the proof of Lemma~\ref{lemma:insight}.
+    The fiber of the map 
+    \[
+    \Map_{\AVB^\vop(n)}((X,\overleftarrow{V},\overrightarrow{W}, \alpha), (Y,\overleftarrow{V'},\overrightarrow{W'},\beta)) \to \Map(X,Y)   
+    \]
+    at $f \colon X \to Y$ can be identified with 
+    \[
+    M := \Map_{\AffLin^\op(n)^X}((\overleftarrow{V},\overrightarrow{W}, \alpha), (\overleftarrow{f^*V'},\overrightarrow{f^*W'},f^*\beta)).
+    \]
+    The proof of Lemma~\ref{colimitlemma} shows that $M$ can be computed as the pullback 
+    \[
+      \Map_{\AffLin^X}(f^*V', V) \times_{\Map_{\AffLin^X}(f^*V' \oplus W, \R^n_X)} \Map_{\AffLin^X}(W,f^*W').
+    \] 
+    For $V = W = \emptyset$ this is contractible, which shows 1. and 2.
+    For $V = \R^n_X, W = 0, \alpha = \mathrm{triv}$, we immediately see that the pullback is equivalent to 
+    \[
+      \Map_{\AffLin^X}(0,f^*W').  
+    \]
+    From here we can follow the rest of the proof of Lemma~\ref{lemma:insight}.
+\end{proof}
+
+\begin{construction}
+    Let
+    \[
+        \theta \colon \iotarnzero S^\perp \Rightarrow \id_{\AVB^\vop(n)}    
+    \]
+    be the counit of the adjunction 
+    $\iotarnzero \dashv S^\perp$. 
+    Let 
+    \[
+      \infty \colon \iotaemptyempty \pr \Rightarrow \id_{\AVB^\vop(n)}  
+    \]
+    be the counit of the adjunction 
+    $\iotaemptyempty \dashv \pr$.
+\end{construction}
+
+\begin{proposition}
+    We have a unique (up to an anima of contractable choices) homotopy
+    \[
+      \theta \circ \iotarnzero(\sigma_\infty) \simeq \infty , 
+    \]
+    or equivalently the following square has a unique (up to an anima of contractable choices) filler 
+    \[\begin{tikzcd}
+        {\iotaemptyempty \pr} & {\id_{\AVB^\vop(n)}} \\
+        {\iotarnzero \pr} & {\iotarnzero S^\perp}
+        \arrow["{\iotarnzero(\sigma_\infty)}"', Rightarrow, from=2-1, to=2-2]
+        \arrow["\theta"', Rightarrow, from=2-2, to=1-2]
+        \arrow["\infty", Rightarrow, from=2-1, to=1-1]
+        \arrow["\infty", Rightarrow, from=1-1, to=1-2]
+    \end{tikzcd}\label{diag:AVB(n)square}\]\label{prop: thomatinftyinavb(n)}
+\end{proposition}
+\begin{proof}
+    With the help of Lemma~\ref{lemma:favouritelemma} we compute 
+    \begin{eqnarray*}
+        & & \Nat_{\Fun(\AVB^\vop(n), \AVB^\vop(n))}(\iotarnzero \pr, \id_{\AVB^\vop(n)}) \\ 
+        & \simeq & \Nat_{\Fun(\AVB^\vop(n), \An)}(\pr, S^\perp)\\
+        & \simeq & \Nat_{\Fun(\AVB^\vop(n), \An)}(\Map(\iotaemptyempty(\pt), -), S^\perp) \\
+        & \simeq & S^\perp( \iotaemptyempty(\pt)) = \pt 
+    \end{eqnarray*}
+\end{proof}
+
+\subsubsection{Proof of Proposition~\ref{prop: AVB(n)} Part 3}
+We end this section by showing that the functor $\overleftarrow{\pr}$ maps the square~\ref{fig:endosquareavb(n)}
+to a diagram of distinguised squares.
+
+\begin{lemma}
+    Let $(\overleftarrow{V},\overrightarrow{W},\alpha) \in \AffLin^\op(n)$. Then we have equivalences of functors 
+    \begin{enumerate}
+        \item \[
+            \overleftarrow{\pr} \circ \iota_{(\overleftarrow{V},\overrightarrow{W},\alpha)} \simeq \iota_V \colon \An \to \AVB^\vop
+        \]
+        \item \[
+            \overrightarrow{\pr} \circ \iota_{(\overleftarrow{V},\overrightarrow{W},\alpha)} \simeq \iota_W \colon \An \to \AVB
+        \]
+        
+    \end{enumerate}
+\label{lemma:iotasagree}
+\end{lemma}
+\begin{proof}
+    Since $\overleftarrow{\pr},\overrightarrow{\pr}$ are functors of Cartesian fibrations, we only have to provide equivalences 
+    of the values of the point.
+    But by construction the left hand and right hand sides agree on the point. 
+\end{proof}
+
+By the last lemma we compute that the postcomposition of square~\ref{fig:endosquareavb(n)} with $\overleftarrow{\pr}$ is equivalent 
+to the square 
+\[\begin{tikzcd}
+	{\iota_{\emptyset}\pr} & {\overleftarrow{\pr}} \\
+	{\iota_{\R^n}\pr} & {\iota_{\R^n}S^\perp}
+	\arrow["\infty", Rightarrow, from=2-1, to=1-1]
+	\arrow["\infty", Rightarrow, from=1-1, to=1-2]
+	\arrow["{\iota_{\R^n}\sigma^\infty}"', Rightarrow, from=2-1, to=2-2]
+	\arrow["{\overleftarrow{\pr}(\theta)}"', Rightarrow, from=2-2, to=1-2]
+\end{tikzcd}\]
+
+Consider the counit $\epsilon$ of the adjunction $\iota_0 S \dashv \id_{\AVB}$ of Construction~\ref{constr:thomdiag1}.
+On an object $(X,W)$ the morphism $\epsilon_{(X,W)}$ consists of the data of a projection of anima 
+\[
+\pi \colon S^W \to X    
+\]
+and an affine linear morphism of vector bundles over $S^W$:
+\[
+\vartheta \colon 0 \to \pi^*W.    
+\]
+
+We want to show that the value of the above square on an object $(X,V,W,\alpha \colon V \oplus W \to \R^n_X)$ is distinguished.
+The missing piece is to identify the value of $\overleftarrow{\pr}(\theta)$.
+It consists of the information of a morphism of anima 
+\[
+\pi \colon S^W \to X    
+\]
+and an affine linear morphism of vector bundles over $S^W$:
+\[
+\phi \colon \pi^*V \to \R^n_{S^W}.    
+\]
+In fact $\theta$ itself consists of an additional data of 
+an affine linear morphism of vector bundles over $S^W$:
+\[
+\psi \colon 0 \to \pi^*W
+\]
+and a compatibility datum 
+\[\begin{tikzcd}
+	{\pi^*V \oplus 0} & {\pi^*V \oplus \pi^*W} \\
+	{\R^n_{S^W} \oplus 0} & {\R^n_{S^W}}
+	\arrow["{\pi^*V \oplus \psi}", from=1-1, to=1-2]
+	\arrow["{\pi^*\alpha}", from=1-2, to=2-2]
+	\arrow["{\mathrm{triv}}"', from=2-1, to=2-2]
+	\arrow["{\phi\oplus 0}"', from=1-1, to=2-1]
+\end{tikzcd}.\]
+To show that the square in question is distinguished we
+can assume that $\phi$ is given by $\pi^*V \oplus \psi$.
+By \`subtracting' $V$ we only need to show that the squares 
+\[\begin{tikzcd}
+	{(X,\emptyset)} & {(X,0)} \\
+	{(X,W)} & {(S^W,W)}
+	\arrow["\infty", from=1-1, to=1-2]
+	\arrow["{(\sigma_\infty,\id)}"', from=2-1, to=2-2]
+	\arrow["\infty", from=2-1, to=1-1]
+	\arrow["{(\pi,\psi)}"', from=2-2, to=1-2]
+\end{tikzcd}\]
+and 
+\[\begin{tikzcd}
+	{(X,\emptyset)} & {(X,0)} \\
+	{(X,W)} & {(S^W,W)}
+	\arrow["\infty", from=1-1, to=1-2]
+	\arrow["{(\sigma_\infty,\id)}"', from=2-1, to=2-2]
+	\arrow["\infty", from=2-1, to=1-1]
+	\arrow["{(\pi,\vartheta)}"', from=2-2, to=1-2]
+\end{tikzcd}\]
+are equivalent. In other words we need to show
+the above square is simple distinguished. 
+The following lemma answers this affirmatively.
+With Lemma~\ref{lemma:iotasagree} and the definition $S^\perp = S\circ \overrightarrow{\pr}$ in mind we have 
+\begin{lemma}
+    The natural transformations 
+    \[
+    \overrightarrow{\pr}(\theta)   \colon \iota_n S^\perp \Rightarrow \overrightarrow{\pr} 
+    \]
+    and 
+    \[
+    \epsilon_{\overrightarrow{\pr}} \colon \iota_n S^\perp \Rightarrow \overrightarrow{\pr} 
+    \]
+    are equivalent.
+\end{lemma}
+
+\begin{proof}
+    By Lemma~\ref{lemma:iotasagree} we see that $\overrightarrow{\pr}(\theta)$ is a natural transformation 
+    \[
+      \overrightarrow{\pr} \circ \iotarnzero \circ S^\perp \Rightarrow \overrightarrow{\pr}.  
+    \]
+    Under the adjunction $\iota_n = \overrightarrow{\pr} \circ \iotarnzero \dashv S$ its adjoint transformation 
+    \[
+    (\overrightarrow{\pr}(\theta))^\flat \colon S^\perp \Rightarrow S \circ \overrightarrow{\pr} = S^\perp   
+    \]
+    is computed as the composite
+    \[\begin{tikzcd}
+        {S^\perp} & {S\circ\overrightarrow{\pr} \circ \iotarnzero \circ S^\perp} & {S \circ \overrightarrow{\pr}} & {S^\perp}
+        \arrow["{\eta_{S^\perp}}", Rightarrow, from=1-1, to=1-2]
+        \arrow["{S(\overrightarrow{\pr}(\theta))}", Rightarrow, from=1-2, to=1-3]
+        \arrow[Rightarrow, no head, from=1-3, to=1-4],
+    \end{tikzcd}\]
+    where 
+    $ \eta_{S^\perp}$ is the value of the unit    
+    \[
+        \eta \colon \id_{\An} \Rightarrow S\iota_0
+    \]
+    of the adjunction $\iota_n = \overrightarrow{\pr} \circ \iotarnzero \dashv S$
+    on the values of the functor $S^\perp$.
+    We first compute $\eta$.
+    We claim that $\eta_X$ is given by the $0$-section 
+    \[
+    X \to S^0_X = S^0 \times X = \{0, \infty\} \times X. 
+    \]
+    By Yoneda it is enough to check this for $X = \pt$.
+    Since $S$ is corepresented by $\iota_0(\pt)$ the value $\eta_\pt$ is determined by the functor $\iota_0$:
+    \[\begin{tikzcd}
+        \pt & {\Map(\pt,\pt)} \\
+        {S(\iota_0(\pt))} & {\Map((\pt,0),(\pt,0))}
+        \arrow["{\iota_0}", from=1-2, to=2-2]
+        \arrow["{\eta_\pt}", from=1-1, to=2-1]
+        \arrow["\simeq", from=1-1, to=1-2]
+        \arrow["\simeq"', from=2-1, to=2-2]
+    \end{tikzcd}\]
+    Under the lower horizontal identification the morphism $\id_{(\pt,0)}$ corresponds to $0 \in S^0_\pt \simeq \{0,\infty\}$.
+
+    We claim that $(\overrightarrow{\pr}(\theta))^\flat$ is the identity transformation $S^\perp \Rightarrow S^\perp$.
+    Since $S^\perp$ is corepresented by $\iotarnzero(\pt)$ we only have to verify this on $\iotarnzero(\pt)$, that is 
+    we want to understand the map
+    \[
+    S(S^0, 0) \xrightarrow{S(\overrightarrow{\pr}(\theta_{\iotarnzero(\pt)}))} S(\pt, 0)
+    \]
+    over the zero section 
+    \[
+    S^0 \to S(S^0, 0).
+    \]
+    To pick a point $a$ in the zero section of $S(S^0, 0)$ we need to pick a point $a \in S^0$
+    and consider the induced morphism 
+    \[
+        (\pt,0) \xto{\iota_0(a)} (S^0,0)
+    \]
+    under $\iota_0$.
+    To understand the composite 
+    \[
+        (\pt,0) \xto{\iota_0(a)} (S^0,0) \xto{\overrightarrow{\pr}(\theta)} (\pt, 0)
+    \]
+    we observe that we can lift $\iota_0(a)$ along $\overrightarrow{\pr}$, namely by 
+    \[
+      \iotarnzero(a) \colon \iotarnzero(\pt) \to \iotarnzero(S^0).  
+    \]
+    The composite $\overrightarrow{\pr}(\theta) \circ \iota_0(a)$ is then equivalent to the image 
+    of $\theta \circ \iotarnzero(a)$ under $\overrightarrow{\pr}$.
+    But 
+    \[
+        \theta \circ \iotarnzero(a) \colon \iotarnzero(\pt) \to \iotarnzero(\pt) 
+    \]
+    is the left adjoint morphism $a^\sharp$ of 
+    \[
+      a \colon \pt \to S^\perp(\iotarnzero(\pt)) = S^0.  
+    \]
+    Since $\overrightarrow{\pr}$ is an equivalence between the mapping anima $\Map(\iotarnzero(\pt)), \iotarnzero(\pt)$ 
+    and $\Map(\iota_0(\pt), \iota_0(\pt))$, we can recover $a$ out of $\overrightarrow{\pr}(a^\sharp)$.
+    That is we have shown that the natural transformation $(\overrightarrow{\pr}(\theta))^\flat$ is invertible. 
+    But there is only one invertible natural transformation $S^\perp \Rightarrow S^\perp$ namely the identity.
+    The left adjoint natural transformation $\phi^\sharp \colon \iota_n S^\perp \Rightarrow \overrightarrow{\pr}$ of
+    a transformation $\phi \colon S^\perp \Rightarrow S \circ \overrightarrow{\pr}$ is computed by the composite 
+    \[\begin{tikzcd}
+        {\iota_n\circ S^\perp} & {\iota_n \circ S \circ \overrightarrow{\pr}} & {\overrightarrow{\pr}}
+        \arrow["{\iota_n \phi}", Rightarrow, from=1-1, to=1-2]
+        \arrow["{\epsilon_{\overrightarrow{\pr}}}", Rightarrow, from=1-2, to=1-3]
+    \end{tikzcd}\]
+    Thus 
+    \begin{eqnarray*}
+        \overrightarrow{\pr}(\theta) & \simeq & ((\overrightarrow{\pr}(\theta))^\flat)^\sharp \\
+        & \simeq & \id^\sharp \\
+        & \simeq & \epsilon_{\overrightarrow{\pr}} \circ \iota_n(\id) \\
+        & \simeq & \epsilon_{\overrightarrow{\pr}} \circ \id \\ 
+        & \simeq & \epsilon_{\overrightarrow{\pr}}
+    \end{eqnarray*}  
+\end{proof}
+
+\section{The Category of Spectra generated by Animae and Vector Bundles}\label{section:spectraGenerated}
+
+
+\begin{definition}
+    % Here definition of pushouts with constant coeffficients
+
+\end{definition}
+
+\begin{lemma}
+    The functor $\Th \colon \AVB \to \An_*$ sends split pushouts with constant coefficients to pushouts.    
+\end{lemma}
+
+\begin{proposition}
+    The functor $\mathrm{Th}^- \colon \AVB^\vop \to \Sp$ that sends a pair $(X,V)$ to the 
+    Thom spectrum $X^{-V}$ of the negative bundle of $V$ is a functor that sends distinguished squares to pushouts.
+\end{proposition}
+
+\begin{proof}
+    We have to show that 
+    \[\begin{tikzcd}
+        0 & {X^{-V}} \\
+        {X^{-V\oplus W}} & {(S^{W})^{-V\oplus W}}
+        \arrow[to=1-2, from=1-1]
+        \arrow[to=1-1, from=2-1]
+        \arrow[to=1-2, from=2-2]
+        \arrow[to=2-2, from=2-1]
+    \end{tikzcd}\]
+    is a pushout.
+    This square is the image of the square in $T\An$:
+    \[\begin{tikzcd}
+        {0_X} & {\mathbb S^{-V}_X} \\
+        {\mathbb S_X^{-V\oplus W}} & {\pi_! \pi^* \mathbb S_X^{-V\oplus W}}
+        \arrow[to=1-2, from=1-1]
+        \arrow[to=1-1, from=2-1]
+        \arrow[to=1-2, from=2-2]
+        \arrow[to=2-2, from=2-1]
+    \end{tikzcd}\]
+    under the colimit preserving functor $T\An \to \Sp$ that `carries out the colimit'.
+    By the projection formula this square is equivalent to the square 
+    \[\begin{tikzcd}
+        {0_X} & {\mathbb S^{-V}_X} \\
+        {\mathbb S_X^{-V} \otimes \mathbb S_X^{-W}} & {\mathbb S_X^{-V} \otimes \mathbb S_X^{-W}\otimes\pi_! \pi^* \mathbb S_X}
+        \arrow[to=1-2, from=1-1]
+        \arrow[to=1-1, from=2-1]
+        \arrow[to=1-2, from=2-2]
+        \arrow[to=2-2, from=2-1]
+    \end{tikzcd}.\]
+    Since the functor $\AVB^\vop \to T\An$ is symmetric monoidal we see that the above square is the tensor product of the image of 
+    the simple distinguished square with $\mathbb S_X^{-V}$. So we can assume $V = 0$. So we want to prove that 
+\[\begin{tikzcd}
+	{0_X} & {\mathbb S_X} \\
+	{\mathbb S_X^{-W}} & {\mathbb S_X^{-W}\otimes\pi_! \pi^* \mathbb S_X}
+	\arrow[to=1-2, from=1-1]
+	\arrow[to=1-1, from=2-1]
+	\arrow[to=1-2, from=2-2]
+	\arrow[to=2-2, from=2-1]
+\end{tikzcd}\]
+is a pushout square in $T\An$. This is a pushout if and only if for each point inclusion $x \colon \pt \to X$ the pullback 
+\[\begin{tikzcd}
+	{x^*0_X} & {x^*\mathbb S_X} \\
+	{x^*\mathbb S_X^{-W}} & {x^*(\mathbb S_X^{-W}\otimes\pi_! \pi^* \mathbb S_X)}
+	\arrow[to=1-2, from=1-1]
+	\arrow[to=1-1, from=2-1]
+	\arrow[to=1-2, from=2-2]
+	\arrow[to=2-2, from=2-1]
+\end{tikzcd}\]
+is a pushout. 
+So we can assume that $X = \pt$. That is we have to show that 
+\[\begin{tikzcd}
+	0 & {\mathbb S} \\
+	{\mathbb S^{-W}} & {\mathbb S^{-W}\otimes \colim_{S^W} \mathbb S}
+	\arrow[to=1-2, from=1-1]
+	\arrow[to=1-1, from=2-1]
+	\arrow[to=1-2, from=2-2]
+	\arrow[to=2-2, from=2-1]
+\end{tikzcd}\]
+is a pushout in spectra for each sphere $S^W$.
+Let us now try to understand the non-trivial maps in that diagram.
+The bottom map comes from the point inclusion at $\infty \in S^W$, namely its the map 
+\[
+\mathbb S^{-W} \otimes \colim_{\pt} \mathbb S \xto{\mathbb S^{-W}\otimes \colim_{\infty} \mathbb S} \mathbb S^{-W} \otimes \colim_{S^W} \mathbb S.
+\]
+and the right map composes as 
+\[
+\mathbb S^{-W} \otimes \colim_{S^W} \mathbb S \xto{\mathbb S^{-W}\otimes \colim_{S^W} \Sigma^\infty \theta} \mathbb S^{-W} \otimes \colim_{S^W} \mathbb S^W \simeq \colim_{S^W}\mathbb S \xto{\colim_\pi \mathbb S} \colim_\pt \mathbb S    
+\]
+By tensoring the above square with the invertible object $\mathbb S^W$ we can instead show that
+\[\begin{tikzcd}
+	0 & {\mathbb S^W} \\
+	{\colim_\pt \mathbb S} & {\colim_{S^W} \mathbb S}
+	\arrow[from=1-1, to=1-2]
+	\arrow[from=2-1, to=1-1]
+	\arrow["{\colim_\infty \mathbb S}"', from=2-1, to=2-2]
+	\arrow["{\colim_{\pi}\Sigma^\infty\theta}"', from=2-2, to=1-2]
+\end{tikzcd}\]
+is a pushout square.
+This square is the image under the functor $\Sigma^\infty$ of the square 
+\[\begin{tikzcd}
+	\pt & {S^W} \\
+	{\pt_+} & {S^W_+}
+	\arrow["\infty", from=1-1, to=1-2]
+	\arrow[from=2-2, to=1-2]
+	\arrow[from=2-1, to=1-1]
+	\arrow["{\infty_+}"', from=2-1, to=2-2]
+\end{tikzcd}\]
+where the right map is the composite 
+\[
+S^W_+ \xto{\theta} S^W_+ \wedge S^W \xto{\pi \wedge S^W} \pt_+ \wedge S^W.    
+\]
+We claim that $\theta$ is given by the diagonal 
+\[
+S^W_+ \xto{\Delta} S^W_+ \times S^W_+ \xto{\mathrm{can}} S^W_+ \wedge S^W.
+\]
+This clearly shows that the right map of the square above is given by the identity on the $S^W$ component, which 
+makes the square a pushout.
+By tracing back the definition we find that $\theta$ is the canonical map 
+\[
+  \colim^{\in \An_*}_{\Map((\pt,0),(\pt,W))}  \Map(((\pt,0),(\pt,0))) \xto{\colim_f (g \mapsto f \circ g)} \colim^{\in \An_*}_{\Map((\pt,0),(\pt,W))} \Map(((\pt,0),(\pt,W)))
+\]
+which is equivalent to the map above.
+\end{proof}
+
+\begin{remark} 
+    The last proposition shows that we have natural cofiber sequences 
+    \[
+      X^{-V \oplus W} \xto{ \sigma_\infty^{- V \oplus W}} (S^W)^{-V \oplus W} \xto{\pi^{-\theta}} X^{-V}.
+    \]
+    These split natural as the left map admits a left inverse via 
+    \[
+    \pi^{-V\oplus W} \colon (S^W)^{-V \oplus W} \to X^{-V \oplus W}.
+    \]
+    So we have a natural decomposition 
+    \[
+        (S^W)^{-V \oplus W} \simeq  X^{-V \oplus W} \oplus X^{-V}.
+    \]
+    Suppose $V \oplus W \simeq \R^n_X$ is a trivial bundle, than we have a square in $\AVB^\vop$
+    \[\begin{tikzcd}
+        {(X,\R^n_X)} & {(S^W,\R^n_{S^W})} \\
+        {(\pt, \R^n)} & {(\mathrm{Th}(W),\R^n_{\mathrm{Th}(W)})}
+        \arrow["{(r,\id)}"', from=1-1, to=2-1]
+        \arrow["{(\infty,\id)}"', from=2-1, to=2-2]
+        \arrow["{(\sigma_\infty, \id)}", from=1-1, to=1-2]
+        \arrow["{(\mathrm{can}, \id)}", from=1-2, to=2-2]
+    \end{tikzcd}\]
+    which get send to a pushout via $\Th^-$ since it is a pushout in the anima coordinate and constant in the vector bundle coordinate.
+    Thus combining with the previous result we have a natural equivalence 
+    \[
+      X^{-V} \to \Sigma^{\infty - n}\Th(W)  
+    \]
+    once we fix a choice of a complement bundle $W$ of $V$. 
+\end{remark}
+
+We have seen that $\Th^-$ respects pushout squares in the anima coordinate and sends distinguished squares to 
+pushouts. The next theorem will show that it is the universal functor that does this at least over compact anima. 
+
+\begin{definition}
+    Let $\cD$ be a category. We call a pushout square
+    \[\begin{tikzcd}
+        A & B \\
+        C & D
+        \arrow["f", from=1-1, to=1-2]
+        \arrow["g"', from=1-1, to=2-1]
+        \arrow[from=2-1, to=2-2]
+        \arrow[from=1-2, to=2-2]
+        \arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=2-2, to=1-1]
+    \end{tikzcd}\]
+    in $\cD$ \emph{split} if at least one of the maps $f$ or $g$ admits a retraction.
+    We say that $\cD$ \emph{has all split pushouts} if for every span $B \xot{f} A \xto{g} C$, where either 
+    $f$ or $g$ is a retraction, the pushout $B \coprod_A C$ exists.
+\end{definition}
+
+\begin{theorem}\label{thrm:dream}
+    
+    For any pointed $\infty$-cagegory $\cD$
+    with split pushouts the restriction along the functor
+    $\Th^- \colon \cX|_{\An^\omega} \to \Sp^\omega, (X,V) \mapsto X^{-V}$
+    induces a functor
+    $ (\Th^-)^* \colon \Fun(\Sp^\omega, \cD) \to \Fun(\cX|_{\An^\omega} , \cD)$
+    which is fully faithful when restricted to the subcategory consisting of those
+    functors $\Sp^\omega \to \cD$ which preserve split pushouts and are reduced.
+    The essential image of that subcategory consists precisely of those functors
+    $\Phi \colon \cX|_{\An^\omega}  \to \cD$ which
+    \begin{enumerate}
+      \item send distinguished squares to pushouts,
+      \item send $(X,\emptyset)$ for all compact anima $X$ to the zero object,
+      \item send squares which are constant in the bundle coordinate and split pushouts in the anima variable to pushouts. \footnote{By this we strictly mean a square that is a Cartesian lift.}
+    \end{enumerate}
+\end{theorem}
+
+\begin{lemma}\label{lemma:reduction}
+    The following diagram commutes 
+    \[\begin{tikzcd}
+        {\AVB^\vop(n)|_{\An^\omega}} && {} && {\An_*^\omega} \\
+        & {\AVB^\vop|_{\An^\omega}} & {\Sp^\omega} \\
+        {\AVB^\vop(n+1)|_{\An^\omega}} &&&& {\An_*^\omega}
+        \arrow["{\Th^\perp}", from=1-1, to=1-5]
+        \arrow["{\Th^\perp}"', from=3-1, to=3-5]
+        \arrow["{\oplus \overrightarrow{\R}}"', from=1-1, to=3-1]
+        \arrow["{\Th^-}", from=2-2, to=2-3]
+        \arrow["\Sigma", from=1-5, to=3-5]
+        \arrow["{\Sigma^{\infty-n}}", from=1-5, to=2-3]
+        \arrow["{\Sigma^{\infty-(n+1)}}", from=3-5, to=2-3]
+        \arrow["{\overleftarrow{\pr}}"', from=1-1, to=2-2]
+        \arrow["{\overleftarrow{\pr}}", from=3-1, to=2-2]
+    \end{tikzcd}\]
+\end{lemma}
+
+\begin{proof}
+    We show that the outer and the upper square commute. The rest is clear.
+    \begin{itemize} 
+        \item 
+        We start by showing the commutativity of the outer square.
+        We observe that we can factor the vertical functors as follows 
+        \[
+            \AVB^\vop(n)|_{\An^\omega} \xto{\overrightarrow{\pr}} \AVB|_{\An^\omega} \to \int_{X \in \An^\omega} \Fun(X,\An_*^\omega) \xto{\colim} \An_*^\omega 
+        \]
+    \end{itemize} 
+    Where the middle functor is induced from 
+    \[
+        S = \Map((\pt,0), -) \colon \AffLin \to \An_*^\omega.  
+    \]  
+    Since $\overrightarrow \pr \circ (\oplus \overrightarrow{\R}) \simeq  (\oplus \R )\circ \overrightarrow{\pr}$ 
+    and $\oplus \R$ is also induced from its restriction to $\AffLin$ we only need to show that 
+    \[\begin{tikzcd}
+        \AffLin & {\An^\omega_*} \\
+        \AffLin & {\An^\omega_*}
+        \arrow["{\oplus \R}"', from=1-1, to=2-1]
+        \arrow["\Sigma", from=1-2, to=2-2]
+        \arrow["S", from=1-1, to=1-2]
+        \arrow["S"', from=2-1, to=2-2]
+    \end{tikzcd}\]
+    commutes, which it oviously does.
+    \item Now we show that the upper square commutes. 
+    A reduction argument like before shows that we only need to show that the following diagram commutes
+    \[\begin{tikzcd}
+        && {\AffLin^\op(n)} \\
+        {\AffLin^\op} &&&& \AffLin \\
+        & {{\Sp^\omega}{^\op}} && {\Sp^\omega}
+        \arrow["{\overleftarrow{\pr}}"', from=1-3, to=2-1]
+        \arrow["{\overrightarrow{\pr}}", from=1-3, to=2-5]
+        \arrow["{\Sigma^{\infty - n} S}", from=2-5, to=3-4]
+        \arrow["{\mathbb D}"', from=3-2, to=3-4]
+        \arrow["{\Sigma^\infty S}"', from=2-1, to=3-2]
+    \end{tikzcd}\]
+    that is we have to provide an equivalence between the functors 
+    \[
+    (\overleftarrow V, \overrightarrow{W}, \alpha \colon V \oplus W \to \R^n) \mapsto \mathbb D \Sigma^\infty S^V    
+    \]
+    and 
+    \[
+    (\overleftarrow V, \overrightarrow{W}, \alpha \colon V \oplus W \to \R^n) \mapsto \Sigma^{\infty - n} S^W.
+    \]
+    The morphism $\alpha$ induces a natural map 
+    \[
+    S^W \to \Map(S^V, S^n)    
+    \]
+    which induces a natural equivalence 
+    \[
+    \Sigma^\infty S^W \to \mathrm{map}(\Sigma^\infty S^V, \Sigma^\infty S^n)    
+    \]
+    which after delooping yields the desired equivalence.
+\end{proof}
+
+\begin{proposition}\label{prop:dream2}
+    For any pointed $\infty$-cagegory $\cD$
+    with split pushouts the restriction along the functor
+    $\Th^\perp \colon \cX(n)|_{\An^\omega} \to \An_*^\omega, (X,\overleftarrow{V},\overrightarrow{W}, \alpha) \mapsto \Th_X(W)$
+    induces a functor
+    $ (\Th^\perp)^* \colon \Fun(\An_*^\omega, \cD) \to \Fun(\cX(n)|_{\An^\omega} , \cD)$
+    which is fully faithful when restricted to the subcategory consisting of those
+    functors $\An_*^\omega \to \cD$ which preserve split pushouts and are reduced.
+    The essential image of that subcategory consists precisely of those functors
+    $\Phi \colon \cX(n)|_{\An^\omega}  \to \cD$ which
+    \begin{enumerate}
+      \item send distinguished squares to pushouts,
+      \item send $(X,\emptyset,\emptyset, \infty)$ for all compact anima $X$ to the zero object,
+      \item send squares which are constant in the bundle coordinate and split pushouts in the anima variable to pushouts.
+    \end{enumerate}
+\end{proposition}
+
+\begin{proof}[Proof of Theorem~\ref{thrm:dream}]
+    \begin{eqnarray*}   
+        \Fun^{\mathrm{d.s,red.,s.p.}}(\AVB^\vop, \mathcal D) & \stackrel{\mathrm{Lemma}~\ref{lemma:reduction}}{\simeq} & \lim_n 
+        \Fun^{\mathrm{d.s,red.,s.p.}}(\AVB^\vop(n), \mathcal D) \\
+        & \stackrel{\mathrm{Prop.}~\ref{prop:dream2}}{\simeq} & \lim_n \Fun^{\mathrm{s.p.}}(\An_*^\omega, \mathcal D) \\
+        & \simeq & \Fun^{\mathrm{s.p.}}(\Sp^\omega, \mathcal D)
+    \end{eqnarray*} 
+\end{proof}
+\begin{proof}[Proof of Proposition~\ref{prop:dream2}]
+    Given a functor $\psi \colon \AVB^\vop(n) \to \mathcal D$ we define 
+    the functor 
+    \[
+    \psi|_{\An_*^\omega} \colon \An_*^\omega \to \mathcal D    
+    \]
+    by letting it send a pointed anima $\pt \to X$ to the value 
+    \[
+    \psi|_{\An_*^\omega}(X) := \mathrm{cof}\left( \psi(\iotarnzero(\pt))\to \psi(\iotarnzero(X))\right).  
+    \]
+    We claim that the functor $\res_{\An_*^\omega} \colon \psi \mapsto \psi|_{\An_*^\omega}$ is inverse to the functor $(\Th^\perp)^*$ when restricted to 
+    the full subcategories 
+    $\Fun^{\mathrm{d.s,red.,s.p.}}(\AVB^\vop(n), \mathcal D)$ and 
+    $\Fun^{\mathrm{red.,s.p.}}(\An_*^\omega, \cD)$ of the respective functor categories.
+
+    We start with a reality check by showing the inclusions 
+    
+        \[ 
+            \res_{\An_*^\omega}(\Fun^{\mathrm{red.,s.p.}}(\AVB^\vop(n), \mathcal D)) \subset \Fun^{\mathrm{red.,s.p.}}(\An_*^\omega, \cD),
+        \]
+         \[
+            (\Th^\perp)^*(\Fun^{\mathrm{red.,s.p.}}(\An_*^\omega, \cD)) \subset \Fun^{\mathrm{d.s,red.,s.p.}}(\AVB^\vop(n), \mathcal D):
+        \]
+
+
+    \begin{itemize}
+        \item The inclusion 
+        \[
+            \res|_{\An_*^\omega}(\Fun) \subset \Fun^\mathrm{red.}
+        \]
+        follows immediately from the definitions.
+        \item The inclusion 
+        \[
+            \res|_{\An_*^\omega}(\Fun^\mathrm{s.p.}) \subset \Fun^{\mathrm{s.p.}}
+        \]
+        folows from the fact that the functor $\iotarnzero$ sends split pushouts to split pushouts that are constant in the vector bundle 
+        coordinates.
+        \item The inclusion 
+        \[
+            (\Th^\perp)^*(\Fun^\mathrm{red.}) \subset \Fun^\mathrm{red.}
+        \]
+        follows from the fact that $\Th_X(\emptyset) \simeq \pt$ for every anima $X$.
+        \item The inclusion 
+        \[
+            (\Th^\perp)^*(\Fun^\mathrm{s.p.}) \subset \Fun^\mathrm{s.p., d.s.}
+        \]
+        follows immediately when we have shown that the functor $\Th \colon \AVB \to \An_*$ sends distinguished squares and squares that are split pushouts 
+        with constant coefficients to pushouts. 
+        Let 
+        \[\begin{tikzcd}
+            {(X,\emptyset)} & {(X,W)} \\
+            {(X,0)} & {(S^W_X,0)}
+            \arrow["{(\id,\infty)}", from=2-1, to=1-1]
+            \arrow["{(\id,\infty)}", from=1-1, to=1-2]
+            \arrow["{(\sigma_\infty,\id)}"', from=2-1, to=2-2]
+            \arrow["{(\pi,\theta)}"', from=2-2, to=1-2]
+        \end{tikzcd}\]
+        be a simple distinguished square in $\AVB$.
+        The image of this square under $S$ is given by the square 
+        \[\begin{tikzcd}
+            X & {S^W_X} \\
+            {X \coprod X} & {S^W_X \coprod S^X_X}
+            \arrow["{\mathrm{fold}}", from=2-1, to=1-1]
+            \arrow["{\sigma_\infty}", from=1-1, to=1-2]
+            \arrow["{\sigma_\infty \coprod \sigma_\infty}"', from=2-1, to=2-2]
+            \arrow["{(\id, \sigma_\infty \pi)}"', from=2-2, to=1-2]
+        \end{tikzcd}\]\footnote{The zigzag identity of the adjunction $\iota_0 \dashv S$ shows that the first coordinate of the right arrow is the identity.}
+        After quotienting out the added points at $\infty$ we are left with the square 
+        \[\begin{tikzcd}
+            \pt & {\Th_X(W)} \\
+            {X \coprod \pt} & {S^W_X \coprod \pt}
+            \arrow[from=2-1, to=1-1]
+            \arrow["\infty", from=1-1, to=1-2]
+            \arrow["{\sigma_\infty \coprod \id}"', from=2-1, to=2-2]
+            \arrow["{(\mathrm{can},\infty)}"', from=2-2, to=1-2]
+        \end{tikzcd}\]
+        which is obviously a pushout.
+
+        Now let 
+        \[\begin{tikzcd}
+            {(A,W)} & {(B,W)} \\
+            {(C,W)} & {(D,W)}
+            \arrow[from=1-1, to=1-2]
+            \arrow[from=2-1, to=2-2]
+            \arrow[from=1-2, to=2-2]
+            \arrow[from=1-1, to=2-1]
+        \end{tikzcd}\]
+        be a split pushout with constant coefficients. We want to show that 
+        \[\begin{tikzcd}
+            {\Th_A(W)} & {\Th_B(W)} \\
+            {\Th_C(W)} & {\Th_D(W)}
+            \arrow[from=1-1, to=1-2]
+            \arrow[from=2-1, to=2-2]
+            \arrow[from=1-2, to=2-2]
+            \arrow[from=1-1, to=2-1]
+        \end{tikzcd}\]
+        is a pushout. By pulling back along points of $\cD$ we can assume $D \simeq \pt$. Then $W \simeq \R^n$ for some $n$.
+        That is we look at the square 
+        \[\begin{tikzcd}
+            {(A,\R^n)} & {(B,\R^n)} \\
+            {(C,\R^n)} & {(\pt,\R^n)}
+            \arrow[from=1-1, to=1-2]
+            \arrow[from=2-1, to=2-2]
+            \arrow[from=1-2, to=2-2]
+            \arrow[from=1-1, to=2-1].
+        \end{tikzcd}\]
+        The image under $\Th$ is 
+        \[\begin{tikzcd}
+            {\Sigma^n A_+} & {\Sigma^n B_+} \\
+            {\Sigma^nC_+} & {\Sigma^nD_+}
+            \arrow[from=1-1, to=1-2]
+            \arrow[from=2-1, to=2-2]
+            \arrow[from=1-2, to=2-2]
+            \arrow[from=1-1, to=2-1]
+        \end{tikzcd}\]
+        which is clearly a pushout. 
+        % Todo: Prove that in a lemma
+    \end{itemize}
+
+    To show that $\res|_{\An_*^\omega}$ is inverse to $(\Th^\perp)^*$ we construct functors $\mathcal F \colon \Fun(\An_*^\omega, \mathcal D) \to \Fun(\An_*^\omega, \mathcal D)$
+    and $\mathcal G, \mathcal H \colon \Fun(\AVB^\vop(n), \mathcal D) \to \Fun(\AVB^\vop(n),\mathcal D)$ and natural transformations 
+    \[
+    \res|_{\An_*^\omega} (\Th^\perp)^* \xrightarrow{\rho_1} \mathcal F \xleftarrow{\rho_2}   \id_{\Fun(\An_*^\omega, \mathcal D)} 
+    \]
+    \[
+        (\Th^\perp)^* \res|_{\An_*^\omega} \xleftarrow{\eta_1} \mathcal G \xto{\eta_2} \mathcal H \xot{\eta_3} \id_{\Fun(\AVB^\vop(n), \mathcal D)}   
+    \]
+    so that the natural transformations $\rho_i$ evaluete to equivalences on the full subcategory 
+    $\Fun^{\mathrm{red.,s.p.}}(\An_*^\omega, \cD)$ and 
+    likewise $\eta_i$ evaluate to equivalences on the subcategory 
+    $\Fun^{\mathrm{d.s,red.,s.p.}}(\AVB^\vop(n), \mathcal D)$.
+
+    Let $\mathcal F$ be the localization functor corresponding to the full subcategory of reduced functors. That is 
+    \[
+      \mathcal F (\phi) := \phi^{\mathrm{red}}\colon X \mapsto \mathrm{cof}\left(\phi(\pt) \to \phi(X)\right).
+    \]
+    It comes with a natural transformation $\rho_2 \colon \id \to \mathcal F$, that evaluates as the canonical map 
+    $\phi(X) \to \phi^\mathrm{red}(X)$ into the cofiber.
+    A simple calculation shows that 
+    \[
+    (\phi \circ \Th^\perp)|_{\An_*^\omega} (X) \simeq \mathrm{cof}(\phi(\pt_+) \to \phi(X_+)).
+    \]
+    The functorial split pushout 
+    \[\begin{tikzcd}
+        {\pt_+} & {X_+} \\
+        \pt & X
+        \arrow[from=1-1, to=1-2]
+        \arrow[from=1-1, to=2-1]
+        \arrow[from=2-1, to=2-2]
+        \arrow[from=1-2, to=2-2]
+        \arrow[bend right=30, dotted, from=1-2, to=1-1]
+        \arrow[bend left=30, dotted, from=2-2, to=2-1]
+    \end{tikzcd}\]
+    induces a natural transformation 
+    $ \rho_1 \colon \res|_{\An_*^\omega} (\Th^\perp)^* \to \mathcal F$.
+
+    Let $\mathcal G$ be the functor that sends a functor $\psi \colon \AVB^\vop(n) \to \mathcal D$ to the functor 
+    \[
+    \mathrm{cof}\left(\psi\iotarnzero\pr \xto{\psi\iotarnzero\sigma_\infty}\psi\iotarnzero S^\perp\right)    
+    \]
+    and let $\mathcal H$ send $\psi$ to 
+    \[
+    \psi^\mathrm{red} := \mathrm{cof}(\psi(\infty) \colon \psi \iotaemptyempty \pr \to \psi).
+    \]
+    The evident map $\psi \to \psi^\mathrm{red}$ refines to a natural transformation 
+    $\eta_3 \colon \id \to \mathcal H$.
+
+    The square~\ref{fig:endosquareavb(n)} of endofucntors in Proposition~\ref{prop: AVB(n)} yields a functorial square 
+    \[\begin{tikzcd}
+        {\psi \iotaemptyempty} & \psi \\
+        {\psi \iotarnzero \pr} & {\psi \iotarnzero S^\perp}
+        \arrow[from=1-1, to=1-2]
+        \arrow[from=2-2, to=1-2]
+        \arrow[from=2-1, to=1-1]
+        \arrow[from=2-1, to=2-2]
+    \end{tikzcd}\]
+    that induces a natural map $\mathcal G(\psi) \to \psi^\mathrm{red}$ that is a transformation $\eta_2 \colon \mathcal G \to \mathcal H$.
+    Finally the split pushout square of functors 
+    \[\begin{tikzcd}
+        \pr & {S^\perp} \\
+        {\mathrm{const}_{\pt}} & {\Th^\perp}
+        \arrow["\sigma_\infty"', from=1-1, to=1-2]
+        \arrow[from=1-2, to=2-2]
+        \arrow[from=1-1, to=2-1]
+        \arrow[from=2-1, to=2-2]
+        \arrow[bend right=30, dotted, from=1-2, to=1-1]
+        \arrow[bend left=30, dotted, from=2-2, to=2-1]
+    \end{tikzcd}\]
+    induces a square 
+    \[\begin{tikzcd}
+        {\psi \iotarnzero \pr} & {\psi \iotarnzero S^\perp} \\
+        {\psi \iotarnzero \mathrm{const}_{\pt}} & {\psi \iotarnzero \Th^\perp}
+        \arrow[from=1-1, to=1-2]
+        \arrow[from=1-2, to=2-2]
+        \arrow[from=1-1, to=2-1]
+        \arrow[from=2-1, to=2-2]
+    \end{tikzcd}\]
+    that ultimately leads to a natural map $\mathcal G(\psi) \to \psi|_{\An_*^\omega} \circ \Th^\perp$ that refines 
+    to a natural transformation 
+    $ \eta_1 \colon \mathcal G \to (\Th^\perp)^* \res|_{\An_*^\omega}$.
+
+    The subcategories of the functor categories in question are chosen precisely such that all of the transformations 
+    $\eta_i, \rho_j$ are equivalences when restricted to them, that is:
+    \begin{itemize}
+        \item $\rho_1 \colon (\phi \circ \Th^\perp)|_{\An_*^\omega} \to \phi^\mathrm{red}$ is an equivalence if $\phi$ preserves split pushouts,
+        \item $\rho_2 \colon \phi \to \phi^\mathrm{red}$ is an equivalence if $\phi$ is reduced,
+        \item $\eta_1 \colon \mathcal G(\psi) \to \psi_{\An_*^\omega} \circ \Th^\perp$ is an equivalence if $\psi$ preserves split pushouts in the anima variable that are 
+        constant on the vector bundle coordinates, 
+        \item $\eta_2 \colon \mathcal G(\psi) \to \psi^\mathrm{red}$ is an equivalence if $\psi$ sends distinguished squares to pushouts,
+        \item $\eta_3 \colon \psi \to \psi^\mathrm{red}$ is an equivalence if $\psi$ sends objects of the form $\iotaemptyempty(X)$ to the zero object.
+    \end{itemize}
+
+\end{proof}
+
+\begin{remark}
+    This proof also shows that 
+    \[\begin{tikzcd}
+        {\Fun^{\mathrm{red.,s.p.}}(\An_*^\omega,\mathcal D)} & {\Fun^{\mathrm{red.,s.p.}}(\AVB^\vop(n)|_{\An^\omega},\mathcal D)}
+        \arrow[""{name=0, anchor=center, inner sep=0}, "{(\Th^\perp)^*}"', shift right=2, from=1-1, to=1-2]
+        \arrow[""{name=1, anchor=center, inner sep=0}, "{\res|_{\An_*^\omega}}"', shift right=2, from=1-2, to=1-1]
+        \arrow["\dashv"{anchor=center, rotate=90}, draw=none, from=0, to=1]
+    \end{tikzcd}\]    
+is a Bousfield co-localization. The category of colocal objects is the full subcategory 
+\[
+\Fun^{\mathrm{d.s,red.,s.p.}}(\AVB^\vop(n), \mathcal D) \subset \Fun^{\mathrm{red.,s.p.}}(\AVB^\vop(n), \mathcal D) 
+\]
+of functors that additionally send distinguished squares to pushouts.
+\end{remark}
+
+\section{Genuine Cohomology Theories}\label{section:Genuinecohomologytheories}
+
+\begin{definition}[Genuine Cohomology Theories]
+  
+    A \emph{genuine cohomology theory} consists of a collection
+  $E^V(X)$ of abelian groups, where $X$ runs trough all compact anima and
+  $V$ is a vector bundle over $X$.
+  For each map $f \colon X \to Y$ and a vector bundle $W$ over $Y$ we have induced
+  maps
+  $f^W \colon E^{W}(Y) \to E^{f^*W}(X)$.
+  For each map $\phi \colon V \to W$ of vector bundles over $X$ we have
+  induced maps
+  $\phi_X \colon E^{V}(X) \to E^{W}(X)$.
+  The usual functoriality conditions hold, that is
+  \begin{itemize}
+    \item If $f, \phi$ above are the identity maps then they induce the identity.
+    \item We have $(g \circ f)^V = f^{g^*V} \circ g^V$ and
+    $(\phi \circ \psi)_X = \phi_X \circ \psi_X$.
+  \end{itemize}
+  
+  We require these collection of abelian groups and induced maps to satisfy some
+  properties
+  
+  \begin{enumerate}
+    \item[(i)]\label{homotopyinvariance} (Homotopy Invariance)\\
+     If $\phi \simeq \psi$ are homotopic morphisms of vector bundles $V \to W$ over $X$, then 
+     the induced morphisms $\phi_X = \psi_X$ are equal.
+     If $H \colon f \simeq g$ is a homotopy, then it induces an equivalence 
+     $\phi_H \colon f^*V \simeq g^*V$ between vector bundles over $X$.
+     We require that $({\phi_H})_X \circ f^V = g^V$, i.e. the following commutes 
+     \[\begin{tikzcd}
+      && {E^{f^*V}(X)} \\
+      {E^V(X)} \\
+      && {E^{g^*V}(X)}
+      \arrow["{({\phi_H})_X}", from=1-3, to=3-3]
+      \arrow["{f^V}", from=2-1, to=1-3]
+      \arrow["{g^V}"', from=2-1, to=3-3]
+    \end{tikzcd}\]
+    \iffalse
+    \item[(ii)]\label{additivity} (Additivity)\\
+    For each collection $(X_i,V_i)_{i \in I}$
+    of anima $X_i$ and vector bundles $V_i$ over $X_i$ the induced homomorphism
+    \[
+      E^{\coprod_i V_i}(\coprod_i X_i) \to \prod_i E^{V_i}(X_i)
+      \]
+      is an isomorphism.
+    \fi 
+      \item[(ii)]\label{beckchavalley} (Beck-Chevalley)\\
+      Let $f \colon X \to Y$ be
+      a map of anima and $\phi \colon V \to W$ be a map of vector bundles over $Y$.
+      Let $f^*\phi$ be the induced map $f^* V \to f^* W$ of vector bundles over $X$.
+      Then the following square commutes
+      \[\begin{tikzcd}
+        {E^{V}(Y)} & {E^{f^*V}(X)} \\
+        {E^W(Y)} & {E^{f^*W}(X)}
+        \arrow["{\phi_Y}"', from=1-1, to=2-1]
+        \arrow["{f^W}"', from=2-1, to=2-2]
+        \arrow["{f^V}", from=1-1, to=1-2]
+        \arrow["{(f^*\phi)_X}", from=1-2, to=2-2]
+      \end{tikzcd}\]
+  
+    \item[(iii)]\label{reduced} (Reducedness)\\
+      Let $X$ be a compact anima and 
+      let $\emptyset$ be the empty bundle over $X$. Then 
+      $E^\emptyset(X) \cong 0$.
+    \item[(iv)]\label{mayervietoris} (Mayer-Vietoris)\\
+    For each pushout square of anima
+    \[\begin{tikzcd}
+      {X_1} & {X_2} \\
+      {X_3} & {X_4}
+      \arrow["{f_1}", from=1-1, to=1-2]
+      \arrow["{f_3}", from=1-2, to=2-2]
+      \arrow["{f_2}"', from=1-1, to=2-1]
+      \arrow["{f_4}"', from=2-1, to=2-2]
+      \arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=2-2, to=1-1]
+      \arrow["H"{description}, Rightarrow, from=2-1, to=1-2]
+    \end{tikzcd}\]
+    and vector bundle $V$ over $X_4$ the induced sequence
+    \[
+      E^{V}(X_4) \xto{(f_3^V,f_4^V)} E^{f_3^*V}(X_2)\oplus E^{f_4^*V}(X_3)
+      \xto{f_1^{f_3^*V} - ({\phi_H})_X \circ f_2^{f_4^*V}} E^{f_1^*f_3^*V}(X_1)
+      \]
+    is exact in the middle.
+    \item[(v)]\label{thomiso}(The Thom Isomorphism)\\
+    Let $V,W$ be two vector bundles over $X$. Let
+    \[E^{V\oplus W}(S_X^V,X) =
+    E^{p^*(V\oplus W)}(S_X^V) \ominus E^{V\oplus W}(X)
+    \] be the complement of
+    the direct summand inside $E^{p^*(V\oplus W)}(S_X^{V})$ of $E^{V\oplus W}(X)$
+    due to the retraction $\sigma^{p^*(V\oplus W)} \circ p^{V\oplus W} = \id$.
+    Then the map
+    \[
+    E^W(X) \xto{p^W} E^{p^*W}(S_X^V) \xto{(\theta_{(X)}^{(V,W)})_{S_X^V}} E^{p^*(V \oplus W)}(S_X^V) \to E^{V\oplus W}(S_X^V,X)
+    \]
+    is an isomorphism.
+  \end{enumerate}
+  
+  \end{definition}
+  
+  We want to make the above definition rigorous, by observing that some of the statet 
+  axioms of a genuine cohomology theory are implemented by a functor 
+  out of $h\AVB^\op$. In general we can describe the homotopy category of the 
+  total category of a Cartesian fibration as follows:
+  
+  \begin{remark}
+  Let $p \colon \cC \to \mathcal I$ be a Cartesian fibration. We want to give a generators and 
+  relation discription 
+  of the homotopy category of $\cC$ in terms of the functor ${\mathrm{d}} p \colon \mathcal I^\op \to \catinfty$ that 
+  classifies $p$. 
+  First, consider the functor $h {\mathrm{d}} p \colon \mathcal I^\op \to \catinfty$, that 
+  we obtain by postcomposing ${\mathrm{d}} p$ with the functor $h \colon \catinfty \to \catinfty$
+  that sends an $\infty$-category $\cD$ to its homotopy category $h\cD$.
+  The natural transformation $\id_{\catinfty} \to h$ induces a functor 
+  $h\cC \to h\int_{\mathcal I^\op} h {\mathrm{d}} p$.
+  We claim that this functor induces an equivalence between ordinary categories.
+  TODO 
+  Since $h {\mathrm{d}} p$ maps into the full subcategory $\mathcal{C}\mathrm{at}_1$ of 
+  $\catinfty$ of ordinary categories, which is a $(2,1)-category$, the functor $h {\mathrm{d}} p$
+  factorizes over the homotopy-$2$ category $\tau_{\leq 2} \mathcal I$. 
+  In fact, the induced functor $\int_{\mathcal I^\op} h {\mathrm{d}} p 
+  \to \int_{\mathcal \tau_{\leq 2}I^\op} h {\mathrm{d}} p $ is an 
+  equivalence of categories.
+  We conclude, that we can compute the homotopy category $h\cC$ by computing 
+  $h \int_{\tau_{\leq 2}} h {\mathrm{d}} p$, i.e. the homotopy category 
+  of the Grothendieck construction of the $2$-functor from the homotopy-$2$ category of 
+  $\mathcal I^\op$ to the $(2,1)$-category of $1$-categories, given by the 
+  fiber wise homotopy category of the straightening of $p$. 
+  Luckily, there is a formula for that construction:
+  
+  An object of $h\cC$ is a pair $(i, [c])$ consisting of an object $i \in \mathcal I$
+  and an equivalence class of objects $[c] \in h {\mathrm{d}} p(i)$.
+  
+  A morphism $(i, [c]) \to (j, [d])$ is an equivalcence class represented by a pair $(f, [\phi])$ consisting 
+  of a morphism 
+  $f \colon j \to i$ in $\mathcal I$ and homotopy class of morphisms $[\phi \colon c \to f^*d]$. 
+  Two of such pairs $(f, [\phi])$ and $(g, [\psi])$ get identified if there exists 
+  a homotopy $H \colon f \to g$ in $\mathcal I$ such that with the induced natural 
+  isomorphism $H^* \colon f^* \simeq g^*$ between functors 
+  $h {\mathrm{d}} p(j) \to h {\mathrm{d}} p(i)$
+  the post composition $c \xto{[\phi]} f^*d \xto{H^*} g^*d$ is equal to the class 
+  $[\psi]$.
+  We can even further simplify the the discription of $h\cC$ by abusing the fact 
+  that we can factorize every morphism in $\cC$ in a fiber wise morphism followed by a Cartesian 
+  morphism. Let $(f,[\phi]) \colon (i,c) \to (j, d)$ represent a morphism in $h \cC$.
+  Then we can write it as the composite $(f,[\phi]) = (f, [\id]) \circ (\id, [\phi])$
+  \[\begin{tikzcd}
+      {(i,c)} && {(j,d)} \\
+      & {(i,f^*d)}
+      \arrow["{(f,[\phi])}", from=1-1, to=1-3]
+      \arrow["{(\id,[\phi])}"', from=1-1, to=2-2]
+      \arrow["{(f,\id)}"', from=2-2, to=1-3].
+  \end{tikzcd}\]
+  The composition of two such decompositions $(f,[\phi]) = (f, [\id]) \circ (\id, [\phi])$ and 
+  $(g,[\psi]) = (g, [\id]) \circ (\id, [\psi])$ is given by the decomposition $(\id, [\psi \phi])\circ (\id, gf)$
+  \[\begin{tikzcd}
+      {(i,c)} \\
+      {(i,f^*d)} & {(j,d)} \\
+      {(i,f^*g^*e)} & {(j, g^*e)} & {(k,b)}
+      \arrow["{(\id,[\phi])}"', from=1-1, to=2-1]
+      \arrow["{(f,\id)}"', from=2-1, to=2-2]
+      \arrow["{(\id,[\psi])}", from=2-2, to=3-2]
+      \arrow["{(g,\id)}"', from=3-2, to=3-3]
+      \arrow["{(\id,[\psi])}"', dashed, from=2-1, to=3-1]
+      \arrow["{(f,\id)}"', dashed, from=3-1, to=3-2]
+  \end{tikzcd}\].
+  Thus a functor $F \colon h\cC \to \cD$ into an ordinary category consists of the data 
+  \begin{itemize}
+    \item A specified object $F(i,c) \in \cD$ for each pair $i \in \mathcal I$ and $c \in  h {\mathrm{d}} p(i)$.
+    \item A morphism $F(f) \colon F(i,f^*d) \to F(j,d)$ for every morphism $f \colon i \to j$ in $\cC$ and fixed object $d \in h {\mathrm{d}} p(j)$.
+    \item A morphism $F([\phi]) \colon F(i, c) \to F(i, d)$ for every homotopy class of morphisms $[\phi \colon c \to d]$ in $ h {\mathrm{d}} p(i)$.
+    \item A specified natural isomorphism $\epsilon_{H,d} \colon F(i,f^*d) \xto{\cong} F(i, g^*d)$ for every homotopy $H \colon f \simeq g$ between morphisms 
+    $ i \to j $ in $\cC$ and object $d \in h {\mathrm{d}} p(j)$
+  \end{itemize}
+  such that 
+  \begin{itemize}
+    \item (Beck-Chavalley) Both composites agree $F(\phi) \circ F(f) = F(f) \circ F(f^*\phi)$
+    \[\begin{tikzcd}
+      {F(i,f^*c)} & {F(j, c)} \\
+      {F(i,f^*d)} & {F(j,d)}
+      \arrow["{F([f^*\phi])}"', from=1-1, to=2-1]
+      \arrow["{F(f)}"', from=2-1, to=2-2]
+      \arrow["{F(f)}", from=1-1, to=1-2]
+      \arrow["{F([\phi])}", from=1-2, to=2-2]
+    \end{tikzcd}\]
+    \item $F(f) = F(g) \circ \epsilon_{H,d}$
+    \[\begin{tikzcd}
+      {F(i,f^*d)} \\
+      && {F(j,d)} \\
+      {F(i,g^*d)}
+      \arrow["{\epsilon_{H,d}}"', from=1-1, to=3-1]
+      \arrow["{F(f)}", from=1-1, to=2-3]
+      \arrow["{F(g)}"', from=3-1, to=2-3]
+    \end{tikzcd}\]
+  \end{itemize}
+  \end{remark}
+  With the last remark we can now give an equivalent definition of a 
+  genuine cohomology theory. 
+  
+  \begin{definition}[Genuine Cohomology Theories II]\label{truedef}  
+    A \emph{genuine cohomology theory} $E$ is a functor $E \colon h (\AVB^\op) \to \mathrm{Ab} \colon (X,V) \mapsto E^V(X)$
+    that satisfies the following axioms 
+    \begin{enumerate}
+      \item[(iii)](Reducedness)\\
+      Let $X$ be a compact anima and 
+      let $\emptyset$ be the empty bundle over $X$. Then 
+      $E^\emptyset(X) \cong 0$.
+    \item[(iv)](Mayer-Vietoris)\\
+    For each pushout square of anima
+    \[\begin{tikzcd}
+      {X_1} & {X_2} \\
+      {X_3} & {X_4}
+      \arrow["{f_1}", from=1-1, to=1-2]
+      \arrow["{f_3}", from=1-2, to=2-2]
+      \arrow["{f_2}"', from=1-1, to=2-1]
+      \arrow["{f_4}"', from=2-1, to=2-2]
+      \arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=2-2, to=1-1]
+      \arrow["H"{description}, Rightarrow, from=2-1, to=1-2]
+    \end{tikzcd}\]
+    and vector bundle $V$ over $X_4$ the induced sequence
+    \[
+      E^{V}(X_4) \xto{(f_3^V,f_4^V)} E^{f_3^*V}(X_2)\oplus E^{f_4^*V}(X_3)
+      \xto{f_1^{f_3^*V} - ({\phi_H})_X \circ f_2^{f_4^*V}} E^{f_1^*f_3^*V}(X_1)
+      \]
+    is exact in the middle.
+    \item[(v)](Thom Isomorphism)\\
+    Let $V,W$ be two vector bundles over $X$.
+    \iffalse 
+     Let
+    \[E^{V\oplus W}(S_X^V,X) =
+    E^{p^*(V\oplus W)}(S_X^V) \ominus E^{V\oplus W}(X)
+    \] be the complement of
+    the direct summand inside $E^{p^*(V\oplus W)}(S_X^{V})$ of $E^{V\oplus W}(X)$
+    due to the retraction $\sigma^{p^*(V\oplus W)} \circ p^{V\oplus W} = \id$.
+    \fi 
+    Then the map
+    \[
+    E^W(X) \xto{p^W} E^{p^*W}(S_X^V) \xto{(\theta_{(X)}^{(V,W)})_{S_X^V}} E^{p^*(V \oplus W)}(S_X^V) \to E^{V\oplus W}(S_X^V,X)
+    \]
+    is an isomorphism.
+    \end{enumerate}
+  \end{definition}  
+  
+  \begin{remark}
+    Our motivation for this specific equivalent formutlation of the Eilenberg-Steenrod axioms for cohomology theories is, that it is generic enough, to 
+    translate it to different contexts, e.g. equivariant homotopy theory, but it is specific enough to model the `correct' notion of cohomology theories
+    instead of naive ones. We devoted the last chapter to propose a definition for equivariant genuine cohomology theories.
+  \end{remark}
+  
+  \begin{definition}
+    A \emph{cohomology theory of finite spectra} $E$ is a functor 
+    $ (h \Sp^\omega)^\op \to \mathrm{Ab}$ that satisfies the following axioms:
+    \begin{enumerate}
+      \item[(i)](Reducedness) $E(0) \simeq 0$
+      \item[(ii)](Exactness in the middle) Let $X \xto{f} Y \xto{g} Z$ be 
+      a fiber sequence of finite spectra and let $a \in \ker E(f)$, 
+      then there exists a $b \in E(Z)$ such that $E(g)(b) = a$.
+    \end{enumerate}
+  \end{definition}
+  
+  \begin{proposition}[Adams version of Brown Representability]
+    Let $E$ be a cohomology theory of finite spectra. Then there exists a spectrum 
+    $\mathcal E$ and a natural isomorphism $[-, \mathcal E] \xto{\simeq} E$ of functors 
+    $(h \Sp^\omega)^\op \to \mathrm{Ab}$.
+    It follows that the spectrum $\mathcal E$ is necesseraly unique.
+  \end{proposition}
+
+  \begin{proposition}
+    The functor $E \mapsto E \circ \Th^-$ is an equivalence between the category
+    \[\{\mathrm{Cohomology\ Theories\ on\ }\Sp^\omega\}\] 
+    of cohomology theories on compact spectra and 
+    the category \[
+        \{\mathrm{Genuine\ Cohomology\ Theories}\}
+       \] of genuine cohomology theories.
+    In particular exists vor every genuine cohomology theory $E$ a unique spectrum $\mathcal E$ and a natural 
+    equivalence 
+    \[
+      E^V(X) \simeq [X^{-V}, \mathcal E]  .
+    \]
+  \end{proposition}
+
+\begin{proof}
+    The category of genuine cohomology theories is modeled 
+    by the full subcategory 
+    \[
+      \Fun^{\mathrm{M.V., d.s., red.}}(\AVB^\vop|_{\An^\omega}, \mathrm{Ab}^\op)^\op  
+    \]
+    of the functor category $\Fun(\AVB^\vop|_{\An^\omega}, \mathrm{Ab}^\op)^\op$ on those functors 
+    $E \colon \AVB^\vop|_{\An^\omega} \to \mathrm{Ab}^\op$ that satisfies the axioms of Definition~\ref{truedef}.
+    By Theorem~\ref{thrm:dream} the functor $E \mapsto E \circ \Th^-$ identifies the category of genuine cohomology 
+    theories with a full subcategory of 
+    \[
+        \Fun^{\mathrm{add.}}(\Sp^\omega, \mathrm{Ab}^\op)^\op.
+    \]
+    We claim that this subcategory is precisely the one which is spanned by the cohomology theories.
+    To show this we have to prove two things 
+    \begin{itemize}
+        \item Let $\mathcal E$ be a spectrum, then the functor 
+            \[
+                [\Th^-(-), \mathcal E] \colon \AVB^\vop|_{\An^\omega} \to \mathrm{Ab}^\op
+            \]
+            satisfies the Mayer-Vietoris axiom of Definition~\ref{truedef}.
+        \item Let $E$ be a genuine cohomology and let $\tilde E \colon \Sp^\omega \to \Ab^\op$
+              be the unique functor such that $E \simeq \tilde E \circ \Th^-$ holds, according to Theorem~\ref{thrm:dream}.
+              Then $\tilde E$ is a cohomology theory.
+
+    \end{itemize}
+    The first claim follows from the fact that the functor $\Th^-$ sends pushout squares with constant coefficients 
+    to pushout squares in spectra. 
+    % \[\begin{tikzcd}
+    %     {(A,V)} & {(B,V)} \\
+    %     {(C,V)} & {(D,V)}
+    %     \arrow[from=1-1, to=1-2]
+    %     \arrow[from=1-2, to=2-2]
+    %     \arrow[from=1-1, to=2-1]
+    %     \arrow[from=2-1, to=2-2]
+    % \end{tikzcd}\]
+    The second claim follows from the fact that any pushout square
+    \[\begin{tikzcd}
+        {\mathcal A} & {\mathcal B} \\
+        {\mathcal C} & {\mathcal D}
+        \arrow[from=1-1, to=1-2]
+        \arrow[from=1-2, to=2-2]
+        \arrow[from=1-1, to=2-1]
+        \arrow[from=2-1, to=2-2]
+        \arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=2-2, to=1-1]
+    \end{tikzcd}\]
+     is of the form 
+    \[\begin{tikzcd}
+        {\Sigma^{\infty - n}A} & {\Sigma^{\infty - n}B} \\
+        {\Sigma^{\infty - n}C} & {\Sigma^{\infty - n}D}
+        \arrow[from=1-1, to=1-2]
+        \arrow[from=1-2, to=2-2]
+        \arrow[from=1-1, to=2-1]
+        \arrow[from=2-1, to=2-2]
+        \arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=2-2, to=1-1],
+    \end{tikzcd}\]
+    where 
+    \[\begin{tikzcd}
+        A & B \\
+        C & D
+        \arrow[from=1-1, to=1-2]
+        \arrow[from=1-2, to=2-2]
+        \arrow[from=1-1, to=2-1]
+        \arrow[from=2-1, to=2-2]
+        \arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=2-2, to=1-1]
+    \end{tikzcd}\]
+    is a pushout in $\An_*^\omega$.
+    Consider the following pushout in $\AVB^\vop|_{\An^\omega}$:
+    \[\begin{tikzcd}
+        {(A,\R^n)} & {(B,\R^n)} \\
+        {(C,\R^n)} & {(D,\R^n)}
+        \arrow[from=1-1, to=1-2]
+        \arrow[from=1-2, to=2-2]
+        \arrow[from=1-1, to=2-1]
+        \arrow[from=2-1, to=2-2]
+        \arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=2-2, to=1-1]
+    \end{tikzcd}.\]
+    By the (Mayer-Vietoris) axiom it gets send to a sequence 
+    \[
+    E^n(D) \to E^n(B) \oplus E^n(C) \to E^n(A)    
+    \]
+    which is exact in the middle. Therefore also the sequence 
+    \[
+    \tilde E(\Sigma^{\infty - n} D) \to \tilde E(\Sigma^{\infty - n} B) \oplus \tilde E(\Sigma^{\infty - n} C)  \to \tilde E(\Sigma^{\infty - n} A)     
+    \]
+    is exact in the middle since we have 
+    \[
+    \tilde E(\Sigma^{\infty -n} X) \simeq \fib( E^n X \to E^n \pt)
+    \]
+    for any pointed finite space $X$.
+\end{proof}
+
+\section{Equivariant Cohomology Theories}
+
+Throughout this section fix a compact Lie group $G$.
+
+\begin{definition}
+We consider the category of $G$-anima which is defined as the the presheaf category 
+\[
+\An_G := \Psh(\mathrm{Orb}_G).
+\]
+For a closed subgroup $H \leq G$ we let $\AffLin^H$ be the category consisting of finite dimensional euclidean vector spaces with an 
+$H$-action through linear isometries. A morphism $f \colon V \to W$ is an affine linear morphism that 
+decomposes as an equivariant linear isometric embedding $\iota \colon V \hookrightarrow W$ followed by a translation along a vector 
+$w \in (\iota(V)^\perp)^H$ out of the $H$ fixed points of the orthogonal complement of $\iota(V)$.
+Thus $\AffLin^{\{e\}} \simeq \AffLin$.
+The assignment $G/H \mapsto \AffLin^H$ makes $\AffLin^{-}$ into a $G$-category, that is a functor 
+$\mathrm{Orb}_G^\op \to \catinfty$.
+Let $X \mapsto \AffLin^X$ the unique limit preserving extension $\An_G^\op \to \catinfty$ of $\AffLin^{-}$.
+Let 
+\[
+  \AVB^\vop_G := \int_{X \in \An_G^\op} (\AffLin^{X})^\op   
+\]
+be the unstraightening of the functor $\AffLin^{-}$.
+The category $\AVB^\vop_G$ is the vertical opposite of the \emph{category of (equivariant) affine vector bundles over $G$} 
+\[
+  \AVB_G := \int_{X \in \An_G} \AffLin^X.
+\]
+For every $G$-representation $V \in \AffLin^G$ there is a functor 
+\[
+\iota_V \colon \An_G \to \AVB_G    
+\]
+that equips a $G$-anima with the trivial $V$ vector bundle over it. One can construct $\iota_V$ 
+as in the non-equivariant case via the source of a cartesian lift 
+\[\begin{tikzcd}
+	\pt && {\Fun(\An_G,\AVB_G)} \\
+	{\Delta^1} && {\Fun(\An_G,\An_G)}
+	\arrow["{\pr_*}", from=1-3, to=2-3]
+	\arrow["{\id \to \mathrm{const}_{G/G}}"', from=2-1, to=2-3]
+	\arrow["{\mathrm{const}_{(G/G,V)}}", from=1-1, to=1-3]
+	\arrow["{\mathrm{target}}"', from=1-1, to=2-1]
+	\arrow[dashed, from=2-1, to=1-3].
+\end{tikzcd}\]
+
+As in the case $G = \{e\}$ we have distinguished squares in the category $\AVB^\vop_G$
+
+
+
+
+Let $(\An_G)^\omega_*$ be the category of pointed objects in the category compact $G$-anima.
+A \emph{$G$-cohomology theory $E$} is a functor $E \colon ((\An_G)^\omega_*)^\op \times \AffLin_G^\simeq \to \Ab$
+together with natural equivalences 
+\[
+    \sigma_V \colon E(X,W) \to E(S^V \wedge X, V \oplus W)
+\]
+such that 
+$E(-, \R^\bullet_{\mathrm{triv}} \oplus V)$ is a cohomology theory for every $V$ and the following diagrams commute
+\[\begin{tikzcd}
+	& {E(X,V)} \\
+	{E(S^W\wedge X,W\oplus V)} && {E(S^U\wedge X, U \oplus V)} \\
+	{E(S^U\wedge S^W \wedge X, U \oplus W \oplus V)} && {E(S^W \wedge S^U \wedge X, W \oplus U \oplus V)}
+	\arrow["{\sigma_W}", from=1-2, to=2-1]
+	\arrow["{\sigma_U}"', from=1-2, to=2-3]
+	\arrow["{\sigma_U}", from=2-1, to=3-1]
+	\arrow["{\sigma_W}"', from=2-3, to=3-3]
+	\arrow["\simeq", from=3-1, to=3-3]
+\end{tikzcd},\]
+
+\[\begin{tikzcd}
+	{E(X;W)} & {E(S^V \wedge X; V \oplus W)} \\
+	{E(S^{U \oplus V} \wedge X; U \oplus V \oplus W)} & {E(S^U \wedge S^V \wedge X;U \oplus V \oplus W)}
+	\arrow["{\sigma_V}", from=1-1, to=1-2]
+	\arrow["\simeq"', from=2-1, to=2-2]
+	\arrow["{\sigma_U}", from=1-2, to=2-2]
+	\arrow["{\sigma_{U\oplus V}}"', from=1-1, to=2-1].
+\end{tikzcd}\]
+
+%TODO define genuine cohomology theory 
+
+\end{definition}
+
+\begin{definition}
+    Let $E \colon (\AVB^\vop_G|_{\An_G^\omega})^\op \to \Ab$ be a genuine cohomology theory, $Y \to Z$ a map of $G$-anima and fix $V \in \AffLin^G$, then we define 
+    the $V$-th $E$-cohomology group of $Z$ relative to $Y$ as
+    \[
+      E^V(Z,Y) := E(Z,Y;V) := \ker ( E(\iota_V Z \to \iota_V Y)). 
+    \]
+    For a pointed $G$-anima $X$ we set 
+    \[
+      \tilde E^V(X) := \tilde E(X;V) := E(X, \pt; V).
+    \]
+\end{definition}
+\begin{lemma}
+
+    The diagram 
+    \[\begin{tikzcd}
+        {E(\pt, W)} & {E(X,W)} \\
+        {E(S^V\vee X,V \oplus W)} & {E(S^V \times X, V \oplus W)} \\
+        {E(\pt, V \oplus W)} & {E(S^V \wedge X, V \oplus W)}
+        \arrow[from=1-2, to=1-1]
+        \arrow[from=1-1, to=2-1]
+        \arrow[from=2-2, to=2-1]
+        \arrow[from=1-2, to=2-2]
+        \arrow[from=3-2, to=2-2]
+        \arrow[from=3-1, to=2-1]
+        \arrow[from=3-2, to=3-1]
+    \end{tikzcd}\]
+    induces on horizontal kernels a zigzag 
+    \[
+    \tilde E(X,W) \to E(S^V \times X, S^V \vee X ; V \oplus W) \leftarrow \tilde E(S^V \wedge X, V \oplus W),
+    \]
+    where both morphisms are isomorphisms.
+\end{lemma}
+
+\begin{proof}
+By the snake-lemma the following ladder diagram 
+    \[\begin{tikzcd}
+        & 0 & {E(S^V\times X;V\oplus W)} & {E(S^V\times X;V\oplus W)} & 0 \\
+        0 & {\tilde E(S^V;V\oplus W)} & {E(S^V\vee X;V\oplus W)} & {E(X;V\oplus W)} & 0
+        \arrow[from=2-2, to=2-3]
+        \arrow[from=2-3, to=2-4]
+        \arrow[from=2-4, to=2-5]
+        \arrow[from=2-1, to=2-2]
+        \arrow[from=1-3, to=2-3]
+        \arrow[from=1-2, to=1-3]
+        \arrow[from=1-2, to=2-2]
+        \arrow[from=1-3, to=1-4]
+        \arrow[from=1-4, to=1-5]
+        \arrow[two heads, from=1-4, to=2-4]
+    \end{tikzcd}\]
+induces a long exact sequence
+\[
+0 \to E(S^V \times X, S^V \vee X; V \oplus W) \to E(X, W) \to \tilde E(S^V; V \oplus W) \to \dots 
+\]
+The Thom-isomorphism axiom shows that $\tilde E(S^V; V\oplus W) \simeq E(\pt, W)$. 
+Hence \[E(S^V \times X, S^V \vee X; V \oplus W) \simeq \tilde E(X;W).\]
+A careful examination shows that the left arrow of the span estabishes this isomorphism. The right arrow of the span 
+is an isomorphism because of the Mayer-Vietoris axiom.
+\end{proof}
+\begin{definition}
+    We define 
+    \[
+    \sigma_V \colon \tilde  E^W(X) \to \tilde E^{V\oplus W}(S^V \wedge X)    
+    \]
+    to be the resulting isomorphism.
+\end{definition}
+
+\begin{lemma}
+    Let $E \colon (\AVB^\vop_G|_{\An_G^\omega})^\op \to \Ab$ be a genuine cohomology theory.
+    Then $\tilde E$ is a $G$-cohomology theory.
+\end{lemma}
+\begin{proof}
+    % TODO Proof
+    By definition of the Mayer-Vietoris axiom we have that $\tilde E(-, \R^\bullet \oplus V)$ is an ordinary cohomomology theory 
+    for every $V$.
+    We will shows that $\sigma_{U\oplus V} \simeq \sigma_U \circ \sigma_V$ holds. Then we are finished since the axiom 
+    $\sigma_U \circ \sigma_V \simeq \sigma_V \circ \sigma_U$ then follows from this and the functoriality of 
+    $\sigma_{-}$ in $\AffLin^G$.
+    The essential part in proving $\sigma_{U\oplus V} \simeq \sigma_U \circ \sigma_V$  comes from the commutativity of the square 
+    \[\begin{tikzcd}
+        {(X;W)} & {(S^V\times X;V \oplus W)} \\
+        {(S^{U\oplus V}\times X;U\oplus V\oplus W)} & {(S^U\times S^V \times X;U\oplus V\oplus W)}
+        \arrow["{(\pr,\theta_V)}"', from=1-2, to=1-1]
+        \arrow["{(\pr,\theta_{U\oplus V})}", from=2-1, to=1-1]
+        \arrow["{(q\times X;\id)}", from=2-2, to=2-1]
+        \arrow["{(\pr,\theta_U)}"', from=2-2, to=1-2]
+    \end{tikzcd}\]
+    where $q\colon S^U \times S^V \to S^{U\oplus V}$ is the quotient map.
+\end{proof}
+
+
+\begin{definition}
+Let $\cC$ be a symmetric monoidal category. Let $\cC //^\mathrm{lax} \cC^\simeq$ be the lax 
+quotient of the action of the core $\cC^\simeq$ on $\cC$, which is defined as the unstraightening of the 
+functor 
+\[
+B\cC^\simeq \to \catinfty \colon \pt \mapsto \cC.
+\]
+One can think of an object of $\cC //^\mathrm{lax} \cC^\simeq$ as an object of $\cC$, while a morphism 
+\[
+  c \to d  
+\]
+consists of the data of an object $e \in \cC$ and a morphism 
+\[
+  c \otimes e \to d  
+\]
+of $\cC$.
+\end{definition}
+\begin{definition}
+Since every pair of objects $c,e \in \cC$ defines a functor 
+\[
+  \cC^\op(c) \xto{-\otimes \overrightarrow{e}} \cC^\op(c \otimes e)  
+\]
+and and every morphism $c \to d$ defines a morphism 
+\[
+  \cC^\op(c) \to \cC^\op(d)  
+\]
+in a compatible way we find that the assignment
+\[
+    c \mapsto \cC^\op(c)
+\]
+defines a functor 
+\[
+ \cC^\op(-) \colon \cC //^\mathrm{lax} \cC^\simeq \to \catinfty. 
+\]
+Since the forgetful functors $\cC^\op(c) \to \cC^\op$ are compatible with the structure maps of the diagram $\cC^\op(-)$ we obtain 
+a natural transformation 
+\[\cC^\op(-) \Rightarrow \mathrm{const_{\cC^\op}}.\]
+\end{definition}
+
+\begin{lemma}
+
+\end{lemma}
+
+
+\section{The General Philosophy}
+
+Let $\cal X$ be a topos and let $(\cal V, \oplus)$ be a pointed symmetric monoidal $\cal X$-category together with a 
+symmetric monoidal $\cal X$-fucntor $S \colon \cal V \to \cal X^\omega_*$, this in particular consists 
+of a family of symmetric monoidal functors 
+\begin{eqnarray*}
+({\cal V}^X,\oplus) &\to& (\cal X_{X/\cdot /X}, \wedge_X)    \\
+V & \mapsto & S^V.
+\end{eqnarray*}
+Furthermore, we assume that $S$ is corepresented by the 
+unit $0 \in \cal V^\pt$.
+
+\begin{proposition}
+Let $\cD$ be an idempotent complete pointed category. Then there is 
+an equivalence of categories 
+\[
+  \mathrm{Gen}^\mathrm{split}(\int_{\cal X^\omega} {\cal V}^{\op}(V), \cD) \simeq \mathrm{Exc}_*^\mathrm{split}(\cal X_*^\omega, \cD)  
+\]
+\end{proposition}
+
+\begin{proposition} We have an equivalence of $\cal X$-categories 
+    \[
+        \colim_{V \in \cal V //^\mathrm{lax} \cal V^\simeq} {\cal V}^{\op}(V) \simeq \cal V^\op   
+    \]
+    where the colimit is taken in the catgory of $\cal X$-categories.
+\end{proposition}
+
+\begin{proposition} Let $\cal V \to \cal C$ be a symmetric monoidal $\cal X$-functor.
+    Then 
+    \[
+    \colim^{\in \Gamma}_{V \in \cal V //^\mathrm{lax} \cal V^\simeq} \cC   
+    \]
+    is a model for $\mathcal{C}[\mathcal{V}^{- 1}]$ in $\mathrm{CAlg(\Gamma)}$, where 
+    $\Gamma \in \{\cal X -\catinfty, \cal{X} - \mathrm{Pr}^\mathrm{L} \}$
+\end{proposition}
+
+\begin{corollary}
+Let $\cD$ be an idempotent complete pointed category. Then there is an 
+equivalence of categories 
+\[
+    \mathrm{Gen}^\mathrm{split}(\int_{\cal X ^\omega} \cal V ^\op, \cD) \simeq \mathrm{Exc}^\mathrm{split}_*(\mathcal{X}^\omega_*[\mathcal{V}^{- 1}], \cD)
+\]
+\end{corollary}
+\begin{corollary}
+    Let $\cD$ be an idempotent complete pointed category. Then there is an 
+    equivalence of categories 
+    \[
+        \mathrm{Gen}(\int_{\cal X ^\omega} \cal V ^\op, \cD) \simeq \mathrm{Exc}_*(\mathcal{X}^\omega_*[\mathcal{V}^{- 1}], \cD)
+    \]
+    \end{corollary}
+
+%   \begin{remark}
+%     A functor $F \colon \cC \to \cD$ which preserves split puhsouts also preserves
+%     cofibers of split monomorphisms as it is a special case.
+%     If $\cC$ and $\cD$ are semi-additive $\infty$-categories,
+%     then we observe that tfae
+%     \begin{itemize}
+%       \item $F$ preserves split pushouts.
+%       \item $F$ preserves cofibers of split monomorphisms.
+%       \item $F$ is additive.
+%     \end{itemize}
+%     since we can classify split pushouts in a semi-additive $\infty$-category to be of the form
+%     \[
+%       \begin{tikzcd}
+%         A & A \oplus X \\
+%         B & B \oplus X
+%         \arrow[from=1-1,to=1-2]
+%         \arrow[from=1-1,to=2-1]
+%         \arrow[from=2-1,to=2-2]
+%         \arrow[from=1-2,to=2-2]
+%       \end{tikzcd}.
+%     \]
+%   \end{remark}
+% This is a special case of a more general lemma 
+% \begin{lemma}
+%     Let 
+%     \[\begin{tikzcd}
+%         \cC & \cD & \cE & \cC
+%         \arrow["F", from=1-1, to=1-2]
+%         \arrow["G", from=1-2, to=1-3]
+%         \arrow["L", from=1-3, to=1-4]
+%     \end{tikzcd}\]
+%     be functors together with adjunction data 
+%     $FL \dashv G$ with counit $\epsilon \colon FLG \Rightarrow \id$ and 
+%     $L \dashv GF$ with counit $\theta \colon LGF \Rightarrow \id$ such that
+%     both units 
+%     $\id \Rightarrow FLG$ are mutually equivalent.
+%     Then there exists an auto equivalence $\Phi \colon F \Rightarrow F$ such that 
+%     \[
+%     F(\theta) \simeq \Phi \circ \epsilon_F     
+%     \]
+%     are equivalent transformations $FLGF \Rightarrow F$.
+% \end{lemma}
+% \begin{proof}
+%     Consider the following diagram 
+%     \[\begin{tikzcd}
+%         & {\Map(-,GF-)} \\
+%         {\Map(L-,-)} & {\Map(L-,LGF-)} \\
+%         {\Map(FL-,F-)} & {\Map(FL-,FLGF-)} & {\Map(FL-,F-)}
+%         \arrow["{F(\theta)_*}", from=3-2, to=3-1]
+%         \arrow["{(\epsilon_F)_*}"', from=3-2, to=3-3]
+%         \arrow["{\theta_*}"', from=2-2, to=2-1]
+%         \arrow["F"', from=2-1, to=3-1]
+%         \arrow["F"', from=2-2, to=3-2]
+%         \arrow["L"', from=1-2, to=2-2]
+%         \arrow["\simeq"', from=1-2, to=2-1]
+%         \arrow["\simeq", from=1-2, to=3-3]
+%     \end{tikzcd}\]
+% \end{proof}
+% \begin{construction}\label{cX(n)}
+%     Let $\mathbb W(n)$ be the pullback of categories 
+%     \[\begin{tikzcd}
+%         {\mathbb W(n)} & {\AffLin/\R^n} \\
+%         {\AffLin^{\times 2}} & \AffLin
+%         \arrow["{\mathrm{source}}", from=1-2, to=2-2]
+%         \arrow["\oplus"', from=2-1, to=2-2]
+%         \arrow[from=1-1, to=2-1]
+%         \arrow[from=1-1, to=1-2]
+%         \arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=1-1, to=2-2]
+%     \end{tikzcd}\]
+%     Let $l.e.$ ($r.e.$) denote the non-full subcategory of the slice category
+%     ${\mathbb W(n)} := (\oplus \colon (\cO)^{\times 2} \to \cO)_{/\R^n}$
+%     given by the class of morphisms which get send to equivalences under the
+%     projections ${\mathbb W(n)} \to (\cO)^{\times 2} \xto{\pr_j} \cO$ for
+%     $j = 1$ ($j = 2$ resp.).
+%     For example, $r.e.$ is the pullback of
+%     \begin{equation}\label{eq:defnre}
+%       \cO \times (\cO)^\simeq \xto{(\oplus, \R^n)} \cO
+%       \times \cO \xleftarrow{(s,t)} \cO^{\Delta^1}
+%     \end{equation}
+%     We define $\cO(n)$ to be the full subcategory of the span category
+%     associated to the triple $({\mathbb W(n)}, r.e., l.e.)$ on the objects
+%     $(V,W, \alpha \colon V\oplus W \to \R^n)$ where $\alpha$ is either an
+%     equivalence or the $\infty$-map, but in that case we require $V = W = \emptyset$.
+  
+%     A typical morphism of $\AffLin(n)$ is of the form 
+%           \[
+%             (V,W,\alpha\colon  V\oplus W \xto{\simeq} \R^n) \xot{f}
+%             (S,U,\beta \colon S \oplus U \to \R^n) \xto{g}
+%             (V',W'\alpha' \colon V'\oplus W' \xto{\simeq} \R^n)  
+%           \]
+%           In particular it gives us a commutative diagram 
+%           \[\begin{tikzcd}
+%               && {S \oplus U} \\
+%               {V\oplus W} && {\R^n} && {V'\oplus W'}
+%               \arrow["{(\overleftarrow{\pr}g,\overrightarrow{\pr}g)}", from=1-3, to=2-5]
+%               \arrow["{(\overleftarrow{\pr}f\overrightarrow{\pr}f)}"', from=1-3, to=2-1]
+%               \arrow["{\alpha }"', from=2-1, to=2-3]
+%               \arrow[from=1-3, to=2-3]
+%               \arrow["{\alpha'}", from=2-5, to=2-3]
+%           \end{tikzcd}\]
+%           where $\overrightarrow{\pr}f$ and $\overleftarrow{\pr}g$ are equivalences or $V=W=\emptyset$.
+%           Hence, we can think of the data of a morphism in $\AffLin(n)$ to 
+%           consist of  
+%           \begin{itemize}
+%               \item A map $\phi \colon V' \to V$,
+%               \item A map $\psi \colon W \to W'$,
+%               \item A commutative square 
+%               \[\begin{tikzcd}
+%                   {V'\oplus W} & {V'\oplus W'} \\
+%                   {V\oplus W} & {\R^n}
+%                   \arrow["\alpha"', from=2-1, to=2-2]
+%                   \arrow["{\alpha'}", from=1-2, to=2-2]
+%                   \arrow["{\phi\oplus W}"', from=1-1, to=2-1]
+%                   \arrow["{V'\oplus \psi}", from=1-1, to=1-2]
+%               \end{tikzcd}\]
+%           \end{itemize}
+  
+%     Moreover, let $\cX(n)$ be the total space of the Cartesian fibration 
+%     associated to $\underline{\cO(n)}$. 
+%     % supposedly the span category construction takes care of the vop 
+%   \end{construction}
+  
+%   \begin{remark}\label{spansandunstraightening}
+%     We want to apply Theorem 3.8 in \cite{hebestreit2020orthofibrations} to 
+%     the functor $G \colon (\spaces^\omega)^\op \to \mathrm{AdTrip}$ which sends 
+%     $X$ to the adequate triple $(\Fun(X,{\mathbb W(n)}), \Fun(X,r.e.), \Fun(X,l.e.))$.
+%     This will yield a discription of $\cX(n)$ as a full subcategory of a 
+%     span category. 
+%     Since we are particularly interested in the Cartesian fibration associated to 
+%     $G$ we want to compare our situation to the content of remark 3.16 of \cite{hebestreit2020orthofibrations}.
+%     In order to not confuse ourselfs in the comparison between our notation and the 
+%     notation in paper \cite{hebestreit2020orthofibrations} we give a little 
+%     dictionary:
+    
+%     \begin{tabular}{l|r}
+%       This Paper & \cite{hebestreit2020orthofibrations} \\
+%       \hline\hline
+%       backwards arrow & egressive morphism \\
+%       \cline{1-2}
+%       forwards arrow & ingressive morphism \\
+%       \cline{1-2}
+%       adequate Triple & adequate Triple \\ 
+%       (category, backwards arrows, forwards arrows) &
+%       (category, forwards arrows, backwards arrows) \\
+%     \end{tabular}
+    
+%     Let $X:= \spaces^\omega$ and $Y := \int_{X \in {\spaces^\omega}^\op} \Fun(X,{\mathbb W(n)})$.
+%     Then we have $Y^{\mathrm{eg}} = \int_{X \in {\spaces^\omega}^\op} \Fun(X,r.e.)$,
+%     $Y_{\mathrm{in}} = \int_{X \in {\spaces^\omega}^\op} \Fun(X,l.e.) $ and 
+%     \[
+%       Y^{\mathrm{eq}}_{\mathrm{fw}} = \coprod_{X \in \spaces^\omega} r.e.^X 
+%       := \left[ \int_{X \in (\spaces^\omega)^\op} \underline{r.e.} \right]
+%       \times_{\spaces^\omega} (\spaces^\omega)^\simeq.
+%     \] 
+%     Remark 3.16 of \cite{hebestreit2020orthofibrations} tells us now that we 
+%     have an equivalence of $\infty$-categories
+%     \[
+%       \int_{x \in {\spaces^\omega}^\op} \Span({\mathbb W(n)}^X,r.e.^X,l.e.^X) \simeq 
+%       \Span \left(\int_{x \in {\spaces^\omega}^\op}{\mathbb W(n)}^X,\coprod_X r.e.^X , 
+%       \int_{x \in {\spaces^\omega}^\op}l.e.^X \right).    
+%     \]
+%     We sum up: 
+%     $\cX(n)$ is a full subcategory of the span category
+%     of $\int_X \underline{{\mathbb W(n)}}$ with backwards arrows given by $\coprod_X r.e.^X$
+%     and forward morphisms given by $\int_X l.e.^X$.
+%   \end{remark}
+  
+  
+%   \begin{lemma}\label{colimitlemma}
+%     The functor $-\oplus \overrightarrow{\R} \colon {\cO}^{\times 2} \to {\cO}^{\times 2}
+%       \colon (V,W) \mapsto (V, W\oplus \R)$ induces a functor
+%     $-\oplus \overrightarrow{\R} \colon \cO(n)\to \cO(n+1)$,
+%     compatible with the functors
+%     $\cO(n) \to \Span({\mathbb W(n)}, r.e., l.e. ) \xto{(pr_1)_*} \Span(\cO,
+%       {\cO}, {\cO}^\simeq) \simeq ({\cO})^\op$
+%     so that we have an equivalence
+%     \[
+%       \colim (\cO(0) \xto{-\oplus \overrightarrow{\R}} \cO(1)
+%       \xto{-\oplus \overrightarrow{\R}} \dots) \xrightarrow{\simeq} {\cO}^\op 
+%       .\]
+%   \end{lemma}
+%   \begin{proof}
+%     The existence of the induced functor
+%     $\cO(n) \to \cO(n+1)$ and the compatibility is clear by inspection.
+%     We show that the functor
+%     \[
+%       \colim (\cO(0)^X \xto{-\oplus \overrightarrow{\R}} \cO(1)^X
+%       \xto{-\oplus \overrightarrow{\R}} \dots) \to ({\cO^X})^\op
+%     \]
+%     is fully faithful and essentially surjective for every compact space $X$.
+%     Since $X$ is a compact space, we can pull it out the colimit diagram and 
+%     see that we can reduce the claim to the case $X \simeq \pt$.
+%     The essential surjectivity is clear as every object of $\AffLin$ is 
+%     equivalent to $\R^k$ or $\emptyset$ for some $k$.
+%     And these are evidently in the image. 
+%     We now show that the functor is fully faithful.
+%     Fix objects $(V,W,\alpha \colon V \oplus W \xto{\simeq} \R^n),
+%       (V',W',\alpha' \colon V' \oplus W' \xto{\simeq} \R^n) \in \cO(n)$ and let
+%     \[
+%       M := \Map((V,W,\alpha \colon V \oplus W \xto{\simeq} \R^{n}),
+%       (V',W',\alpha' \colon V \oplus W' \xto{\simeq} \R^{n}))
+%       .\]
+%     In the case $\emptyset \in \{V,W,V',W'\}$ we easily compute
+%     $ M \simeq \pt \simeq \Map_{(\cO)^\op}(V',\emptyset) \simeq
+%       \Map_{(\cO)^\op}(\emptyset, V)$ and the claim follows from the fact
+%     $(\emptyset,\emptyset) \oplus \overrightarrow{\R} \simeq
+%       (\emptyset,\emptyset) \in \cO(n+1)$ as $\emptyset \in \cO$
+%     is an absorbing element with respect to $\oplus$.
+  
+%     So suppose $V,W,V',W' \neq \emptyset$. By unraveling the construction of
+%     $\cO(n)$ we have that $M$ is equivalent to the core of the
+%     full subcategory of
+%     \[
+%       \Fun(\Lambda^2_0, {\mathbb W(n)}) \times_{(\ev_1,\ev_2),
+%         {\mathbb W(n)}\times {\mathbb W(n)}} \{(V,W,\alpha),(V',W',\alpha')\}
+%     \]
+%     on those wedges
+%     \[
+%       (V,W,\alpha) \xleftarrow{f} (A,B,\beta) \xto{g} (V',W',\beta)
+%     \]
+%     for which $f$ is a right equivalence and $g$ is a left equivalence.
+%     By writing $ \Fun(\Lambda^2_0, {\mathbb W(n)}) $ as the
+%     pullback ${\mathbb W(n)}^{\Delta^1} \times_{s,{\mathbb W(n)},s} {\mathbb W(n)}^{\Delta^1}$
+%     and commuting limits with limits we find that $M$ is equivalent to the core of
+%     \[
+%       r.e./(V,W,\alpha) \times_{{\mathbb W(n)}} l.e./(V',W',\alpha').
+%     \]
+%     The category of right equivalences, for example,
+%     is itself a pullback of categories, see \eqref{eq:defnre}.
+%     Therefore, we can compute $r.e./(V,W,\alpha)$, after
+%     commuting limits again, as the pullback of
+%     \[
+%       \cO/V \times (\cO)^\simeq/W \xto{(\oplus, \R^n)} \cO/V\oplus W \times
+%       \cO/\R^n \xot{(s,t)} (\cO)^{\Delta^1}/\alpha
+%     \]
+%     The category $(\cO)^\simeq/W$ is contractible, so we can omit it in the above wedge.
+%     Moreover, the above wedge is of the form
+%     $A \times_{\pt} \pt \to B \times_{\pt} C \leftarrow D \times_D D$,
+%     so we can compute its pullback $P$ as the
+%     pullback of  $A \times_B D \to D \leftarrow \pt \times_C D$.
+%     Let us first compute
+%     \begin{eqnarray*}
+%       \pt \times_C D &=& \{\id_{\R^n}\} \times_{\cO/\R^n,t} (\cO)^{\Delta^1}/\alpha \\
+%       &\simeq & \{\id_{\R^n}\} \times_{(\cO)^{\Delta^1}, \ev_{\{1\} \subset \{1,2\} }}
+%       \Fun(\Pow(\langle 2 \rangle), \cO)
+%       \times_{(\cO)^{\Delta^1}, \ev_{\{2\} \subset \{1,2\} }} \{\alpha \} \\
+%       & \simeq & \cO / V \oplus W  = B .
+%     \end{eqnarray*}
+%     One can check that the composition $B = \pt \times_C D \to D \to B$ is the identity,
+%     and that makes the map from $P$ to $A = \cO/V$ an equivalence.
+%     Similarly one can compute that $l.e./(V',W',\alpha')$ is equivalent to
+%     $\cO/W'$.
+%     If we put these results together we can identify $M$ with the core of the pullback
+%     \[
+%       \cO/V \to {\mathbb W(n)} \leftarrow \cO/W'
+%     \]
+%     where the left map sends a map $f\colon U \to V$ to the triple
+%     $(U,W, U\oplus W \xto{f \oplus W} V \oplus W \xto{\alpha} \R^n)$ and
+%     the right map sends $g \colon U \to W'$ to the triple
+%     $(V',U,V' \oplus U \xto{V' \oplus g} V' \oplus W' \xto{\alpha'} \R^n)$.
+  
+%     There is an evident map from
+%     $\Map(V',V) \times_{\Map(V'\oplus W,\R^n)} \Map(W,W')$
+%     into $\cO/V \times_{{\mathbb W(n)}} \cO/W'$. In fact it is obtained
+%     as the pullback:
+%     \[\begin{tikzcd}[column sep=tiny]
+%         {\Map(V',V)\times_{\Map(V'\oplus W,\R^n)}\Map(W,W')} && {\cO/V \times_{{\mathbb W(n)}}\cO/W} \\
+%         \\
+%         \\
+%         {\pt \times_{\pt} \pt} && {\cO \times_{\id\times\{W\},\cO \times \cO,\{V'\}\times\id}\cO}
+%         \arrow[from=1-1, to=4-1]
+%         \arrow["{(V',W)}", from=4-1, to=4-3]
+%         \arrow["{s\times_ss}", from=1-3, to=4-3]
+%         \arrow[from=1-1, to=1-3]
+%         \arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=1-1, to=4-3]
+%       \end{tikzcd}\]
+%     After taking cores the lower map becomes an equivalence, which shows that
+%     $M$ is equivalent to $\Map(V',V) \times_{\Map(V'\oplus W,\R^n)} \Map(W,W')$.
+%     Under this identification the forgetful functor $\cO(n) \to (\cO)^\op$
+%     induces the projection $\Map(V',V) \times_{\Map(V'\oplus W,\R^n)} \Map(W,W') \to \Map(V',V)$
+%     and the functor $-\oplus \overrightarrow{\R} \colon \cO(n) \to \cO(n+1)$
+%     can be identified with the map
+%     \[
+%       \Map(V',V) \times_{\Map(V'\oplus W,\R^n)} \Map(W,W') \to
+%       \Map(V',V) \times_{\Map(V'\oplus W \oplus \R,\R^{n+1})} \Map(W\oplus \R,W'\oplus \R)
+%     \]
+%     Now, it becomes clear, that the induced functor
+%     $\colim \cO(n) \to (\cO)^\op$ is fully faithful,
+%     whence we have proven that the map
+%     \begin{eqnarray*}
+%       \Map(W\oplus \R^k, W' \oplus \R^k) &\to& \Map(V' \oplus W \oplus \R^k, \R^{n+k}) \\
+%       \phi &\mapsto & \alpha' \circ (\id_{V'} \oplus \phi)
+%     \end{eqnarray*}
+%     becomes an equivalence in the colimit for $k \to \infty$.
+%     Since $\alpha'$ is an equivalence, we may as well show the claim for the system
+%     \begin{eqnarray*}
+%       \Map(W\oplus \R^k, W' \oplus \R^k) &\to&
+%       \Map(V' \oplus W \oplus \R^k, V' \oplus W' \oplus \R^k) \\
+%       \phi &\mapsto & \id_{V'} \oplus \phi
+%     \end{eqnarray*}
+  
+%     Both spaces of affine linear embeddings are Thom spaces
+%     $M_i$ for vector bundles $\xi_i \to A_i$,  $i = 1,2$, 
+%     \begin{itemize}
+%       \item $A_1 = \isoemb{W \oplus \R^k}{W' \oplus \R^k}$
+%       \item $A_2 = \isoemb{V' \oplus W \oplus \R^k}{V' \oplus W' \oplus \R^k}$
+%     \end{itemize}
+%     of rank
+%     $\dim W' - \dim W$.
+%     Moreover the map between $M_1 \to M_2$ comes from a map of vector bundles
+%     $\xi_1 \to \xi_2$, which induces isomorphisms on fibers.
+%     Hence we can reduce to check that $A_1 \to A_2$ becomes an equivalence for 
+%     $k \to \infty$.
+%     After picking bases $W \cong \R^l, W' \cong \R^{l'}, V' \cong \R^{m'}$,
+%     we obtain equivalences $A_1 \simeq O(l' + k)/O(l' - l)$ and
+%     $A_2 \simeq O(m' + l' + k)/O(l' - l)$.
+%     Under these choices, 
+%     we can identify the map $A_1 \to A_2$ with the standard inclusion
+%     $O(l' + k)/O(l' - l) \subset O(m' + l' + k)/O(l' - l)$,
+%     which yields the desired equivalence on colimits for $k \to \infty$.
+%   \end{proof}
+  
+%   \begin{corollary}\label{filterAVB}
+%     The
+%     functors $- \oplus (0, \R) \colon \cO(n) \to \cO(n + 1)$ induce an
+%     equivalence 
+%       \[
+%         \colim (\cX(0) \xto{-\oplus \overrightarrow{\R}} \cX(1)
+%         \xto{-\oplus \overrightarrow{\R}} \dots) \xrightarrow{\simeq} {\cX}
+%       .\]
+%   \end{corollary}
+  
+%   \begin{proof}
+%     Apply the last lemma together with the fact that the
+%     functor $\catinfty \to \catinfty$, which sends 
+%     a category $\cD$ to the underying category of the 
+%     cartesian unstraightening of $\underline{\cD}$
+%     preserves filtered colimits.
+%   \end{proof}
+  
+
+
+\begin{thebibliography}{99}
+    % BibTeX-Einträge
+\end{thebibliography}
+
+\end{document}

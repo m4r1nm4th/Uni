@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistics Calculator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Statistics Calculator</h1>
+        <input type="text" id="seriesInput" placeholder="Enter numbers, e.g., 1, 2, 3, 4, 5">
+        <button onclick="calculateStatistics()">Calculate</button>
+
+        <h2>Results:</h2>
+        <div id="results"></div>
+    </div>
+
+    <script>
+        async function calculateStatistics() {
+            const input = document.getElementById("seriesInput").value;
+            const seriesArray = input.split(",").map(Number);
+            console.log(JSON.stringify({series: seriesArray}))
+
+            const response = await fetch('/compute', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ series: seriesArray })
+            });
+            const result = await response.json();
+
+            document.getElementById("results").innerHTML = `
+                <p>Mean: ${result.mean}</p>
+                <p>Median: ${result.median}</p>
+                <p>Standard Abweichung: ${result.std_dev}</p>
+                <p>Varianz: ${result.var}</p>
+                <p>Minimum: ${result.min}</p>
+                <p>Maximum: ${result.max}</p>
+            `;
+        }
+    </script>
+</body>
+</html>

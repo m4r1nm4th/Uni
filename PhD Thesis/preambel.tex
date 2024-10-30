@@ -1,0 +1,298 @@
+%%%%%%%%%%%% ALLGEMEINER STUFF %%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\documentclass[a4paper,12pt, pdftex]{article}
+\documentclass[a4paper, 12pt]{amsart}
+
+%\usepackage{lmodern} %schönere Buchstaben
+%\usepackage{ngerman} %Deutsch
+%\usepackage{amsmath} %Mathe
+%\usepackage{amssymb} %Symbole
+%\usepackage{amsthm} %Theoreme
+\usepackage{latexsym, amscd, amsfonts, eucal, mathrsfs, amsmath, amssymb, amsthm, xr, stmaryrd, tikz-cd, bbold}
+%\usetikzlibrary{shapes.geometric}
+%\usetikzlibrary{arrows.meta}
+%\tikzset{commutative diagrams/arrow style=math font}
+
+\usepackage[utf8]{inputenc} %Umlaute im Quelltext
+\usepackage[T1]{fontenc} %Umlaute in der Pdf Suche
+%\usepackage[pdftex, allcolors=black]{hyperref} %Clickable Links
+
+%\usepackage{faktor} %Quotienten algebraischer Objekte
+\usepackage{graphicx} %Grafiken
+\usepackage{setspace} %Zeilenabstände
+%\usepackage{tikz} %Zeichnungen
+\usepackage{enumerate} %Aufzaehlungen
+\usepackage{url} %webpages in references
+%\usepackage{mathrsfs}
+%\usetikzlibrary{arrows}
+
+
+%Die Aufzählungen schöner numerieren:
+%\renewcommand\theenumi{\alph{enumi})}
+%\renewcommand\labelenumi{\theenumi}
+%\setlength{\parindent}{0em} %Keine Einrückungen bei neuen Absätzen
+\usepackage{parskip} %Macht keine Einrückungen bei neuen Absätzen und die Absätze sehen scheisse aus
+%\usepackage[arrow,curve]{xy}
+%\usepackage{diagrams} %Kommutative Diagramme
+
+
+\usepackage{geometry}
+
+ \geometry{
+ a4paper,
+ total={180mm,207mm}, %default = {120mm, 207mm}
+ left=15mm, %default = 35mm
+ top=35mm,
+ headsep=12mm,
+ footskip = 15mm,
+ }
+
+ \iffalse
+ \geometry{
+ a4paper,
+ total={120mm,207mm}, %default = {120mm, 207mm}
+ left=35mm, %default = 35mm
+ top=35mm,
+ headsep=12mm,
+ footskip = 15mm,
+ }
+ \fi
+% \usepackage{fancyhdr}
+% \fancyhead{}
+% \fancyhead[LE]{$p$-Adic Stable Homotopy Theory and Anderson Duality}
+% \fancyhead[CO]{Felix Janssen}
+% \fancyhead[R]{Chapter \thesection}
+% \fancyfoot{}
+% \fancyfoot[C]{\thepage}
+
+
+
+\usepackage{pdfpages}
+\usepackage{hyperref}
+%\iffalse
+\hypersetup{
+    unicode=false,          % non-Latin characters in Acrobat’s bookmarks
+    pdftoolbar=true,        % show Acrobat’s toolbar?
+    pdfmenubar=true,        % show Acrobat’s menu?
+    pdffitwindow=false,     % window fit to page when opened
+    pdfstartview={FitH},    % fits the width of the page to the window
+    pdftitle={My title},    % title
+    pdfauthor={Author},     % author
+    pdfsubject={Subject},   % subject of the document
+    pdfcreator={Creator},   % creator of the document
+    pdfproducer={Producer}, % producer of the document
+    pdfkeywords={keyword1, key2, key3}, % list of keywords
+    pdfnewwindow=true,      % links in new PDF window
+    colorlinks=true,       % false: boxed links; true: colored links
+    linkcolor=red,          % color of internal links (change box color with linkbordercolor)
+    linkbordercolor = red,
+    citecolor=green,        % color of links to bibliography
+    filecolor=magenta,      % color of file links
+    urlcolor=cyan,           % color of external links
+    urlbordercolor={1 1 1}  % color of border around links
+}
+%\fi
+
+%\oddsidemargin=0.5in \evensidemargin=0.5in \textwidth=6in
+%\textheight=8.5in
+
+%%%%%%%font designs%%%%%%%%%%just untab a group%%%%%%%%%%
+
+%\usepackage[cmintegrals,cmbraces]{newtxmath}
+%\usepackage{ebgaramond-maths}
+%\usepackage[T1]{fontenc}
+
+%\usepackage{libertine}
+%\usepackage{libertinust1math}
+%\usepackage[T1]{fontenc}
+
+%\usepackage[T1]{fontenc}
+%\usepackage{newpxtext,eulerpx}
+
+%\usepackage[default,regular,black]{sourceserifpro}
+%\usepackage[T1]{fontenc}
+
+%\usepackage[XCharter]{newtxmath}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+%\usepackage[utf8]{inputenc}
+
+%%%%%%%%%%%%%%%%%%%%%% THEOREME %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand{\proofname}{Proof}
+
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+
+\theoremstyle{remark}
+\newtheorem{rem}{Remark}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{exam}[thm]{Example}
+\newtheorem{exer}[thm]{Exercise}
+%%%%%%%%%%%%%%% abbreviations %%%%%%%%%%%%%%%%%%%
+\newcommand{\cal}{\mathcal}
+\newcommand{\cA}{\mathcal A}
+\newcommand{\cB}{\mathcal B}
+\newcommand{\cC}{\mathcal C}
+\newcommand{\cD}{\mathcal D}
+\newcommand{\cE}{\mathcal E}
+\newcommand{\cF}{\mathcal F}
+\newcommand{\cG}{\mathcal G}
+\newcommand{\cH}{\mathcal H}
+\newcommand{\spaces}{\mathcal S}
+\DeclareMathOperator{\globalspaces}{\spaces_{glob}}
+%\newcommand{\cO}{\mathcal O}
+\DeclareMathOperator{\sSet}{sSet}
+\DeclareMathOperator{\Orb}{Orb}
+\newcommand{\onto}{\twoheadrightarrow}
+\newcommand{\into}{\hookrightarrow}
+%\DeclareMathOperator{\Psh}{Psh}
+\newcommand{\h}{\mathrm{h}}
+\DeclareMathOperator{\Th}{Th}
+\DeclareMathOperator{\CAlg}{CAlg}
+\newcommand{\twiggle}{\rightsquigarrow}
+
+%%%%%%%%%%%%%%% MATHEMATISCHE MAKROS %%%%%%%%%%%%%%%%
+\newcommand{\p}{\mathbb P}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\F}{\mathbb F}
+\newcommand{\D}{\mathbb D}
+\newcommand{\E}{\mathbb E}
+\renewcommand{\S}{\mathbb S}
+\newcommand{\aff}{\mathbb A}
+\newcommand{\Sch}{\mathrm{Sch}}
+\newcommand{\bB}{\mathbb B}
+\DeclareMathOperator{\AffLin}{AffLin}
+%%% \newcommand{\cX}{\mathcal{X}}
+\newcommand{\catinfty}{\mathcal C\mathrm{at}_{\infty}}
+\newcommand\f[3]{#1 \colon #2 \rightarrow #3}
+% \newcommand\xto[1]{\xrightarrow{#1}}
+\newcommand\xot[1]{\xleftarrow{#1}}
+\newcommand{\op}{\mathrm{op}}
+\DeclareMathOperator{\Ch}{Ch}
+\newcommand{\acts}{\circlearrowright}
+\newcommand{\stca}{\circlearrowleft}
+\newcommand{\normal}{\vartriangleleft}
+\newcommand{\tate}[1]{^{t#1}}
+\renewcommand{\L}{\mathbb{L}}
+\newcommand{\trunc}[1]{\tau_{\leq #1}}
+\newcommand{\Pre}{\mathrm{Pre}}
+\DeclareMathOperator{\thh}{THH}
+\DeclareMathOperator{\tc}{TC}
+\DeclareMathOperator{\hh}{HH}
+\DeclareMathOperator{\Lan}{Lan}
+\DeclareMathOperator{\Ran}{Ran}
+\newcommand{\cotangent}[2]{\mathrm{L}_{#1/#2}}
+% \newcommand{\omega}{\mathrm{fin}}
+\DeclareMathOperator{\Rex}{Rex}
+\DeclareMathOperator{\Lex}{Lex}
+
+
+%%%%%%%%%%%%%%%%Tikzcd makros%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\adj}[4]{
+  \begin{tikzcd}[ampersand replacement=\&]
+  #1\arrow[r, shift left=1ex, "#3"{name=G}] \& #2 \arrow[l, shift left=.5ex, "#4"{name=F}]
+            \arrow[phantom, from=F, to=G, , "\scriptscriptstyle\boldsymbol{\top}"]
+  \end{tikzcd}%
+}
+
+\newcommand{\sq}[8]{
+\begin{tikzcd}[ampersand replacement=\&]
+  #1 \arrow[r, "#5"] \arrow[d, "#6"'] \& #2 \arrow[d, "#7"]                                   \\
+#3 \arrow[r, "#8"']                 \& #4
+  \end{tikzcd}%
+}
+
+\newcommand{\po}[8]{
+\begin{tikzcd}[ampersand replacement=\&]
+  #1 \arrow[r, "#5"] \arrow[d, "#6"'] \& #2 \arrow[d, "#7"]                                   \\
+#3 \arrow[r, "#8"']                 \& #4 \arrow[lu, "\ulcorner", phantom, very near start]
+  \end{tikzcd}%
+}
+
+\newcommand{\pb}[8]{
+\begin{tikzcd}[ampersand replacement=\&]
+#4 \arrow[r, "#8"] \arrow[d, "#7"'] \arrow[rd, "\lrcorner", phantom, very near start] \& #2 \arrow[d, "#5"]     \\
+#3 \arrow[r, "#6"']                                                                   \& #1
+\end{tikzcd}%
+}
+
+\newcommand{\zseq}[5]{
+\begin{tikzcd}[ampersand replacement=\&]
+\dots \arrow[r, "#3"] \& #1 \arrow[r, "#4"] \& #2 \arrow[r, "#5"] \& \dots
+\end{tikzcd}
+}
+
+\newcommand{\nseq}[4]{
+\begin{tikzcd}[ampersand replacement=\&]
+#1 \arrow[r, "#3"] \& #2 \arrow[r, "#4"] \& \dots
+\end{tikzcd}
+}
+
+\newcommand{\tow}[4]{
+\begin{tikzcd}[ampersand replacement=\&]
+\vdots \arrow[d, "#4"] \\
+#2 \arrow[d, "#3"]     \\
+#1
+\end{tikzcd}
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\newcommand{\substeq}{\operatorname{\subseteq}}
+\newcommand{\s}{\mathfrak{S}}
+\newcommand{\bs}{\backslash}
+\newcommand{\tensor}{\otimes}
+\newcommand{\del}{\partial}
+
+\DeclareMathOperator{\rk}{rk}
+\newcommand{\fib}{\operatorname{fib}}
+\newcommand{\cof}{\operatorname{cof}}
+\newcommand{\GL}{\operatorname{GL}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Mat}{{\operatorname{Mat}}}
+\newcommand{\tr}{{\operatorname{tr}}}
+\newcommand{\colim}{\operatorname{colim}}
+%\newcommand{\sym}{\operatorname{Sym}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\im}{\operatorname{im}}
+%\newcommand{\lh}{\operatorname{LH}}
+%\newcommand{\mathspan}{\operatorname{span}}
+\newcommand{\Spec}{\operatorname{Spec}}
+%\newcommand{\diag}{\operatorname{diag}}
+%\newcommand{\dirlim}{\underrightarrow\lim}
+\newcommand{\coker}{\operatorname{coker}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\End}{\operatorname{End}}
+\DeclareMathOperator{\map}{map}
+\DeclareMathOperator{\Map}{Map}
+\DeclareMathOperator{\Set}{Set}
+\DeclareMathOperator{\Fun}{Fun}
+\DeclareMathOperator{\Sp}{Sp}
+\DeclareMathOperator{\Nat}{Nat}
+\DeclareMathOperator{\Ab}{Ab}
+\DeclareMathOperator{\Top}{Top}
+\DeclareMathOperator{\TopGrpd}{TopGrpd}
+\DeclareMathOperator{\pt}{pt}
+\DeclareMathOperator{\Span}{Span}
+
+\let\oldphi\phi
+\let\phi\varphi
+\let\varphi\oldphi
+\renewcommand{\epsilon}{\varepsilon}
+\renewcommand{\emptyset}{\varnothing}
+\DeclareMathOperator{\Ind}{Ind}
+\newcommand{\Psh}{\mathcal P}

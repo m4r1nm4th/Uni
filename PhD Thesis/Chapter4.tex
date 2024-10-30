@@ -1,0 +1,211 @@
+\section{Equivariant Cohomology Theories}
+
+Throughout this section fix a compact Lie group $G$.
+
+\begin{definition}
+We consider the category of $G$-anima which is defined as the the presheaf category 
+\[
+\An_G := \Psh(\mathrm{Orb}_G).
+\]
+For a closed subgroup $H \leq G$ we let $\AffLin^H$ be the category consisting of finite dimensional euclidean vector spaces with an 
+$H$-action through linear isometries. A morphism $f \colon V \to W$ is an affine linear morphism that 
+decomposes as an equivariant linear isometric embedding $\iota \colon V \hookrightarrow W$ followed by a translation along a vector 
+$w \in (\iota(V)^\perp)^H$ out of the $H$ fixed points of the orthogonal complement of $\iota(V)$.
+Thus $\AffLin^{\{e\}} \simeq \AffLin$.
+The assignment $G/H \mapsto \AffLin^H$ makes $\AffLin^{-}$ into a $G$-category, that is a functor 
+$\mathrm{Orb}_G^\op \to \catinfty$.
+Let $X \mapsto \AffLin^X$ the unique limit preserving extension $\An_G^\op \to \catinfty$ of $\AffLin^{-}$.
+Let 
+\[
+  \AVB^\vop_G := \int_{X \in \An_G^\op} (\AffLin^{X})^\op   
+\]
+be the unstraightening of the functor $\AffLin^{-}$.
+The category $\AVB^\vop_G$ is the vertical opposite of the \emph{category of (equivariant) affine vector bundles over $G$} 
+\[
+  \AVB_G := \int_{X \in \An_G} \AffLin^X.
+\]
+For every $G$-representation $V \in \AffLin^G$ there is a functor 
+\[
+\iota_V \colon \An_G \to \AVB_G    
+\]
+that equips a $G$-anima with the trivial $V$ vector bundle over it. One can construct $\iota_V$ 
+as in the non-equivariant case via the source of a cartesian lift 
+\[\begin{tikzcd}
+	\pt && {\Fun(\An_G,\AVB_G)} \\
+	{\Delta^1} && {\Fun(\An_G,\An_G)}
+	\arrow["{\pr_*}", from=1-3, to=2-3]
+	\arrow["{\id \to \mathrm{const}_{G/G}}"', from=2-1, to=2-3]
+	\arrow["{\mathrm{const}_{(G/G,V)}}", from=1-1, to=1-3]
+	\arrow["{\mathrm{target}}"', from=1-1, to=2-1]
+	\arrow[dashed, from=2-1, to=1-3].
+\end{tikzcd}\]
+
+As in the case $G = \{e\}$ we have distinguished squares in the category $\AVB^\vop_G$
+
+
+
+
+Let $(\An_G)^\omega_*$ be the category of pointed objects in the category compact $G$-anima.
+A \emph{$G$-cohomology theory $E$} is a functor $E \colon ((\An_G)^\omega_*)^\op \times \AffLin_G^\simeq \to \Ab$
+together with natural equivalences 
+\[
+    \sigma_V \colon E(X,W) \to E(S^V \wedge X, V \oplus W)
+\]
+such that 
+$E(-, \R^\bullet_{\mathrm{triv}} \oplus V)$ is a cohomology theory for every $V$ and the following diagrams commute
+\[\begin{tikzcd}
+	& {E(X,V)} \\
+	{E(S^W\wedge X,W\oplus V)} && {E(S^U\wedge X, U \oplus V)} \\
+	{E(S^U\wedge S^W \wedge X, U \oplus W \oplus V)} && {E(S^W \wedge S^U \wedge X, W \oplus U \oplus V)}
+	\arrow["{\sigma_W}", from=1-2, to=2-1]
+	\arrow["{\sigma_U}"', from=1-2, to=2-3]
+	\arrow["{\sigma_U}", from=2-1, to=3-1]
+	\arrow["{\sigma_W}"', from=2-3, to=3-3]
+	\arrow["\simeq", from=3-1, to=3-3]
+\end{tikzcd},\]
+
+\[\begin{tikzcd}
+	{E(X;W)} & {E(S^V \wedge X; V \oplus W)} \\
+	{E(S^{U \oplus V} \wedge X; U \oplus V \oplus W)} & {E(S^U \wedge S^V \wedge X;U \oplus V \oplus W)}
+	\arrow["{\sigma_V}", from=1-1, to=1-2]
+	\arrow["\simeq"', from=2-1, to=2-2]
+	\arrow["{\sigma_U}", from=1-2, to=2-2]
+	\arrow["{\sigma_{U\oplus V}}"', from=1-1, to=2-1].
+\end{tikzcd}\]
+
+%TODO define genuine cohomology theory 
+
+\end{definition}
+
+\begin{definition}
+    Let $E \colon (\AVB^\vop_G|_{\An_G^\omega})^\op \to \Ab$ be a genuine cohomology theory, $Y \to Z$ a map of $G$-anima and fix $V \in \AffLin^G$, then we define 
+    the $V$-th $E$-cohomology group of $Z$ relative to $Y$ as
+    \[
+      E^V(Z,Y) := E(Z,Y;V) := \ker ( E(\iota_V Z \to \iota_V Y)). 
+    \]
+    For a pointed $G$-anima $X$ we set 
+    \[
+      \tilde E^V(X) := \tilde E(X;V) := E(X, \pt; V).
+    \]
+\end{definition}
+\begin{lemma}
+
+    The diagram 
+    \[\begin{tikzcd}
+        {E(\pt, W)} & {E(X,W)} \\
+        {E(S^V\vee X,V \oplus W)} & {E(S^V \times X, V \oplus W)} \\
+        {E(\pt, V \oplus W)} & {E(S^V \wedge X, V \oplus W)}
+        \arrow[from=1-2, to=1-1]
+        \arrow[from=1-1, to=2-1]
+        \arrow[from=2-2, to=2-1]
+        \arrow[from=1-2, to=2-2]
+        \arrow[from=3-2, to=2-2]
+        \arrow[from=3-1, to=2-1]
+        \arrow[from=3-2, to=3-1]
+    \end{tikzcd}\]
+    induces on horizontal kernels a zigzag 
+    \[
+    \tilde E(X,W) \to E(S^V \times X, S^V \vee X ; V \oplus W) \leftarrow \tilde E(S^V \wedge X, V \oplus W),
+    \]
+    where both morphisms are isomorphisms.
+\end{lemma}
+
+\begin{proof}
+By the snake-lemma the following ladder diagram 
+    \[\begin{tikzcd}
+        & 0 & {E(S^V\times X;V\oplus W)} & {E(S^V\times X;V\oplus W)} & 0 \\
+        0 & {\tilde E(S^V;V\oplus W)} & {E(S^V\vee X;V\oplus W)} & {E(X;V\oplus W)} & 0
+        \arrow[from=2-2, to=2-3]
+        \arrow[from=2-3, to=2-4]
+        \arrow[from=2-4, to=2-5]
+        \arrow[from=2-1, to=2-2]
+        \arrow[from=1-3, to=2-3]
+        \arrow[from=1-2, to=1-3]
+        \arrow[from=1-2, to=2-2]
+        \arrow[from=1-3, to=1-4]
+        \arrow[from=1-4, to=1-5]
+        \arrow[two heads, from=1-4, to=2-4]
+    \end{tikzcd}\]
+induces a long exact sequence
+\[
+0 \to E(S^V \times X, S^V \vee X; V \oplus W) \to E(X, W) \to \tilde E(S^V; V \oplus W) \to \dots 
+\]
+The Thom-isomorphism axiom shows that $\tilde E(S^V; V\oplus W) \simeq E(\pt, W)$. 
+Hence \[E(S^V \times X, S^V \vee X; V \oplus W) \simeq \tilde E(X;W).\]
+A careful examination shows that the left arrow of the span estabishes this isomorphism. The right arrow of the span 
+is an isomorphism because of the Mayer-Vietoris axiom.
+\end{proof}
+\begin{definition}
+    We define 
+    \[
+    \sigma_V \colon \tilde  E^W(X) \to \tilde E^{V\oplus W}(S^V \wedge X)    
+    \]
+    to be the resulting isomorphism.
+\end{definition}
+
+\begin{lemma}
+    Let $E \colon (\AVB^\vop_G|_{\An_G^\omega})^\op \to \Ab$ be a genuine cohomology theory.
+    Then $\tilde E$ is a $G$-cohomology theory.
+\end{lemma}
+\begin{proof}
+    % TODO Proof
+    By definition of the Mayer-Vietoris axiom we have that $\tilde E(-, \R^\bullet \oplus V)$ is an ordinary cohomomology theory 
+    for every $V$.
+    We will shows that $\sigma_{U\oplus V} \simeq \sigma_U \circ \sigma_V$ holds. Then we are finished since the axiom 
+    $\sigma_U \circ \sigma_V \simeq \sigma_V \circ \sigma_U$ then follows from this and the functoriality of 
+    $\sigma_{-}$ in $\AffLin^G$.
+    The essential part in proving $\sigma_{U\oplus V} \simeq \sigma_U \circ \sigma_V$  comes from the commutativity of the square 
+    \[\begin{tikzcd}
+        {(X;W)} & {(S^V\times X;V \oplus W)} \\
+        {(S^{U\oplus V}\times X;U\oplus V\oplus W)} & {(S^U\times S^V \times X;U\oplus V\oplus W)}
+        \arrow["{(\pr,\theta_V)}"', from=1-2, to=1-1]
+        \arrow["{(\pr,\theta_{U\oplus V})}", from=2-1, to=1-1]
+        \arrow["{(q\times X;\id)}", from=2-2, to=2-1]
+        \arrow["{(\pr,\theta_U)}"', from=2-2, to=1-2]
+    \end{tikzcd}\]
+    where $q\colon S^U \times S^V \to S^{U\oplus V}$ is the quotient map.
+\end{proof}
+
+
+\begin{definition}
+Let $\cC$ be a symmetric monoidal category. Let $\cC //^\mathrm{lax} \cC^\simeq$ be the lax 
+quotient of the action of the core $\cC^\simeq$ on $\cC$, which is defined as the unstraightening of the 
+functor 
+\[
+B\cC^\simeq \to \catinfty \colon \pt \mapsto \cC.
+\]
+One can think of an object of $\cC //^\mathrm{lax} \cC^\simeq$ as an object of $\cC$, while a morphism 
+\[
+  c \to d  
+\]
+consists of the data of an object $e \in \cC$ and a morphism 
+\[
+  c \otimes e \to d  
+\]
+of $\cC$.
+\end{definition}
+\begin{definition}
+Since every pair of objects $c,e \in \cC$ defines a functor 
+\[
+  \cC^\op(c) \xto{-\otimes \overrightarrow{e}} \cC^\op(c \otimes e)  
+\]
+and and every morphism $c \to d$ defines a morphism 
+\[
+  \cC^\op(c) \to \cC^\op(d)  
+\]
+in a compatible way we find that the assignment
+\[
+    c \mapsto \cC^\op(c)
+\]
+defines a functor 
+\[
+ \cC^\op(-) \colon \cC //^\mathrm{lax} \cC^\simeq \to \catinfty. 
+\]
+Since the forgetful functors $\cC^\op(c) \to \cC^\op$ are compatible with the structure maps of the diagram $\cC^\op(-)$ we obtain 
+a natural transformation 
+\[\cC^\op(-) \Rightarrow \mathrm{const_{\cC^\op}}.\]
+\end{definition}
+
+\begin{lemma}
+
+\end{lemma}

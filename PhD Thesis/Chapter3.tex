@@ -1,0 +1,371 @@
+\section{Genuine Cohomology Theories}\label{section:Genuinecohomologytheories}
+
+\begin{definition}[Genuine Cohomology Theories]
+  
+    A \emph{genuine cohomology theory} consists of a collection
+  $E^V(X)$ of abelian groups, where $X$ runs trough all compact anima and
+  $V$ is a vector bundle over $X$.
+  For each map $f \colon X \to Y$ and a vector bundle $W$ over $Y$ we have induced
+  maps
+  $f^W \colon E^{W}(Y) \to E^{f^*W}(X)$.
+  For each map $\phi \colon V \to W$ of vector bundles over $X$ we have
+  induced maps
+  $\phi_X \colon E^{V}(X) \to E^{W}(X)$.
+  The usual functoriality conditions hold, that is
+  \begin{itemize}
+    \item If $f, \phi$ above are the identity maps then they induce the identity.
+    \item We have $(g \circ f)^V = f^{g^*V} \circ g^V$ and
+    $(\phi \circ \psi)_X = \phi_X \circ \psi_X$.
+  \end{itemize}
+  
+  We require these collection of abelian groups and induced maps to satisfy some
+  properties
+  
+  \begin{enumerate}
+    \item[(i)]\label{homotopyinvariance} (Homotopy Invariance)\\
+     If $\phi \simeq \psi$ are homotopic morphisms of vector bundles $V \to W$ over $X$, then 
+     the induced morphisms $\phi_X = \psi_X$ are equal.
+     If $H \colon f \simeq g$ is a homotopy, then it induces an equivalence 
+     $\phi_H \colon f^*V \simeq g^*V$ between vector bundles over $X$.
+     We require that $({\phi_H})_X \circ f^V = g^V$, i.e. the following commutes 
+     \[\begin{tikzcd}
+      && {E^{f^*V}(X)} \\
+      {E^V(X)} \\
+      && {E^{g^*V}(X)}
+      \arrow["{({\phi_H})_X}", from=1-3, to=3-3]
+      \arrow["{f^V}", from=2-1, to=1-3]
+      \arrow["{g^V}"', from=2-1, to=3-3]
+    \end{tikzcd}\]
+    \iffalse
+    \item[(ii)]\label{additivity} (Additivity)\\
+    For each collection $(X_i,V_i)_{i \in I}$
+    of anima $X_i$ and vector bundles $V_i$ over $X_i$ the induced homomorphism
+    \[
+      E^{\coprod_i V_i}(\coprod_i X_i) \to \prod_i E^{V_i}(X_i)
+      \]
+      is an isomorphism.
+    \fi 
+      \item[(ii)]\label{beckchavalley} (Beck-Chevalley)\\
+      Let $f \colon X \to Y$ be
+      a map of anima and $\phi \colon V \to W$ be a map of vector bundles over $Y$.
+      Let $f^*\phi$ be the induced map $f^* V \to f^* W$ of vector bundles over $X$.
+      Then the following square commutes
+      \[\begin{tikzcd}
+        {E^{V}(Y)} & {E^{f^*V}(X)} \\
+        {E^W(Y)} & {E^{f^*W}(X)}
+        \arrow["{\phi_Y}"', from=1-1, to=2-1]
+        \arrow["{f^W}"', from=2-1, to=2-2]
+        \arrow["{f^V}", from=1-1, to=1-2]
+        \arrow["{(f^*\phi)_X}", from=1-2, to=2-2]
+      \end{tikzcd}\]
+  
+    \item[(iii)]\label{reduced} (Reducedness)\\
+      Let $X$ be a compact anima and 
+      let $\emptyset$ be the empty bundle over $X$. Then 
+      $E^\emptyset(X) \cong 0$.
+    \item[(iv)]\label{mayervietoris} (Mayer-Vietoris)\\
+    For each pushout square of anima
+    \[\begin{tikzcd}
+      {X_1} & {X_2} \\
+      {X_3} & {X_4}
+      \arrow["{f_1}", from=1-1, to=1-2]
+      \arrow["{f_3}", from=1-2, to=2-2]
+      \arrow["{f_2}"', from=1-1, to=2-1]
+      \arrow["{f_4}"', from=2-1, to=2-2]
+      \arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=2-2, to=1-1]
+      \arrow["H"{description}, Rightarrow, from=2-1, to=1-2]
+    \end{tikzcd}\]
+    and vector bundle $V$ over $X_4$ the induced sequence
+    \[
+      E^{V}(X_4) \xto{(f_3^V,f_4^V)} E^{f_3^*V}(X_2)\oplus E^{f_4^*V}(X_3)
+      \xto{f_1^{f_3^*V} - ({\phi_H})_X \circ f_2^{f_4^*V}} E^{f_1^*f_3^*V}(X_1)
+      \]
+    is exact in the middle.
+    \item[(v)]\label{thomiso}(The Thom Isomorphism)\\
+    Let $V,W$ be two vector bundles over $X$. Let
+    \[E^{V\oplus W}(S_X^V,X) =
+    E^{p^*(V\oplus W)}(S_X^V) \ominus E^{V\oplus W}(X)
+    \] be the complement of
+    the direct summand inside $E^{p^*(V\oplus W)}(S_X^{V})$ of $E^{V\oplus W}(X)$
+    due to the retraction $\sigma^{p^*(V\oplus W)} \circ p^{V\oplus W} = \id$.
+    Then the map
+    \[
+    E^W(X) \xto{p^W} E^{p^*W}(S_X^V) \xto{(\theta_{(X)}^{(V,W)})_{S_X^V}} E^{p^*(V \oplus W)}(S_X^V) \to E^{V\oplus W}(S_X^V,X)
+    \]
+    is an isomorphism.
+  \end{enumerate}
+  
+  \end{definition}
+  
+  We want to make the above definition rigorous, by observing that some of the statet 
+  axioms of a genuine cohomology theory are implemented by a functor 
+  out of $h\AVB^\op$. In general we can describe the homotopy category of the 
+  total category of a Cartesian fibration as follows:
+  
+  \begin{remark}
+  Let $p \colon \cC \to \mathcal I$ be a Cartesian fibration. We want to give a generators and 
+  relation discription 
+  of the homotopy category of $\cC$ in terms of the functor ${\mathrm{d}} p \colon \mathcal I^\op \to \catinfty$ that 
+  classifies $p$. 
+  First, consider the functor $h {\mathrm{d}} p \colon \mathcal I^\op \to \catinfty$, that 
+  we obtain by postcomposing ${\mathrm{d}} p$ with the functor $h \colon \catinfty \to \catinfty$
+  that sends an $\infty$-category $\cD$ to its homotopy category $h\cD$.
+  The natural transformation $\id_{\catinfty} \to h$ induces a functor 
+  $h\cC \to h\int_{\mathcal I^\op} h {\mathrm{d}} p$.
+  We claim that this functor induces an equivalence between ordinary categories.
+  TODO 
+  Since $h {\mathrm{d}} p$ maps into the full subcategory $\mathcal{C}\mathrm{at}_1$ of 
+  $\catinfty$ of ordinary categories, which is a $(2,1)-category$, the functor $h {\mathrm{d}} p$
+  factorizes over the homotopy-$2$ category $\tau_{\leq 2} \mathcal I$. 
+  In fact, the induced functor $\int_{\mathcal I^\op} h {\mathrm{d}} p 
+  \to \int_{\mathcal \tau_{\leq 2}I^\op} h {\mathrm{d}} p $ is an 
+  equivalence of categories.
+  We conclude, that we can compute the homotopy category $h\cC$ by computing 
+  $h \int_{\tau_{\leq 2}} h {\mathrm{d}} p$, i.e. the homotopy category 
+  of the Grothendieck construction of the $2$-functor from the homotopy-$2$ category of 
+  $\mathcal I^\op$ to the $(2,1)$-category of $1$-categories, given by the 
+  fiber wise homotopy category of the straightening of $p$. 
+  Luckily, there is a formula for that construction:
+  
+  An object of $h\cC$ is a pair $(i, [c])$ consisting of an object $i \in \mathcal I$
+  and an equivalence class of objects $[c] \in h {\mathrm{d}} p(i)$.
+  
+  A morphism $(i, [c]) \to (j, [d])$ is an equivalcence class represented by a pair $(f, [\phi])$ consisting 
+  of a morphism 
+  $f \colon j \to i$ in $\mathcal I$ and homotopy class of morphisms $[\phi \colon c \to f^*d]$. 
+  Two of such pairs $(f, [\phi])$ and $(g, [\psi])$ get identified if there exists 
+  a homotopy $H \colon f \to g$ in $\mathcal I$ such that with the induced natural 
+  isomorphism $H^* \colon f^* \simeq g^*$ between functors 
+  $h {\mathrm{d}} p(j) \to h {\mathrm{d}} p(i)$
+  the post composition $c \xto{[\phi]} f^*d \xto{H^*} g^*d$ is equal to the class 
+  $[\psi]$.
+  We can even further simplify the the discription of $h\cC$ by abusing the fact 
+  that we can factorize every morphism in $\cC$ in a fiber wise morphism followed by a Cartesian 
+  morphism. Let $(f,[\phi]) \colon (i,c) \to (j, d)$ represent a morphism in $h \cC$.
+  Then we can write it as the composite $(f,[\phi]) = (f, [\id]) \circ (\id, [\phi])$
+  \[\begin{tikzcd}
+      {(i,c)} && {(j,d)} \\
+      & {(i,f^*d)}
+      \arrow["{(f,[\phi])}", from=1-1, to=1-3]
+      \arrow["{(\id,[\phi])}"', from=1-1, to=2-2]
+      \arrow["{(f,\id)}"', from=2-2, to=1-3].
+  \end{tikzcd}\]
+  The composition of two such decompositions $(f,[\phi]) = (f, [\id]) \circ (\id, [\phi])$ and 
+  $(g,[\psi]) = (g, [\id]) \circ (\id, [\psi])$ is given by the decomposition $(\id, [\psi \phi])\circ (\id, gf)$
+  \[\begin{tikzcd}
+      {(i,c)} \\
+      {(i,f^*d)} & {(j,d)} \\
+      {(i,f^*g^*e)} & {(j, g^*e)} & {(k,b)}
+      \arrow["{(\id,[\phi])}"', from=1-1, to=2-1]
+      \arrow["{(f,\id)}"', from=2-1, to=2-2]
+      \arrow["{(\id,[\psi])}", from=2-2, to=3-2]
+      \arrow["{(g,\id)}"', from=3-2, to=3-3]
+      \arrow["{(\id,[\psi])}"', dashed, from=2-1, to=3-1]
+      \arrow["{(f,\id)}"', dashed, from=3-1, to=3-2]
+  \end{tikzcd}\].
+  Thus a functor $F \colon h\cC \to \cD$ into an ordinary category consists of the data 
+  \begin{itemize}
+    \item A specified object $F(i,c) \in \cD$ for each pair $i \in \mathcal I$ and $c \in  h {\mathrm{d}} p(i)$.
+    \item A morphism $F(f) \colon F(i,f^*d) \to F(j,d)$ for every morphism $f \colon i \to j$ in $\cC$ and fixed object $d \in h {\mathrm{d}} p(j)$.
+    \item A morphism $F([\phi]) \colon F(i, c) \to F(i, d)$ for every homotopy class of morphisms $[\phi \colon c \to d]$ in $ h {\mathrm{d}} p(i)$.
+    \item A specified natural isomorphism $\epsilon_{H,d} \colon F(i,f^*d) \xto{\cong} F(i, g^*d)$ for every homotopy $H \colon f \simeq g$ between morphisms 
+    $ i \to j $ in $\cC$ and object $d \in h {\mathrm{d}} p(j)$
+  \end{itemize}
+  such that 
+  \begin{itemize}
+    \item (Beck-Chavalley) Both composites agree $F(\phi) \circ F(f) = F(f) \circ F(f^*\phi)$
+    \[\begin{tikzcd}
+      {F(i,f^*c)} & {F(j, c)} \\
+      {F(i,f^*d)} & {F(j,d)}
+      \arrow["{F([f^*\phi])}"', from=1-1, to=2-1]
+      \arrow["{F(f)}"', from=2-1, to=2-2]
+      \arrow["{F(f)}", from=1-1, to=1-2]
+      \arrow["{F([\phi])}", from=1-2, to=2-2]
+    \end{tikzcd}\]
+    \item $F(f) = F(g) \circ \epsilon_{H,d}$
+    \[\begin{tikzcd}
+      {F(i,f^*d)} \\
+      && {F(j,d)} \\
+      {F(i,g^*d)}
+      \arrow["{\epsilon_{H,d}}"', from=1-1, to=3-1]
+      \arrow["{F(f)}", from=1-1, to=2-3]
+      \arrow["{F(g)}"', from=3-1, to=2-3]
+    \end{tikzcd}\]
+  \end{itemize}
+  \end{remark}
+  With the last remark we can now give an equivalent definition of a 
+  genuine cohomology theory. 
+  
+  \begin{definition}[Genuine Cohomology Theories II]\label{truedef}  
+    A \emph{genuine cohomology theory} $E$ is a functor $E \colon h (\AVB^\op) \to \mathrm{Ab} \colon (X,V) \mapsto E^V(X)$
+    that satisfies the following axioms 
+    \begin{enumerate}
+      \item[(iii)](Reducedness)\\
+      Let $X$ be a compact anima and 
+      let $\emptyset$ be the empty bundle over $X$. Then 
+      $E^\emptyset(X) \cong 0$.
+    \item[(iv)](Mayer-Vietoris)\\
+    For each pushout square of anima
+    \[\begin{tikzcd}
+      {X_1} & {X_2} \\
+      {X_3} & {X_4}
+      \arrow["{f_1}", from=1-1, to=1-2]
+      \arrow["{f_3}", from=1-2, to=2-2]
+      \arrow["{f_2}"', from=1-1, to=2-1]
+      \arrow["{f_4}"', from=2-1, to=2-2]
+      \arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=2-2, to=1-1]
+      \arrow["H"{description}, Rightarrow, from=2-1, to=1-2]
+    \end{tikzcd}\]
+    and vector bundle $V$ over $X_4$ the induced sequence
+    \[
+      E^{V}(X_4) \xto{(f_3^V,f_4^V)} E^{f_3^*V}(X_2)\oplus E^{f_4^*V}(X_3)
+      \xto{f_1^{f_3^*V} - ({\phi_H})_X \circ f_2^{f_4^*V}} E^{f_1^*f_3^*V}(X_1)
+      \]
+    is exact in the middle.
+    \item[(v)](Thom Isomorphism)\\
+    Let $V,W$ be two vector bundles over $X$.
+    \iffalse 
+     Let
+    \[E^{V\oplus W}(S_X^V,X) =
+    E^{p^*(V\oplus W)}(S_X^V) \ominus E^{V\oplus W}(X)
+    \] be the complement of
+    the direct summand inside $E^{p^*(V\oplus W)}(S_X^{V})$ of $E^{V\oplus W}(X)$
+    due to the retraction $\sigma^{p^*(V\oplus W)} \circ p^{V\oplus W} = \id$.
+    \fi 
+    Then the map
+    \[
+    E^W(X) \xto{p^W} E^{p^*W}(S_X^V) \xto{(\theta_{(X)}^{(V,W)})_{S_X^V}} E^{p^*(V \oplus W)}(S_X^V) \to E^{V\oplus W}(S_X^V,X)
+    \]
+    is an isomorphism.
+    \end{enumerate}
+  \end{definition}  
+  
+  \begin{remark}
+    Our motivation for this specific equivalent formutlation of the Eilenberg-Steenrod axioms for cohomology theories is, that it is generic enough, to 
+    translate it to different contexts, e.g. equivariant homotopy theory, but it is specific enough to model the `correct' notion of cohomology theories
+    instead of naive ones. We devoted the last chapter to propose a definition for equivariant genuine cohomology theories.
+  \end{remark}
+  
+  \begin{definition}
+    A \emph{cohomology theory of finite spectra} $E$ is a functor 
+    $ (h \Sp^\omega)^\op \to \mathrm{Ab}$ that satisfies the following axioms:
+    \begin{enumerate}
+      \item[(i)](Reducedness) $E(0) \simeq 0$
+      \item[(ii)](Exactness in the middle) Let $X \xto{f} Y \xto{g} Z$ be 
+      a fiber sequence of finite spectra and let $a \in \ker E(f)$, 
+      then there exists a $b \in E(Z)$ such that $E(g)(b) = a$.
+    \end{enumerate}
+  \end{definition}
+  
+  \begin{proposition}[Adams version of Brown Representability]
+    Let $E$ be a cohomology theory of finite spectra. Then there exists a spectrum 
+    $\mathcal E$ and a natural isomorphism $[-, \mathcal E] \xto{\simeq} E$ of functors 
+    $(h \Sp^\omega)^\op \to \mathrm{Ab}$.
+    It follows that the spectrum $\mathcal E$ is necesseraly unique.
+  \end{proposition}
+
+  \begin{proposition}
+    The functor $E \mapsto E \circ \Th^-$ is an equivalence between the category
+    \[\{\mathrm{Cohomology\ Theories\ on\ }\Sp^\omega\}\] 
+    of cohomology theories on compact spectra and 
+    the category \[
+        \{\mathrm{Genuine\ Cohomology\ Theories}\}
+       \] of genuine cohomology theories.
+    In particular exists vor every genuine cohomology theory $E$ a unique spectrum $\mathcal E$ and a natural 
+    equivalence 
+    \[
+      E^V(X) \simeq [X^{-V}, \mathcal E]  .
+    \]
+  \end{proposition}
+
+\begin{proof}
+    The category of genuine cohomology theories is modeled 
+    by the full subcategory 
+    \[
+      \Fun^{\mathrm{M.V., d.s., red.}}(\AVB^\vop|_{\An^\omega}, \mathrm{Ab}^\op)^\op  
+    \]
+    of the functor category $\Fun(\AVB^\vop|_{\An^\omega}, \mathrm{Ab}^\op)^\op$ on those functors 
+    $E \colon \AVB^\vop|_{\An^\omega} \to \mathrm{Ab}^\op$ that satisfies the axioms of Definition~\ref{truedef}.
+    By Theorem~\ref{thrm:dream} the functor $E \mapsto E \circ \Th^-$ identifies the category of genuine cohomology 
+    theories with a full subcategory of 
+    \[
+        \Fun^{\mathrm{add.}}(\Sp^\omega, \mathrm{Ab}^\op)^\op.
+    \]
+    We claim that this subcategory is precisely the one which is spanned by the cohomology theories.
+    To show this we have to prove two things 
+    \begin{itemize}
+        \item Let $\mathcal E$ be a spectrum, then the functor 
+            \[
+                [\Th^-(-), \mathcal E] \colon \AVB^\vop|_{\An^\omega} \to \mathrm{Ab}^\op
+            \]
+            satisfies the Mayer-Vietoris axiom of Definition~\ref{truedef}.
+        \item Let $E$ be a genuine cohomology and let $\tilde E \colon \Sp^\omega \to \Ab^\op$
+              be the unique functor such that $E \simeq \tilde E \circ \Th^-$ holds, according to Theorem~\ref{thrm:dream}.
+              Then $\tilde E$ is a cohomology theory.
+
+    \end{itemize}
+    The first claim follows from the fact that the functor $\Th^-$ sends pushout squares with constant coefficients 
+    to pushout squares in spectra. 
+    % \[\begin{tikzcd}
+    %     {(A,V)} & {(B,V)} \\
+    %     {(C,V)} & {(D,V)}
+    %     \arrow[from=1-1, to=1-2]
+    %     \arrow[from=1-2, to=2-2]
+    %     \arrow[from=1-1, to=2-1]
+    %     \arrow[from=2-1, to=2-2]
+    % \end{tikzcd}\]
+    The second claim follows from the fact that any pushout square
+    \[\begin{tikzcd}
+        {\mathcal A} & {\mathcal B} \\
+        {\mathcal C} & {\mathcal D}
+        \arrow[from=1-1, to=1-2]
+        \arrow[from=1-2, to=2-2]
+        \arrow[from=1-1, to=2-1]
+        \arrow[from=2-1, to=2-2]
+        \arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=2-2, to=1-1]
+    \end{tikzcd}\]
+     is of the form 
+    \[\begin{tikzcd}
+        {\Sigma^{\infty - n}A} & {\Sigma^{\infty - n}B} \\
+        {\Sigma^{\infty - n}C} & {\Sigma^{\infty - n}D}
+        \arrow[from=1-1, to=1-2]
+        \arrow[from=1-2, to=2-2]
+        \arrow[from=1-1, to=2-1]
+        \arrow[from=2-1, to=2-2]
+        \arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=2-2, to=1-1],
+    \end{tikzcd}\]
+    where 
+    \[\begin{tikzcd}
+        A & B \\
+        C & D
+        \arrow[from=1-1, to=1-2]
+        \arrow[from=1-2, to=2-2]
+        \arrow[from=1-1, to=2-1]
+        \arrow[from=2-1, to=2-2]
+        \arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=2-2, to=1-1]
+    \end{tikzcd}\]
+    is a pushout in $\An_*^\omega$.
+    Consider the following pushout in $\AVB^\vop|_{\An^\omega}$:
+    \[\begin{tikzcd}
+        {(A,\R^n)} & {(B,\R^n)} \\
+        {(C,\R^n)} & {(D,\R^n)}
+        \arrow[from=1-1, to=1-2]
+        \arrow[from=1-2, to=2-2]
+        \arrow[from=1-1, to=2-1]
+        \arrow[from=2-1, to=2-2]
+        \arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=2-2, to=1-1]
+    \end{tikzcd}.\]
+    By the (Mayer-Vietoris) axiom it gets send to a sequence 
+    \[
+    E^n(D) \to E^n(B) \oplus E^n(C) \to E^n(A)    
+    \]
+    which is exact in the middle. Therefore also the sequence 
+    \[
+    \tilde E(\Sigma^{\infty - n} D) \to \tilde E(\Sigma^{\infty - n} B) \oplus \tilde E(\Sigma^{\infty - n} C)  \to \tilde E(\Sigma^{\infty - n} A)     
+    \]
+    is exact in the middle since we have 
+    \[
+    \tilde E(\Sigma^{\infty -n} X) \simeq \fib( E^n X \to E^n \pt)
+    \]
+    for any pointed finite space $X$.
+\end{proof}

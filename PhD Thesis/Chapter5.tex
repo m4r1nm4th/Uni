@@ -1,0 +1,50 @@
+\section{The General Philosophy}
+
+Let $\cal X$ be a topos and let $(\cal V, \oplus)$ be a pointed symmetric monoidal $\cal X$-category together with a 
+symmetric monoidal $\cal X$-fucntor $S \colon \cal V \to \cal X^\omega_*$, this in particular consists 
+of a family of symmetric monoidal functors 
+\begin{eqnarray*}
+({\cal V}^X,\oplus) &\to& (\cal X_{X/\cdot /X}, \wedge_X)    \\
+V & \mapsto & S^V.
+\end{eqnarray*}
+Furthermore, we assume that $S$ is corepresented by the 
+unit $0 \in \cal V^\pt$.
+
+\begin{proposition}
+Let $\cD$ be an idempotent complete pointed category. Then there is 
+an equivalence of categories 
+\[
+  \mathrm{Gen}^\mathrm{split}(\int_{\cal X^\omega} {\cal V}^{\op}(V), \cD) \simeq \mathrm{Exc}_*^\mathrm{split}(\cal X_*^\omega, \cD)  
+\]
+\end{proposition}
+
+\begin{proposition} We have an equivalence of $\cal X$-categories 
+    \[
+        \colim_{V \in \cal V //^\mathrm{lax} \cal V^\simeq} {\cal V}^{\op}(V) \simeq \cal V^\op   
+    \]
+    where the colimit is taken in the catgory of $\cal X$-categories.
+\end{proposition}
+
+\begin{proposition} Let $\cal V \to \cal C$ be a symmetric monoidal $\cal X$-functor.
+    Then 
+    \[
+    \colim^{\in \Gamma}_{V \in \cal V //^\mathrm{lax} \cal V^\simeq} \cC   
+    \]
+    is a model for $\mathcal{C}[\mathcal{V}^{- 1}]$ in $\mathrm{CAlg(\Gamma)}$, where 
+    $\Gamma \in \{\cal X -\catinfty, \cal{X} - \mathrm{Pr}^\mathrm{L} \}$
+\end{proposition}
+
+\begin{corollary}
+Let $\cD$ be an idempotent complete pointed category. Then there is an 
+equivalence of categories 
+\[
+    \mathrm{Gen}^\mathrm{split}(\int_{\cal X ^\omega} \cal V ^\op, \cD) \simeq \mathrm{Exc}^\mathrm{split}_*(\mathcal{X}^\omega_*[\mathcal{V}^{- 1}], \cD)
+\]
+\end{corollary}
+\begin{corollary}
+    Let $\cD$ be an idempotent complete pointed category. Then there is an 
+    equivalence of categories 
+    \[
+        \mathrm{Gen}(\int_{\cal X ^\omega} \cal V ^\op, \cD) \simeq \mathrm{Exc}_*(\mathcal{X}^\omega_*[\mathcal{V}^{- 1}], \cD)
+    \]
+    \end{corollary}
