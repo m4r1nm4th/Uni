@@ -11,16 +11,20 @@
         <h1>Statistics Calculator</h1>
         <input type="text" id="seriesInput" placeholder="Enter numbers, e.g., 1, 2, 3, 4, 5">
         <button onclick="calculateStatistics()">Calculate</button>
+        <button onclick="generatePlot()">Generate Plot</button>
 
         <h2>Results:</h2>
         <div id="results"></div>
+
+
+        <h2>Box Plot:</h2>
+        <img id="plot" src="" alt="Box Plot" style="max-width: 100%; height: auto;">
     </div>
 
     <script>
         async function calculateStatistics() {
             const input = document.getElementById("seriesInput").value;
             const seriesArray = input.split(",").map(Number);
-            console.log(JSON.stringify({series: seriesArray}))
 
             const response = await fetch('/compute', {
                 method: 'POST',
@@ -37,6 +41,22 @@
                 <p>Minimum: ${result.min}</p>
                 <p>Maximum: ${result.max}</p>
             `;
+        }
+
+        async function generatePlot() {
+            const seriesArray = document.getElementById("seriesInput").value.split(",").map(Number);
+    
+
+            const response = await fetch('/plot', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ series: seriesArray })
+            });
+
+            // Get the plot image as a blob and create an object URL for it
+            const blob = await response.blob();
+            const imgURL = URL.createObjectURL(blob);
+            document.getElementById("plot").src = imgURL;
         }
     </script>
 </body>

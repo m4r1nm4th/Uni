@@ -1,5 +1,7 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, send_file
 import pandas as pd
+import matplotlib.pyplot as plt
+import io
 
 app = Flask(__name__)
 
@@ -26,5 +28,22 @@ def compute():
     stats = calculate_statistics(series_data)
     return jsonify(stats)
 
+@app.route('/plot', methods=['POST'])
+def plot():
+    data = request.json
+    series_data = data.get('series')
+    series = pd.Series(series_data)
+
+    fig, ax = plt.subplots()
+    series.plot.box(ax = ax)
+    plt.title("Box Plot of Series")
+
+    img = io.BytesIO()
+    fig.savefig(img, format='png')
+    img.seek(0)
+    plt.close(fig)
+
+    return send_file(img,mimetype='image/png')
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
